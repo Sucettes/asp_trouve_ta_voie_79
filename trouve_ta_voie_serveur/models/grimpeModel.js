@@ -25,11 +25,11 @@ module.exports = (sequelize, Sequelize) => {
         },
         nbEtoiles: {
             type: Sequelize.DECIMAL,
-            default: 0
+            defaultValue: 0
         },
         nbVotes: {
             type: Sequelize.DECIMAL,
-            default: 0
+            defaultValue: 0
         }
     });
 };

@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         estAdmin: {
             type: Sequelize.BOOLEAN,
-            default: false
+            defaultValue: false
         }
     });
 };

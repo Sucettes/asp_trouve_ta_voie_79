@@ -10,16 +10,23 @@ app.use(bodyParser.json());
 
 const jwt = require('jsonwebtoken');
 app.set('jwt-secret', config.secret);
-const db = require("./models/dbSetup");
+
+// const db = require("./models/dbSetup");
+// db.sequelize.sync({force: true}).then(() => {
 // db.sequelize.sync().then(() => {
-db.sequelize.sync({force: true}).then(() => {
-    console.log("Drop and re-sync db.");
-});
+//     console.log("Drop and re-sync db.");
+// });
 
-const routerGrimpe = require('./routes/grimpeRoutes.js');
+const routerAuth = require('./routes/authRoutes');
+const routerGrimpe = require('./routes/grimpeRoutes');
+const routerUtilisateur = require('./routes/utilisateurRoutes');
 
-app.use('/', routerGrimpe);
+app.use('/api', routerAuth);
+app.use('/api', routerGrimpe);
+app.use('/api', routerUtilisateur);
 
 app.listen(8090, function () {
     console.log('Serveur sur le port ' + this.address().port);
 });
+
+// module.exports = app;
