@@ -52,5 +52,12 @@ export default {
         });
 
         router.push({name: "connexion"});
+    },
+    reloadGetDataFromLocalStorage(context) {
+        context.commit('setUser', {
+            token: localStorage.getItem("token"),
+            userId: localStorage.getItem("userId"),
+            name: localStorage.getItem("name")
+        });
     }
 };

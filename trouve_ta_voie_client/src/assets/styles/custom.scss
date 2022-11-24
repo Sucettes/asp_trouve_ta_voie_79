@@ -1,8 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+
 $light: #b7cce0;
 $dark: #53717f;
 $medium: #7394a1;
-$accent: #d28864;
+$accent: #df591a;
 $green: #54ae2b;
 
-$primary: $accent;
-$secondary: $dark;
+$primary: #df591a;
+//$secondary: $medium;
+
+.btn-outline-primary:hover {
+  color: white
+}
+
+.btn {
+  border-radius: 0;
+}
+
+.form-control {
+  border-radius: 0;
+}
+
+* {
+  font-family: 'Abel', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Oswald', sans-serif;
+}

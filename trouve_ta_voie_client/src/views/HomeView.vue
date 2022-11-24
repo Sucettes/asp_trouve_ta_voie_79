@@ -14,10 +14,7 @@ export default {
 </script>
 
 <style lang="scss">
-$light: #b7cce0;
-$dark: #53717f;
-$medium: #7394a1;
-$accent: #d28864;
+@import '@/assets/styles/custom.scss';
 
 #homeContainer {
   margin: 30px;

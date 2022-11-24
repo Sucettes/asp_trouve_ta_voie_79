@@ -11,10 +11,10 @@
         <ul class="navbar-nav">
 
           <li class="nav-item">
-            <a class="nav-link" href="#" v-if="isLoggedIn">Ajouter un lieu</a>
+              <router-link class="nav-link" to="/lieu/ajouter" v-if="isLoggedIn">Ajouter un lieu</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" v-if="isLoggedIn">Ajouter une grimpe</a>
+            <router-link class="nav-link" to="/grimpe/ajouter" v-if="isLoggedIn">Ajouter une grimpe</router-link>
           </li>
 
           <li class="nav-item">
@@ -28,14 +28,16 @@
           <li class="nav-item dropdown" v-if="isLoggedIn">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                data-bs-toggle="dropdown" aria-expanded="false">
-              {{name}}
+              {{ name }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li><a class="dropdown-item" href="#">Mes grimpes</a></li>
               <li><a class="dropdown-item" href="#">Mes lieux</a></li>
               <li><a class="dropdown-item" href="#">Mes votes</a></li>
               <hr>
-              <li><a class="dropdown-item" href="#">Profil</a></li>
+              <li>
+                <router-link class="dropdown-item" to="/profil">Profil</router-link>
+              </li>
               <li><a class="dropdown-item" @click="logout">Déconnexion</a></li>
             </ul>
           </li>
@@ -48,6 +50,7 @@
 <script>
 export default {
   name: "HeaderNav",
+  components: {},
   methods: {
     logout() {
       this.$store.dispatch("logout");
@@ -66,9 +69,9 @@ export default {
 
 <style lang="scss" scoped>
 $light: #b7cce0;
-$dark:  #53717f;
-$medium:  #7394a1;
-$accent:  #d28864;
+$dark: #53717f;
+$medium: #7394a1;
+$accent: #d28864;
 
 nav {
   background-color: $dark;
@@ -78,6 +81,7 @@ nav {
 .nav-link {
   color: white;
 }
+
 .nav-link:hover {
   color: $light;
 }
@@ -85,6 +89,7 @@ nav {
 .navbar-brand {
   color: white;
 }
+
 .navbar-brand:hover {
   color: $light;
 }

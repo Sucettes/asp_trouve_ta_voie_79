@@ -7,7 +7,10 @@
 import HeaderNav from "@/components/HeaderNav";
 
 export default {
-  components: {HeaderNav}
+  components: {HeaderNav},
+  mounted() {
+    this.$store.dispatch("reloadGetDataFromLocalStorage");
+  }
 };
 </script>
 
@@ -18,9 +21,11 @@ export default {
 #app {
   background-color: #f3f4f6;
 }
+
 html {
   background-color: #f3f4f6;
 }
+
 .backgroundGlass {
   backdrop-filter: blur(15px) saturate(72%);
   -webkit-backdrop-filter: blur(15px) saturate(72%);

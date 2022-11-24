@@ -21,7 +21,18 @@ routerLieu.route('/lieux')
     });
 
 routerLieu.route('/lieu/create')
-    .post()
+    .post(function (req, res) {
+        db.lieux.create({
+            "titre": 'un titre',
+            'description': 'une description',
+            'directives': 'une directives',
+            'latitude': 2,
+            'longitude': 2,
+            'utilisateurId': 10
+        }).then(lieu => {
+            res.status(300).json(lieu);
+        })
+    })
     .all(function (req, res) {
         res.status(405).end();
     });

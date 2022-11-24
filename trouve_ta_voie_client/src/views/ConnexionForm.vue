@@ -4,14 +4,21 @@
       <h2>Connexion</h2>
       <div class="mb-3">
         <label for="inputCourriel" class="form-label">Courriel</label>
-        <input type="email" class="form-control" id="inputCourriel" v-model.trim="courriel" @blur="valideCourriel" @input="valideCourriel" :class="{ 'is-invalid': courrielVal===false }">
-        <p class="error" v-if="!courrielVal">{{ errCourriel }}</p>
+        <input type="email" class="form-control" id="inputCourriel" v-model.trim="courriel"
+               @blur="valideCourriel" @input="valideCourriel"
+               :class="{ 'is-invalid': courrielVal===false }">
+        <ul class="ulError" v-if="!courrielVal">
+          <li class="error" v-for="err in courrielErreurs" :key="err">{{ err }}</li>
+        </ul>
       </div>
 
       <div class="mb-3">
         <label for="inputMdp" class="form-label">Mot de passe</label>
-        <input type="password" class="form-control" id="inputMdp" v-model.trim="mdp" @blur="valideMdp" @input="valideMdp" :class="{ 'is-invalid': mdpVal===false }">
-        <p class="error" v-if="!mdpVal">{{ errMdp }}</p>
+        <input type="password" class="form-control" id="inputMdp" v-model.trim="mdp" @blur="valideMdp"
+               @input="valideMdp" :class="{ 'is-invalid': mdpVal===false }">
+        <ul class="ulError" v-if="!mdpVal">
+          <li class="error" v-for="err in mdpErreurs" :key="err">{{ err }}</li>
+        </ul>
       </div>
 
       <div class="btnWrapper">
@@ -34,9 +41,9 @@ export default {
       courrielVal: undefined,
       mdpVal: undefined,
       mdp: '',
-      errMdp: '',
       isLoading: false,
-      test: false
+      courrielErreurs: [],
+      mdpErreurs: []
     };
   },
   methods: {
@@ -58,25 +65,40 @@ export default {
     },
     valideCourriel(event) {
       const val = event.target.value;
+      const emailRegex = new RegExp('^(\\w|\\.|\\_|\\-)+[@](\\w|\\_|\\-|\\.)+[.]\\w{2,3}$');
+      this.courrielVal = true;
+      this.courrielErreurs = [];
 
       if (val === "") {
-        this.errCourriel = "Est requis!";
         this.courrielVal = false;
-      } else if (val.length > 50) {
-        this.errCourriel = "Trop long!";
+        this.courrielErreurs.push("Est requis !");
+      }
+      if (val.length > 50) {
+        this.courrielErreurs.push("Trop long !");
         this.courrielVal = false;
-      } else {
-        this.courrielVal = true;
+      }
+      if (emailRegex.test(val) === false && val.length > 0) {
+        this.courrielErreurs.push("Format ou caractère invalide !");
+        this.courrielVal = false;
       }
     },
     valideMdp(event) {
       const val = event.target.value;
+      const mdpRegex = new RegExp('^(?=.*\\d)(?=.*[aA-zZ])(?=.*[#?!@$%^&*-]).+$');
+      this.mdpErreurs = [];
+      this.mdpVal = true;
 
       if (val === "") {
-        this.errMdp = "Est requis!";
+        this.mdpErreurs.push("Est requis !");
         this.mdpVal = false;
-      } else {
-        this.mdpVal = true;
+      }
+      if (val.length < 6) {
+        this.mdpErreurs.push("Trop cours !");
+        this.mdpVal = false;
+      }
+      if (mdpRegex.test(val) === false) {
+        this.mdpErreurs.push("Format ou caractère invalide !");
+        this.mdpVal = false;
       }
     }
   },
@@ -94,7 +116,7 @@ export default {
   justify-content: center;
   flex-direction: column;
   background-position: center;
-  background-image: url("../assets/MontagneBack.jpg") !important;
+  background-image: url("@/assets/MontagneBack.jpg") !important;
   height: calc(100vh - 56px);
   background-size: cover;
   background-repeat: no-repeat;
@@ -123,4 +145,10 @@ export default {
   font-size: 0.9rem;
 }
 
+.ulError {
+  list-style: none;
+  padding: 0;
+}
+
 </style>
+
