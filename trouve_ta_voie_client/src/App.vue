@@ -1,30 +1,35 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <HeaderNav></HeaderNav>
+  <router-view></router-view>
 </template>
 
-<style>
+<script>
+import HeaderNav from "@/components/HeaderNav";
+
+export default {
+  components: {HeaderNav}
+};
+</script>
+
+<style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  background-color: #f3f4f6;
+}
+html {
+  background-color: #f3f4f6;
+}
+.backgroundGlass {
+  backdrop-filter: blur(15px) saturate(72%);
+  -webkit-backdrop-filter: blur(15px) saturate(72%);
+  background-color: rgba(221, 160, 122, 0);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
-nav {
+#authForm {
+  width: 25rem;
+  margin: 0 auto;
   padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+  height: auto;
 }
 </style>

@@ -18,15 +18,15 @@ app.set('jwt-secret', config.secret);
 // });
 
 const routerAuth = require('./routes/authRoutes');
-const routerGrimpe = require('./routes/grimpeRoutes');
 const routerUtilisateur = require('./routes/utilisateurRoutes');
+const routerGrimpe = require('./routes/grimpeRoutes');
+const routerLieu = require('./routes/lieuRoutes');
 
 app.use('/api', routerAuth);
-app.use('/api', routerGrimpe);
 app.use('/api', routerUtilisateur);
+app.use('/api', routerGrimpe);
+app.use('/api', routerLieu);
 
 app.listen(8090, function () {
     console.log('Serveur sur le port ' + this.address().port);
 });
-
-// module.exports = app;
