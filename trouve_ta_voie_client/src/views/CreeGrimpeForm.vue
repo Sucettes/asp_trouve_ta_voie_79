@@ -7,7 +7,12 @@
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="titre">
       </div>
-      <div style="background-color: red">TODO : style</div>
+      <select class="form-select" aria-label="Default select example">
+        <option selected disabled>Choisir le style</option>
+        <option value="Traditionnelle">Traditionnelle</option>
+        <option value="Sportive">Sportive</option>
+        <option value="Moulinette">Moulinette</option>
+      </select>
 
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
@@ -40,7 +45,7 @@ export default {
 
     },
     cancel() {
-
+      this.$router.push({name: 'accueil'});
     }
   },
 };

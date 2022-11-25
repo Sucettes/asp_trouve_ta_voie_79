@@ -3,8 +3,10 @@ import HomeView from '../views/HomeView.vue';
 import ConnexionForm from "@/views/ConnexionForm";
 import InscriptionForm from "@/views/InscriptionForm";
 import ProfilView from "@/views/ProfilView";
-import CreeLieuForm from "@/views/CreeLieuForm";
+import CreeLieuForm from "@/components/CreeLieuForm";
 import CreeGrimpeForm from "@/views/CreeGrimpeForm";
+import UserLieuLstComponent from "@/components/UserLieuLstComponent";
+import EditLieuForm from "@/components/EditLieuForm";
 
 const routes = [
     {path: '/', redirect: '/accueil'},
@@ -13,6 +15,11 @@ const routes = [
     {path: '/auth/connexion', name: 'connexion', component: ConnexionForm},
     {path: '/profil', name: 'profil', component: ProfilView},
     {path: '/lieu/ajouter', name: 'lieuAjouter', component: CreeLieuForm},
+    {path: '/lieu/mesLieux', name: 'mesLieux', component: UserLieuLstComponent},
+
+    {path: '/lieu/:id', name: 'lieuDetails', component: UserLieuLstComponent},
+    {path: '/lieu/modifier/:id', name: 'modifierLieu', component: EditLieuForm},
+
     {path: '/grimpe/ajouter', name: 'grimpeAjouter', component: CreeGrimpeForm}
     // {
     //     path: '/lieu', name: 'lieu', props: true, component: CreeModifLieuForm,
@@ -34,28 +41,13 @@ const router = createRouter({
     }
 });
 
-//
-// router.beforeEach(async (to, from, next) => {
-//     // oui : profil, lieuAjouter, grimpeAjouter
-//     // non : inscription, connexion
-//
-//     // next({name:, params: {}})
-//
-//     // console.log(to);
-//     // console.log(from);
-//     //
-//     // if (to.name === 'connexion' || to.name === 'inscription' && this.$store.getters.isAuthenticated) {
-//     //     this.$store.getters.isAuthenticated;
-//     // }
-//     // if (
-//     //     // make sure the user is authenticated
-//     //     !isAuthenticated &&
-//     //     // ❗️ Avoid an infinite redirect
-//     //     to.name !== 'Login'
-//     // ) {
-//     //     // redirect the user to the login page
-//     //     return { name: 'Login' }
-//     // }
-// });
-
 export default router;
+
+
+/**
+ * route : {path: '/lieu/:userId', name: 'mesLieux', component: UserLieuLstComponent},
+ * compon mounted() {    this.userId = this.$route.params.userId;}
+ *                 <router-link class="dropdown-item" :to="{name: 'mesLieux', params: {userId: userId}}"
+ *                              v-if="isLoggedIn">Mes lieux
+ *                 </router-link>
+ */

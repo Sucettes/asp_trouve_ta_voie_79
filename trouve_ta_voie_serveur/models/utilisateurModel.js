@@ -6,7 +6,11 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         courriel: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            unique: true,
+            validate: {
+                isEmail: true,
+            }
         },
         mdp: {
             type: Sequelize.STRING

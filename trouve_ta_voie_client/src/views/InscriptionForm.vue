@@ -70,22 +70,24 @@ export default {
   },
   methods: {
     async register() {
-      this.isLoading = true;
+      if (this.nomVal && this.courrielVal && this.mdpVal && this.mdpConfVal) {
+        this.isLoading = true;
 
-      const actionPayload = {
-        "nom": this.nom,
-        "courriel": this.courriel,
-        "mdp": this.mdp,
-        "mdpConf": this.mdpConf
-      };
+        const actionPayload = {
+          "nom": this.nom,
+          "courriel": this.courriel,
+          "mdp": this.mdp,
+          "mdpConf": this.mdpConf
+        };
 
-      try {
-        await this.$store.dispatch("signup", actionPayload);
-      } catch (err) {
-        console.log(err);
+        try {
+          await this.$store.dispatch("signup", actionPayload);
+        } catch (err) {
+          console.log(err);
+        }
+
+        this.isLoading = false;
       }
-
-      this.isLoading = false;
     },
     valideNom(event) {
       const val = event.target.value;
@@ -97,15 +99,15 @@ export default {
         this.nomErreurs.push("Est requis !");
         this.nomVal = false;
       }
-      if (val.length < 3) {
-        this.nomErreurs.push("Trop cours !");
+      if (val.length < 3 && val.length > 0) {
+        this.nomErreurs.push("Trop court !");
         this.nomVal = false;
       }
       if (val.length > 50) {
         this.nomErreurs.push("Trop long !");
         this.nomVal = false;
       }
-      if (nomRegex.test(val) === false) {
+      if (nomRegex.test(val) === false && val.length > 0) {
         this.nomErreurs.push("Format ou caractère invalide !");
         this.nomVal = false;
       }
@@ -153,11 +155,11 @@ export default {
         this.mdpErreurs.push("Est requis !");
         this.mdpVal = false;
       }
-      if (val.length < 6) {
-        this.mdpErreurs.push("Trop cours !");
+      if (val.length < 6 && val.length > 0) {
+        this.mdpErreurs.push("Trop court !");
         this.mdpVal = false;
       }
-      if (mdpRegex.test(val) === false) {
+      if (mdpRegex.test(val) === false && val.length > 0) {
         this.mdpErreurs.push("Format ou caractère invalide !");
         this.mdpVal = false;
       }
@@ -172,11 +174,11 @@ export default {
         this.mdpConfErreurs.push("Est requis !");
         this.mdpConfVal = false;
       }
-      if (val.length < 6) {
-        this.mdpConfErreurs.push("Trop cours !");
+      if (val.length < 6 && val.length > 0) {
+        this.mdpConfErreurs.push("Trop court !");
         this.mdpConfVal = false;
       }
-      if (mdpRegex.test(val) === false) {
+      if (mdpRegex.test(val) === false && val.length > 0) {
         this.mdpConfErreurs.push("Format ou caractère invalide !");
         this.mdpConfVal = false;
       }

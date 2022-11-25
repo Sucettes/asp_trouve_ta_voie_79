@@ -17,10 +17,10 @@ const routerAuth = express.Router();
 
 routerAuth.route('/inscription')
     .post(async function (req, res) {
-        const emailIsValid = validatorFct.emailIsValid(req.body.courriel);
-        const nameIsValid = validatorFct.nameIsValid(req.body.nom);
-        const pwdIsValid = validatorFct.pwdIsValid(req.body.mdp);
-        const pwdConfIsValid = validatorFct.pwdIsValid(req.body.mdpConf);
+        const emailIsValid = validatorFct.userEmailIsValid(req.body.courriel);
+        const nameIsValid = validatorFct.userNameIsValid(req.body.nom);
+        const pwdIsValid = validatorFct.userPwdIsValid(req.body.mdp);
+        const pwdConfIsValid = validatorFct.userPwdIsValid(req.body.mdpConf);
 
         if (emailIsValid && nameIsValid && pwdIsValid && pwdConfIsValid && (req.body.mdp === req.body.mdpConf)) {
             // email déjà utilisé...
@@ -64,8 +64,8 @@ routerAuth.route('/inscription')
 
 routerAuth.route('/connexion')
     .post(function (req, res) {
-        let courrielEstValide = validatorFct.emailIsValid(req.body.courriel);
-        let mdpEstValide = validatorFct.pwdIsValid(req.body.mdp);
+        let courrielEstValide = validatorFct.userEmailIsValid(req.body.courriel);
+        let mdpEstValide = validatorFct.userPwdIsValid(req.body.mdp);
 
         if (courrielEstValide && mdpEstValide) {
             Utilisateur.findOne({where: {courriel: req.body.courriel}}).then(u => {

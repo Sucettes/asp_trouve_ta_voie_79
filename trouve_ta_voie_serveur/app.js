@@ -1,19 +1,19 @@
 'use strict';
 
 const config = require('./config/config');
-
+const cors = require('cors');
 const express = require('express');
 const app = express();
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-const jwt = require('jsonwebtoken');
+app.use(cors({origin: config.origins}));
 app.set('jwt-secret', config.secret);
 
 // const db = require("./models/dbSetup");
+// // db.sequelize.sync().then(() => {
 // db.sequelize.sync({force: true}).then(() => {
-// db.sequelize.sync().then(() => {
 //     console.log("Drop and re-sync db.");
 // });
 

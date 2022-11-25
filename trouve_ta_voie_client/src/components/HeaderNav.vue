@@ -11,10 +11,12 @@
         <ul class="navbar-nav">
 
           <li class="nav-item">
-              <router-link class="nav-link" to="/lieu/ajouter" v-if="isLoggedIn">Ajouter un lieu</router-link>
+            <router-link class="nav-link" to="/lieu/ajouter" v-if="isLoggedIn">Ajouter un lieu
+            </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/grimpe/ajouter" v-if="isLoggedIn">Ajouter une grimpe</router-link>
+            <router-link class="nav-link" to="/grimpe/ajouter" v-if="isLoggedIn">Ajouter une grimpe
+            </router-link>
           </li>
 
           <li class="nav-item">
@@ -32,7 +34,11 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li><a class="dropdown-item" href="#">Mes grimpes</a></li>
-              <li><a class="dropdown-item" href="#">Mes lieux</a></li>
+              <li>
+                <router-link class="dropdown-item" :to="{name: 'mesLieux'}"
+                             v-if="isLoggedIn">Mes lieux
+                </router-link>
+              </li>
               <li><a class="dropdown-item" href="#">Mes votes</a></li>
               <hr>
               <li>
@@ -51,6 +57,11 @@
 export default {
   name: "HeaderNav",
   components: {},
+  data() {
+    return {
+      userId: 0
+    };
+  },
   methods: {
     logout() {
       this.$store.dispatch("logout");
@@ -63,6 +74,9 @@ export default {
     name() {
       return this.$store.getters.name;
     }
+  },
+  mounted() {
+    this.userId = this.$store.getters.userId;
   }
 };
 </script>

@@ -92,11 +92,11 @@ export default {
         this.mdpErreurs.push("Est requis !");
         this.mdpVal = false;
       }
-      if (val.length < 6) {
-        this.mdpErreurs.push("Trop cours !");
+      if (val.length < 6 && val.length >0) {
+        this.mdpErreurs.push("Trop court !");
         this.mdpVal = false;
       }
-      if (mdpRegex.test(val) === false) {
+      if (mdpRegex.test(val) === false && val.length >0) {
         this.mdpErreurs.push("Format ou caractère invalide !");
         this.mdpVal = false;
       }
