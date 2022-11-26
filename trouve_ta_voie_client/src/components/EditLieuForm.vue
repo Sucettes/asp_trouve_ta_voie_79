@@ -72,6 +72,7 @@
 import lieuValidator from "@/fctUtils/lieuValidator";
 import axios from "axios";
 
+
 export default {
   name: "EditLieuForm",
   components: {},
@@ -79,11 +80,11 @@ export default {
   data() {
     return {
       isLoading: false,
-      title: '',
-      description: '',
-      instruction: '',
-      latitude: '',
-      longitude: '',
+      title: "",
+      description: "",
+      instruction: "",
+      latitude: "",
+      longitude: "",
       titleIsVaild: undefined,
       descIsValid: undefined,
       instrucIsValid: undefined,
@@ -131,7 +132,7 @@ export default {
 
         const payload = {
           data: {
-            id: this.$route.params.id,
+            id: +this.$route.params.id,
             titre: this.title,
             description: this.description,
             directives: this.instruction,
@@ -161,7 +162,7 @@ export default {
       };
 
       axios.get(`http://localhost:8090/api/lieu/${payload.id}`, {
-        headers: {'Authorization': `Bearer ${payload.token}`}
+        headers: {"Authorization": `Bearer ${payload.token}`}
       }).then(res => {
         this.title = res.data.titre;
         this.description = res.data.description;

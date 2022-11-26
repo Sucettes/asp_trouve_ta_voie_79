@@ -18,11 +18,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DECIMAL,
             allowNull: false
         },
-        // todo : Images dans la bd? peut avoir plusieurs photo?
-        photos: {
-            type: Sequelize.BLOB('long'),
-            allowNull: false
-        },
         nbEtoiles: {
             type: Sequelize.DECIMAL,
             defaultValue: 0

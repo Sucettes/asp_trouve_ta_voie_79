@@ -5,12 +5,12 @@ function checkIfIsAuthenticated(req, callback) {
     if (!auth) {
         callback(false, null);
     } else {
-        const authArray = auth.split(' ');
+        const authArray = auth.split(" ");
         if (authArray.length !== 2) {
             callback(false, null);
         } else {
             const tokenEncode = authArray[1];
-            jwt.verify(tokenEncode, req.app.get('jwt-secret'), function (err, tokenDecode) {
+            jwt.verify(tokenEncode, req.app.get("jwt-secret"), function (err, tokenDecode) {
                 if (err) callback(false, null);
                 else {
                     callback(true, tokenDecode);
@@ -19,8 +19,9 @@ function checkIfIsAuthenticated(req, callback) {
         }
     }
 }
-const authMidl = function (req, res, next) {
-    checkIfIsAuthenticated(req, function (isAuthenticated, tokenDecode) {
+
+const authMidl = (req, res, next) => {
+    checkIfIsAuthenticated(req, (isAuthenticated, tokenDecode) => {
         if (!isAuthenticated) res.status(401).end();
         else {
             req.token = tokenDecode;

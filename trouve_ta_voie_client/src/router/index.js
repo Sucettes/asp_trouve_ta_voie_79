@@ -1,5 +1,5 @@
-import {createRouter, createWebHistory} from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import {createRouter, createWebHistory} from "vue-router";
+import HomeView from "../views/HomeView.vue";
 import ConnexionForm from "@/views/ConnexionForm";
 import InscriptionForm from "@/views/InscriptionForm";
 import ProfilView from "@/views/ProfilView";
@@ -8,31 +8,24 @@ import CreeGrimpeForm from "@/views/CreeGrimpeForm";
 import UserLieuLstComponent from "@/components/UserLieuLstComponent";
 import EditLieuForm from "@/components/EditLieuForm";
 
+
 const routes = [
-    {path: '/', redirect: '/accueil'},
-    {path: '/accueil', name: 'accueil', component: HomeView},
-    {path: '/auth/inscription', name: 'inscription', component: InscriptionForm},
-    {path: '/auth/connexion', name: 'connexion', component: ConnexionForm},
-    {path: '/profil', name: 'profil', component: ProfilView},
-    {path: '/lieu/ajouter', name: 'lieuAjouter', component: CreeLieuForm},
-    {path: '/lieu/mesLieux', name: 'mesLieux', component: UserLieuLstComponent},
-
-    {path: '/lieu/:id', name: 'lieuDetails', component: UserLieuLstComponent},
-    {path: '/lieu/modifier/:id', name: 'modifierLieu', component: EditLieuForm},
-
-    {path: '/grimpe/ajouter', name: 'grimpeAjouter', component: CreeGrimpeForm}
-    // {
-    //     path: '/lieu', name: 'lieu', props: true, component: CreeModifLieuForm,
-    //     children: [
-    //         {path: '/', redirect: '/accueil'},
-    //     ]
-    // }
+    {path: "/", redirect: "/accueil"},
+    {path: "/accueil", name: "accueil", component: HomeView},
+    {path: "/auth/inscription", name: "inscription", component: InscriptionForm},
+    {path: "/auth/connexion", name: "connexion", component: ConnexionForm},
+    {path: "/profil", name: "profil", component: ProfilView},
+    {path: "/lieu/ajouter", name: "lieuAjouter", component: CreeLieuForm},
+    {path: "/lieu/mesLieux", name: "mesLieux", component: UserLieuLstComponent},
+    {path: "/lieu/:id", name: "lieuDetails", component: UserLieuLstComponent},
+    {path: "/lieu/modifier/:id", name: "modifierLieu", component: EditLieuForm},
+    {path: "/grimpe/ajouter", name: "grimpeAjouter", component: CreeGrimpeForm}
 ];
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes,
-    linkActiveClass: 'active',
+    linkActiveClass: "active",
     scrollBehavior(_, _2, savedPosition) {
         if (savedPosition) {
             return savedPosition;
@@ -42,12 +35,3 @@ const router = createRouter({
 });
 
 export default router;
-
-
-/**
- * route : {path: '/lieu/:userId', name: 'mesLieux', component: UserLieuLstComponent},
- * compon mounted() {    this.userId = this.$route.params.userId;}
- *                 <router-link class="dropdown-item" :to="{name: 'mesLieux', params: {userId: userId}}"
- *                              v-if="isLoggedIn">Mes lieux
- *                 </router-link>
- */

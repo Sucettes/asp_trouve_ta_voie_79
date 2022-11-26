@@ -22,3 +22,23 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+---
+# Note
+
+```js
+/**
+ * route : {path: '/lieu/:userId', name: 'mesLieux', component: UserLieuLstComponent},
+ * compon mounted() {    this.userId = this.$route.params.userId;}
+ *                 <router-link class="dropdown-item" :to="{name: 'mesLieux', params: {userId: userId}}"
+ *                              v-if="isLoggedIn">Mes lieux
+ *                 </router-link>
+ */
+
+{
+    path: '/lieu', name: 'lieu', props: true, component: CreeModifLieuForm,
+    children: [
+        {path: '/', redirect: '/accueil'},
+    ]
+}
+```

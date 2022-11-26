@@ -26,6 +26,7 @@ db.sequelize = sequelize;
 db.utilisateurs = require('./utilisateurModel.js')(sequelize, Sequelize);
 db.grimpes = require('./grimpeModel.js')(sequelize, Sequelize);
 db.lieux = require('./lieuModel.js')(sequelize, Sequelize);
+db.images = require('./imageModel')(sequelize, Sequelize);
 
 // todo : regarde si c'est correct.
 db.utilisateurs.hasMany(db.lieux);
@@ -36,5 +37,8 @@ db.grimpes.belongsTo(db.utilisateurs);
 
 db.lieux.hasMany(db.grimpes);
 db.grimpes.belongsTo(db.lieux);
+
+// db.images.belongsTo(db.grimpes);
+db.grimpes.hasMany(db.images);
 
 module.exports = db;
