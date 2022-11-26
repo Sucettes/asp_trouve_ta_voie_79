@@ -13,7 +13,7 @@
           <label for="lieuDrop" class="form-label">Lieu</label>
           <select id="lieuDrop" class="form-select" aria-label="Choisir le lieu" v-model="lieu">
             <option selected disabled>Choisir le lieu</option>
-            <option v-for="lieu in lieux" :key="lieu.id" value="lieu.id">{{ lieu.titre }}</option>
+            <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
           </select>
         </div>
 
@@ -54,15 +54,15 @@
           <label for="picInput" class="form-label">Image</label>
           <div class="input-group mb-3">
             <input id="picInput" type="file" class="form-control" placeholder="Photos" aria-label="Photo"
-                   aria-describedby="Photo" @change="pictureChange" accept="image/*">
+                   aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput">
             <button class="btn btn-outline-secondary" type="button" id="PhotoAddBtn" @click="addPhoto">
-              Ajouté
+              Ajouter
             </button>
           </div>
 
           <label for="imgPrev" class="form-label">Aperçu de l'image</label>
           <div>
-            <img id="imgPrev" :src="picturePreviewUrl" alt="" class="picPrev">
+            <img id="imgPrev" :src="picturePreviewUrl" alt="" class="picPrev" ref="picPrev">
           </div>
         </div>
       </div>
@@ -107,45 +107,36 @@ export default {
       picture: null,
       picturePreviewUrl: null,
       pictures: [],
-      // picturesBase64: [],
-      picturesUrl: []
-
+      picturesBase64: [],
+      picturesUrl: [],
+      canAddPicture: true
     };
   },
   methods: {
-    // picItemLstRemove(e) {
-    //   console.log(e);
-    // },
     pictureChange(e) {
       this.picture = e.target.files[0];
       this.picturePreviewUrl = URL.createObjectURL(e.target.files[0]);
+      this.canAddPicture = true;
     },
     addPhoto() {
-      if (this.picture) {
-        this.pictures.push(this.picture);
-        this.picturesUrl.push(URL.createObjectURL((this.picture)));
-        this.picture = null;
-        this.picturePreviewUrl = null;
-        // document.getElementById("picInput").value = null;
+      if (this.canAddPicture) {
+        this.canAddPicture = false;
+        if (this.picture) {
+          this.pictures.push(this.picture);
+          this.picturesUrl.push(URL.createObjectURL((this.picture)));
+
+          const reader = new FileReader();
+          reader.readAsDataURL(this.picture);
+          reader.onload = () => {
+            this.picturesBase64.push({"base64": reader.result, "name": this.picture.name});
+          };
+          this.$refs.picInput.value = null;
+          this.picturePreviewUrl = null;
+        }
       }
     },
     add() {
       this.isLoading = true;
-      let picturesBase64 = [];
-      const reader = new FileReader();
-      // this.picturesBase64 = [];
-      this.pictures.forEach(pic => {
-        reader.readAsDataURL(pic);
-        reader.onload = () => {
-          let base64 = reader.result;
-          picturesBase64.push(JSON.stringify({base64: base64}));
-          console.log(picturesBase64)
-        };
-      });
-
-      console.log("test")
-      console.log(picturesBase64);
-
       const payload = {
         data: {
           titre: this.title,
@@ -153,7 +144,7 @@ export default {
           description: this.description,
           difficulte: this.diff,
           lieuxId: this.lieu,
-          imgBase64: picturesBase64
+          imgsBase64: this.picturesBase64
         },
         token: this.$store.getters.token
       };
@@ -161,9 +152,8 @@ export default {
       try {
         this.$store.dispatch("createGrimpe", payload);
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
-
       this.isLoading = false;
     },
     cancel() {

@@ -1,18 +1,15 @@
 "use strict";
 
+const path = require("path");
 const config = require("./config/config");
 const cors = require("cors");
 const express = require("express");
 const app = express();
-
 const bodyParser = require("body-parser");
-app.use(bodyParser.json());
 
+app.use(bodyParser.json({ limit: '1024mb' }));
 app.use(cors({origin: config.origins}));
 app.set("jwt-secret", config.secret);
-app.use(express.json({limit: "50mb"}));
-
-const path = require("path");
 app.use(express.static(path.join(__dirname, "public")));
 
 // const db = require("./models/dbSetup");
