@@ -1,19 +1,20 @@
 <template>
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
-    <lieu-card-component
-        v-for="x in refreshUserLieux"
-        :key="x.id"
-        :id="x.id"
-        :titre="x.titre"
-        :description="x.description"
-        :directives="x.directives"
-        :latitude="x.latitude"
-        :longitude="x.longitude"
+    <!--    d-flex align-items-stretch    pour avoir la meme hauteur...-->
+    <lieu-card-component class=""
+                         v-for="x in refreshUserLieux"
+                         :key="x.id"
+                         :id="x.id"
+                         :titre="x.titre"
+                         :description="x.description"
+                         :directives="x.directives"
+                         :latitude="x.latitude"
+                         :longitude="x.longitude"
     ></lieu-card-component>
   </div>
   <div v-if="refreshUserLieux.length === 0" class="alert alert-info shadow-sm" role="alert"
        id="alertInfo">
-    Aucun lieu n’a affiché ! <br> cliquez ici pour en ajouté un : <strong @click="addLieu">ajouté un
+    Aucun lieu a affiché ! <br> cliquez ici pour en ajouté un : <strong @click="addLieu">ajouté un
     lieu</strong>
   </div>
 
@@ -29,6 +30,7 @@
 
 <script>
 import LieuCardComponent from "@/components/lieuCardComponent";
+
 
 export default {
   name: "UserLieuLstComponent",
@@ -63,7 +65,7 @@ export default {
       this.isLoading = false;
     },
     addLieu() {
-      this.$router.push({name: 'lieuAjouter'});
+      this.$router.push({name: "lieuAjouter"});
     }
   },
   created() {

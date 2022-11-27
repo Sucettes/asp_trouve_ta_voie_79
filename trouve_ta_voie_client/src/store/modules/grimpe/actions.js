@@ -11,5 +11,14 @@ export default {
         }).catch(err => {
             console.error(err);
         });
+    },
+    async loadUserGrimpes(context, payload) {
+        axios.get(`http://localhost:8090/api/grimpes/${payload.userId}`, {
+            headers: {"Authorization": `Bearer ${payload.token}`}
+        }).then(res => {
+            context.commit("setUserGrimpes", res.data);
+        }).catch(err => {
+            console.log(err);
+        });
     }
 };

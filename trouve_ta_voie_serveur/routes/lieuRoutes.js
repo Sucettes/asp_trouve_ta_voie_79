@@ -25,7 +25,7 @@ routerLieu.route("/lieux/dropFormat")
           });
 
 routerLieu.route("/lieu/create")
-          .post((req, res) => {
+          .post((req, res, next) => {
               const locationTitleIsValid = validatorFct.locationTitleIsValid(req.body.titre);
               const locationDescriptionIsValid = validatorFct.locationDescriptionIsValid(req.body.description);
               const locationInstructionIsValid = validatorFct.locationInstructionIsValid(req.body.directives);

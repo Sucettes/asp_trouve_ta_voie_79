@@ -1,12 +1,13 @@
-'use strict';
+"use strict";
 
+const {DataTypes} = require("sequelize");
 module.exports = (sequelize, Sequelize) => {
-    return sequelize.define('images', {
+    return sequelize.define("images", {
         nom: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING
         },
         path: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: false
         }
     });

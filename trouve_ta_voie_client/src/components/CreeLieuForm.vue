@@ -1,7 +1,7 @@
 <template>
   <div id="lieuContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
     <h1>Ajouter un lieu</h1>
-    <hr>
+
     <form id="addLieuForm">
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>

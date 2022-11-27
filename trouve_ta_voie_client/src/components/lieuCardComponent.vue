@@ -1,31 +1,35 @@
 <template>
   <div id="card">
     <div id="cardBody" class=" shadow-sm p-3 mb-5 bg-body rounded">
-      <h3>{{ titre }}</h3>
-      <hr>
-      <h6>Description</h6>
+      <div>
+        <h3>{{ titre }}</h3>
+        <hr>
+        <h6>Description</h6>
 
-      <p v-if="description.length > 170">{{ description.substring(0, 170) + "..." }}</p>
-      <p v-else>{{ description }}</p>
+        <p v-if="description.length > 170">{{ description.substring(0, 170) + "..." }}</p>
+        <p v-else>{{ description }}</p>
 
-      <span></span>
+        <span></span>
 
-      <h6>Directives</h6>
-      <p v-if="directives.length > 170">{{ directives.substring(0, 170) + "..." }}</p>
-      <p v-else>{{ directives }}</p>
+        <h6>Directives</h6>
+        <p v-if="directives.length > 170">{{ directives.substring(0, 170) + "..." }}</p>
+        <p v-else>{{ directives }}</p>
 
-      <div id="geoDiv">
-        <p><strong>Latitude : </strong>{{ latitude }}</p>
-        <p><strong>Latitude : </strong>{{ longitude }}</p>
+        <div id="geoDiv">
+          <p><strong>Latitude : </strong>{{ latitude }}</p>
+          <p><strong>Latitude : </strong>{{ longitude }}</p>
+        </div>
+
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
 
-      <span></span>
-      <span></span>
-      <span></span>
-
-      <div id="btnWrapper">
-        <p @click="seeDetails" id="detailsBtn">Détails</p>
-        <button @click="editLieu" type="button" class="btn btn-outline-secondary">Modifier</button>
+      <div>
+        <div id="btnWrapper">
+          <p @click="seeDetails" id="detailsBtn">Détails</p>
+          <button @click="editLieu" type="button" class="btn btn-outline-secondary">Modifier</button>
+        </div>
       </div>
     </div>
   </div>
@@ -34,12 +38,13 @@
 <script>
 export default {
   name: "lieuCardComponent",
-  props: ['id', 'titre', 'description', 'directives', 'latitude', 'longitude'],
+  props: ["id", "titre", "description", "directives", "latitude", "longitude"],
   methods: {
     seeDetails() {
     },
     editLieu() {
-      this.$router.push({name: 'modifierLieu',
+      this.$router.push({
+        name: "modifierLieu",
         params: {
           id: this.id
         }
@@ -59,7 +64,7 @@ export default {
 #cardBody {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   background-color: white;
   padding: 25px;
 

@@ -13,7 +13,8 @@ const sequelize = new Sequelize(
         dialect: dbConfig.dialect,
         define: {
             timestamps: false,
-            freezeTableName: true
+            freezeTableName: true,
+
         }
     }
 );

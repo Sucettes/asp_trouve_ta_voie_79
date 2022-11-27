@@ -5,6 +5,10 @@ const uuid = require("uuid");
 const db = require("../models/dbSetup");
 const Grimpe = db.grimpes;
 const Image = db.images;
+const Lieu = db.lieux;
+
+const Utilisateur = db.utilisateurs;
+
 const express = require("express");
 const authMidl = require("../fctUtils/auth");
 const path = require("path");
@@ -25,7 +29,7 @@ routerGrimpe.route("/grimpe/create")
                             titre: req.body.titre,
                             style: req.body.style,
                             description: req.body.description,
-                            difficulte: req.body.difficulte,
+                            difficulte: +req.body.difficulte,
                             utilisateurId: req.token.userId,
                             lieuxId: req.body.lieuxId
                         }, {transaction: transaction});
@@ -43,6 +47,7 @@ routerGrimpe.route("/grimpe/create")
                         imgs = await Image.bulkCreate(imgs, {transaction: transaction});
                         res.status(201).json({grimpe: grimpe, img: imgs});
                     } catch (err) {
+                        // Mettre le rollback()
                         res.status(400).end();
                     }
                 });
@@ -52,11 +57,36 @@ routerGrimpe.route("/grimpe/create")
             });
 
 routerGrimpe.route("/grimpe/:id")
+            .get((req, res) => {
+                Grimpe.findByPk(+req.params.id, {include: Image}).then(g => {
+                    res.status(200).json(g);
+                }).catch(err => {
+                    res.status(400).end();
+                });
+            })
             .all((req, res) => {
                 res.status(405).end();
             });
 
 routerGrimpe.route("/grimpes/:userId")
+            .get((req, res) => {
+                if (+req.params.userId !== +req.token.userId) return res.status(403).end(); // todo : quoi mettre si le gars veut voir ceux qui sont pas a lui?
+
+                Utilisateur.findByPk(req.token.userId).then(u => {
+                    if (u) {
+                        Grimpe.findAll({include: [Image, Lieu, Utilisateur], where: {utilisateurId: req.token.userId}})
+                            .then(g => {
+                                res.status(200).json(g);
+                            }).catch(err => {
+                            res.status(400).end();
+                        });
+                    } else {
+                        res.status(400).end();
+                    }
+                }).catch(err => {
+                    res.status(400).end();
+                });
+            })
             .all((req, res) => {
                 res.status(405).end();
             });

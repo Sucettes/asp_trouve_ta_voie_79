@@ -1,22 +1,23 @@
 "use strict";
 
+const {DataTypes} = require("sequelize");
 module.exports = (sequelize, Sequelize) => {
     return sequelize.define("utilisateurs", {
         nom: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         courriel: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             unique: true,
             validate: {
                 isEmail: true
             }
         },
         mdp: {
-            type: Sequelize.STRING
+            type: DataTypes.STRING
         },
         estAdmin: {
-            type: Sequelize.BOOLEAN,
+            type: DataTypes.BOOLEAN,
             defaultValue: false
         }
     });
