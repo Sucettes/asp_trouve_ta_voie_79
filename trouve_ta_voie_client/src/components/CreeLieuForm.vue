@@ -71,17 +71,18 @@
 <script>
 import lieuValidator from "@/fctUtils/lieuValidator";
 
+
 export default {
   components: [],
   name: "CreeLieuForm",
   data() {
     return {
       isLoading: false,
-      title: '',
-      description: '',
-      instruction: '',
-      latitude: '',
-      longitude: '',
+      title: "",
+      description: "",
+      instruction: "",
+      latitude: "",
+      longitude: "",
       titleIsVaild: undefined,
       descIsValid: undefined,
       instrucIsValid: undefined,

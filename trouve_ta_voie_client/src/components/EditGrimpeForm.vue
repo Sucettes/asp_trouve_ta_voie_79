@@ -4,21 +4,33 @@
     <form id="addGrimpeForm">
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
-        <input type="text" class="form-control" id="titre" placeholder="Titre" v-model="title">
+        <input type="text" class="form-control" id="titre" placeholder="Titre" v-model="title"
+               :class="{ 'is-invalid': titleIsVaild===false }" @blur="checkIfTitleIsValid"
+               @input="checkIfTitleIsValid">
+        <ul class="ulError" v-if="!titleIsVaild">
+          <li class="error" v-for="err in titleMsgErr" :key="err">{{ err }}</li>
+        </ul>
       </div>
 
       <div class="row">
         <div class="col-6">
           <label for="lieuDrop" class="form-label">Lieu</label>
-          <select id="lieuDrop" class="form-select" aria-label="Choisir le lieu" v-model="lieu">
+          <select id="lieuDrop" class="form-select" aria-label="Choisir le lieu" v-model="lieu"
+                  :class="{ 'is-invalid': lieuIsValid===false }" @blur="checkIfLieuIsValid"
+                  @input="checkIfLieuIsValid" @focusout="checkIfLieuIsValid">
             <option selected disabled>Choisir le lieu</option>
             <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
           </select>
+          <ul class="ulError" v-if="!lieuIsValid">
+            <li class="error" v-for="err in lieuMsgErr" :key="err">{{ err }}</li>
+          </ul>
         </div>
 
         <div class="col-6">
           <label for="diffDrop" class="form-label">Difficulté</label>
-          <select id="diffDrop" class="form-select" aria-label="Choisir la difficulté" v-model="diff">
+          <select id="diffDrop" class="form-select" aria-label="Choisir la difficulté" v-model="diff"
+                  :class="{ 'is-invalid': diffIsValid===false }" @blur="checkIfDiffIsValid"
+                  @input="checkIfDiffIsValid" @focusout="checkIfDiffIsValid">
             <option selected disabled>Choisir la difficulté</option>
             <option value="5.60">5.6</option>
             <option value="5.70">5.7</option>
@@ -31,23 +43,36 @@
             <option value="5.14">5.14</option>
             <option value="5.15">5.15</option>
           </select>
+          <ul class="ulError" v-if="!diffIsValid">
+            <li class="error" v-for="err in diffMsgErr" :key="err">{{ err }}</li>
+          </ul>
         </div>
       </div>
 
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" rows="3" v-model="description"></textarea>
+        <textarea class="form-control" id="description" rows="3" v-model="description"
+                  :class="{ 'is-invalid': descriptionIsValid===false }" @blur="checkIfDescriptionIsValid"
+                  @input="checkIfDescriptionIsValid"></textarea>
+        <ul class="ulError" v-if="!descriptionIsValid">
+          <li class="error" v-for="err in descriptionMsgErr" :key="err">{{ err }}</li>
+        </ul>
       </div>
 
       <div class="row">
         <div class="col-md-6">
           <label for="styleDrop" class="form-label">Style</label>
-          <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model="style">
+          <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model="style"
+                  :class="{ 'is-invalid': styleIsValid===false }" @blur="checkIfStyleIsValid"
+                  @input="checkIfStyleIsValid">
             <option selected disabled>Choisir le style</option>
             <option value="Traditionnelle">Traditionnelle</option>
             <option value="Sportive">Sportive</option>
             <option value="Moulinette">Moulinette</option>
           </select>
+          <ul class="ulError" v-if="!styleIsValid">
+            <li class="error" v-for="err in styleMsgErr" :key="err">{{ err }}</li>
+          </ul>
         </div>
       </div>
 
@@ -85,9 +110,9 @@
       <br>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
-        <div v-for="pic in pictures" :key="pic.id" class="picItem" id="dicImgSupp">
+        <div v-for="pic in pictures" :key="pic.id" class="picItem">
           <img :src="'http://localhost:8090'+pic.path" alt="" class="lstPic"/>
-          <a @click="deletePic(pic.id)">Supprimer</a>
+          <a @click="deletePic(pic.id)" class="removePics" v-if="pictures.length > 1">Supprimer</a>
         </div>
       </div>
     </form>
@@ -95,6 +120,7 @@
 </template>
 
 <script>
+import grimpeValidator from "@/fctUtils/grimpeValidator";
 import axios from "axios";
 
 
@@ -111,7 +137,18 @@ export default {
       style: "",
       canAddPicture: true,
       picturePreviewUrl: null,
-      pictures: []
+      pictures: [],
+
+      titleIsVaild: undefined,
+      titleMsgErr: [],
+      lieuIsValid: undefined,
+      lieuMsgErr: [],
+      diffIsValid: undefined,
+      diffMsgErr: [],
+      descriptionIsValid: undefined,
+      descriptionMsgErr: [],
+      styleIsValid: undefined,
+      styleMsgErr: []
     };
   },
   methods: {
@@ -179,13 +216,75 @@ export default {
     },
     async edit() {
       // todo : faire mon edit
+      let result = grimpeValidator.checkIfTitleIsValid(this.title);
+      this.titleMsgErr = result[0];
+      this.titleIsVaild = result[1];
+      result = grimpeValidator.checkIfLieuIsValid(this.lieu);
+      this.lieuMsgErr = result[0];
+      this.lieuIsValid = result[1];
+      result = grimpeValidator.checkIfDifficultyLevelIsValid(this.diff);
+      this.diffMsgErr = result[0];
+      this.diffIsValid = result[1];
+      grimpeValidator.checkIfDescriptionIsValid(this.description);
+      this.descriptionMsgErr = result[0];
+      this.descriptionIsValid = result[1];
+      result = grimpeValidator.checkIfStyleIsValid(this.style);
+      this.styleMsgErr = result[0];
+      this.styleIsValid = result[1];
+
+      if (this.titleIsVaild && this.lieuIsValid && this.diffIsValid && this.descriptionIsValid && this.styleIsValid) {
+        const payload = {
+          data: {
+            id: this.id,
+            titre: this.title,
+            style: this.style,
+            description: this.description,
+            difficulte: this.diff,
+            lieuxId: this.lieu
+          },
+          token: this.$store.getters.token
+        };
+
+        try {
+          this.$store.dispatch("updateGrimpe", payload);
+        } catch (err) {
+          console.log(err);
+        }
+      }
     },
     deletePic(iId) {
-      axios.delete(`http://localhost:8090/api/image/${this.id}/${iId}`, {
-        headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
-      }).then(res => {
-        console.log(res);
-      });
+      if (this.pictures.length > 1) {
+        axios.delete(`http://localhost:8090/api/image/${iId}`, {
+          headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
+        }).then(() => {
+          this.pictures.splice(this.pictures.findIndex(x => x.id === iId), 1);
+        });
+      }
+    },
+    checkIfTitleIsValid(event) {
+      const result = grimpeValidator.checkIfTitleIsValid(event.target.value);
+      this.titleMsgErr = result[0];
+      this.titleIsVaild = result[1];
+    },
+    checkIfLieuIsValid(event) {
+      const result = grimpeValidator.checkIfLieuIsValid(event.target.value);
+      this.lieuMsgErr = result[0];
+      this.lieuIsValid = result[1];
+    },
+    checkIfDiffIsValid(event) {
+      const result = grimpeValidator.checkIfDifficultyLevelIsValid(event.target.value);
+      this.diffMsgErr = result[0];
+      this.diffIsValid = result[1];
+    },
+    checkIfDescriptionIsValid(event) {
+      const result = grimpeValidator.checkIfDescriptionIsValid(event.target.value);
+      this.descriptionMsgErr = result[0];
+      this.descriptionIsValid = result[1];
+    },
+    checkIfStyleIsValid(event) {
+      const result = grimpeValidator.checkIfStyleIsValid(event.target.value);
+      this.styleMsgErr = result[0];
+      this.styleIsValid = result[1];
     }
   },
   created() {
@@ -198,13 +297,11 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
 
-#dicImgSupp {
-  display: flex;
-  flex-direction: column;
-  a {
-    color: red;
-    cursor: pointer;
-  }
+.removePics {
+  display: block;
+  color: red;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .picItem {

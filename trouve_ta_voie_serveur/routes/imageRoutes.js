@@ -15,13 +15,20 @@ routerImage.use(authMidl);
 
 routerImage.route("/image/:id")
            .delete((req, res) => {
-               Image.destroy({
-                   where: {
-                       id: req.params.id
-                   }
-               }).then(i => {
-                   res.status(200).json(i);
-               });
+               try {
+                   Image.findByPk(req.params.id).then(image => {
+                       Image.destroy({
+                           where: {
+                               id: req.params.id
+                           }
+                       }).then(() => {
+                           fs.unlinkSync(`public/${image.dataValues.path}`);
+                           res.status(204).end();
+                       });
+                   });
+               } catch (err) {
+                   res.status(500).end();
+               }
            })
            .all((req, res) => {
                res.status(405).end();

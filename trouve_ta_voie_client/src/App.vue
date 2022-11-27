@@ -6,6 +6,7 @@
 <script>
 import HeaderNav from "@/components/HeaderNav";
 
+
 export default {
   components: {HeaderNav},
   mounted() {
@@ -39,5 +40,15 @@ html {
   margin: 0 auto;
   padding: 30px;
   height: auto;
+}
+
+.error {
+  color: #ff0000;
+  font-size: 0.9rem;
+}
+
+.ulError {
+  list-style: none;
+  padding: 0;
 }
 </style>

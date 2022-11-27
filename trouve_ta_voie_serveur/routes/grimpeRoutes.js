@@ -64,6 +64,21 @@ routerGrimpe.route("/grimpe/:id")
                     res.status(400).end();
                 });
             })
+            .put((req, res) => {
+                Grimpe.findByPk(req.body.id).then(grimpe => {
+                    if (grimpe) {
+                        Grimpe.update({
+                            titre: req.body.titre,
+                            style: req.body.style,
+                            description: req.body.description,
+                            difficulte: req.body.difficulte,
+                            lieuxId: req.body.lieuxId
+                        }, {where: {id: req.body.id}}).then(grimpe => {
+                            res.status(204).json(grimpe);
+                        });
+                    }
+                });
+            })
             .all((req, res) => {
                 res.status(405).end();
             });
@@ -74,10 +89,13 @@ routerGrimpe.route("/grimpes/:userId")
 
                 Utilisateur.findByPk(req.token.userId).then(u => {
                     if (u) {
-                        Grimpe.findAll({include: [Image, Lieu, Utilisateur], where: {utilisateurId: req.token.userId}})
-                            .then(g => {
-                                res.status(200).json(g);
-                            }).catch(err => {
+                        Grimpe.findAll({
+                            include: [Image, Lieu, Utilisateur],
+                            where: {utilisateurId: req.token.userId}
+                        })
+                              .then(g => {
+                                  res.status(200).json(g);
+                              }).catch(err => {
                             res.status(400).end();
                         });
                     } else {

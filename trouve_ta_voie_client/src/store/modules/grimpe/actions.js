@@ -7,7 +7,15 @@ export default {
             headers: {"Authorization": `Bearer ${payload.token}`, "Content-Type": "application/json"}
         }).then(res => {
             context.commit("setGrimpe", res.data);
-            // todo : moute to details page ???
+        }).catch(err => {
+            console.error(err);
+        });
+    },
+    async updateGrimpe(context, payload) {
+        axios.put(`http://localhost:8090/api/grimpe/${payload.data.id}`, payload.data, {
+            headers: {"Authorization": `Bearer ${payload.token}`, "Content-Type": "application/json"}
+        }).then(res => {
+            context.commit("setGrimpe", res.data);
         }).catch(err => {
             console.error(err);
         });

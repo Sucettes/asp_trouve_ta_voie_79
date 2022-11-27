@@ -21,8 +21,12 @@ const grimpeValidator = {
         let styleMsgErr = [];
         let styleIsValid = true;
 
-        if (style !== "Traditionnelle" && style !== "Sportive" && style === "Moulinette") {
-            styleMsgErr.push("");
+        if (style === "" || style === "Choisir le style") {
+            styleMsgErr.push("Est requis !");
+            styleIsValid = false;
+        }
+        if (style !== "Traditionnelle" && style !== "Sportive" && style !== "Moulinette" && style !== "" && style !== "Choisir le style") {
+            styleMsgErr.push("Valeur invalide !");
             styleIsValid = false;
         }
         return [styleMsgErr, styleIsValid];
@@ -54,13 +58,27 @@ const grimpeValidator = {
     checkIfDifficultyLevelIsValid(diff) {
         let diffMsgErr = [];
         let diffIsVaild = true;
-
-        if (diff === "") {
+        if (diff === "" || diff === "Choisir la difficulté") {
             diffMsgErr.push("Est requis !");
             diffIsVaild = false;
         }
-
+        const regex = new RegExp("^5\\.+((1[0-5])|([6-9]+0?))$");
+        if (regex.test(diff) === false && diff.length > 0 && diff !== "Choisir la difficulté") {
+            diffMsgErr.push("Valeur invalide !");
+            diffIsVaild = false;
+        }
         return [diffMsgErr, diffIsVaild];
+    },
+    checkIfLieuIsValid(lieu) {
+        let lieuMsgErr = [];
+        let lieuIsVaild = true;
+
+        if (lieu === "" || lieu === "Choisir le lieu") {
+            lieuMsgErr.push("Est requis !");
+            lieuIsVaild = false;
+        }
+
+        return [lieuMsgErr, lieuIsVaild];
     }
 };
 
