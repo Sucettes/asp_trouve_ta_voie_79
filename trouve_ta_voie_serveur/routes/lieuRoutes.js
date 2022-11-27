@@ -23,12 +23,11 @@ routerLieu.route("/lieux/dropFormat")
           });
 
 routerLieu.route("/lieu/create")
-          .post(authMidl, (req, res, next) => {
+          .post(authMidl, (req, res) => {
               const locationTitleIsValid = validatorFct.locationTitleIsValid(req.body.titre);
               const locationDescriptionIsValid = validatorFct.locationDescriptionIsValid(req.body.description);
               const locationInstructionIsValid = validatorFct.locationInstructionIsValid(req.body.directives);
               const locationGEOIsValid = validatorFct.locationGEOIsValid(req.body.latitude, req.body.longitude);
-
               if (locationTitleIsValid && locationDescriptionIsValid && locationInstructionIsValid && locationGEOIsValid) {
                   Utilisateur.findByPk(req.token.userId).then(u => {
                       if (u) {

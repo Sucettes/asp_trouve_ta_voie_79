@@ -1,6 +1,6 @@
 <template>
   <div id="card">
-    <div id="cardBody" class=" shadow-sm p-3 mb-5 bg-body rounded">
+    <div id="cardBody" class="shadow-sm p-3 mb-5 bg-body rounded">
       <div>
         <h3>{{ titre }}</h3>
         <hr>
@@ -59,9 +59,14 @@ export default {
 
 #card {
   padding: 15px;
+  h1, h2, h3, h4, h5, h6, p {
+    overflow: auto;
+  }
 }
 
 #cardBody {
+  min-height: 520px; // todo : hauteur de carte
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;

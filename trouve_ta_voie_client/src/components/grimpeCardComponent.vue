@@ -87,9 +87,14 @@ export default {
 
 #card {
   padding: 15px;
+  h1, h2, h3, h4, h5, h6, p {
+    overflow: auto;
+  }
 }
 
 #cardBody {
+  min-height: 520px; // todo : hauteur de carte
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;

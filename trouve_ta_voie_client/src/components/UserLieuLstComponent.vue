@@ -1,7 +1,8 @@
 <template>
+<!--  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">-->
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
     <!--    d-flex align-items-stretch    pour avoir la meme hauteur...-->
-    <lieu-card-component class=""
+    <lieu-card-component class="d-flex"
                          v-for="x in refreshUserLieux"
                          :key="x.id"
                          :id="x.id"

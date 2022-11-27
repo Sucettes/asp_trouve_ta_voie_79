@@ -4,7 +4,7 @@ const {DataTypes} = require("sequelize");
 module.exports = (sequelize, Sequelize) => {
     return sequelize.define('grimpes', {
         titre: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(50),
             allowNull: false
         },
         style: {
@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false
         },
         description: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(500),
             allowNull: false
         },
         // todo : regarde pour bien les mettre dans la bd car les valeurs ne sont pas exact... 5.6 = 5.60 dans bd.
