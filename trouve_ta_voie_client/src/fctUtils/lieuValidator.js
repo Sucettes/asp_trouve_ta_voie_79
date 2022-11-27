@@ -76,7 +76,6 @@ const lieuValidator = {
         let valIsValid = true;
 
         if (val === "") {
-            console.log(val)
             valMsgErr.push("Est requis !");
             valIsValid = false;
         }

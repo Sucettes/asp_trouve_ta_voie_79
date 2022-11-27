@@ -26,7 +26,16 @@
                @input="valideMdp" :class="{ 'is-invalid': mdpVal===false }">
         <ul class="ulError" v-if="!mdpVal">
           <li class="error" v-for="err in mdpErreurs" :key="err">{{ err }}</li>
+
+          <li class="error" v-if="mdpConf !== mdp && mdpConf.length > 0 && mdp.length > 0">Est différent
+            !
+          </li>
         </ul>
+
+        <ul class="ulError" v-if="mdpConf !== mdp && mdpConf.length > 0 && mdp.length > 0 && mdpVal">
+          <li class="error">Est différent !</li>
+        </ul>
+
       </div>
       <div class="mb-3">
         <label for="inputMdpConf" class="form-label">Mot de passe confirmer</label>
@@ -35,7 +44,17 @@
                :class="{ 'is-invalid': mdpConfVal===false }">
         <ul class="ulError" v-if="!mdpConfVal">
           <li class="error" v-for="err in mdpConfErreurs" :key="err">{{ err }}</li>
+
+          <li class="error" v-if="mdpConf !== mdp && mdpConf.length > 0 && mdp.length > 0">Est différent
+            !
+          </li>
         </ul>
+
+        <ul class="ulError" v-if="mdpConf !== mdp && mdpConf.length > 0 && mdp.length > 0 && mdpConfVal">
+          <li class="error">Est différent !</li>
+        </ul>
+
+
       </div>
 
       <div class="btnWrapper">
@@ -49,14 +68,18 @@
 
 <script>
 
+import userValidator from "@/fctUtils/userValidator";
+import axios from "axios";
+
+
 export default {
   name: "InscriptionForm",
   data() {
     return {
-      nom: '',
-      courriel: '',
-      mdp: '',
-      mdpConf: '',
+      nom: "",
+      courriel: "",
+      mdp: "",
+      mdpConf: "",
       nomVal: undefined,
       courrielVal: undefined,
       mdpVal: undefined,
@@ -70,118 +93,68 @@ export default {
   },
   methods: {
     async register() {
-      if (this.nomVal && this.courrielVal && this.mdpVal && this.mdpConfVal) {
-        this.isLoading = true;
+      let result = userValidator.checkIfNameIsValid(this.nom);
+      this.nomErreurs = result[0];
+      this.nomVal = result[1];
+      result = userValidator.checkIfEmailIsValid(this.courriel);
+      this.courrielErreurs = result[0];
+      this.courrielVal = result[1];
+      result = userValidator.checkIfPwdIsValid(this.mdp);
+      this.mdpErreurs = result[0];
+      this.mdpVal = result[1];
+      result = userValidator.checkIfPwdIsValid(this.mdpConf);
+      this.mdpConfErreurs = result[0];
+      this.mdpConfVal = result[1];
 
-        const actionPayload = {
-          "nom": this.nom,
-          "courriel": this.courriel,
-          "mdp": this.mdp,
-          "mdpConf": this.mdpConf
-        };
 
-        try {
-          await this.$store.dispatch("signup", actionPayload);
-        } catch (err) {
-          console.log(err);
+      const prom = new Promise((resolve) => {
+        axios.get(`http://localhost:8090/api/utilisateur/courriel/${this.courriel}`).then(res => {
+          if (res.status === 200) {
+            this.courrielVal = false;
+            this.courrielErreurs.push("Courriel déjà utilisé !");
+          }
+          resolve();
+        }).catch(() => {
+          resolve();
+        });
+      });
+
+      prom.then(() => {
+        if (this.nomVal && this.courrielVal && this.mdpVal && this.mdpConfVal && this.mdp === this.mdpConf) {
+          const actionPayload = {
+            "nom": this.nom,
+            "courriel": this.courriel,
+            "mdp": this.mdp,
+            "mdpConf": this.mdpConf
+          };
+
+          try {
+            this.$store.dispatch("signup", actionPayload);
+          } catch (err) {
+            console.log(err);
+          }
         }
-
-        this.isLoading = false;
-      }
+      });
     },
     valideNom(event) {
-      const val = event.target.value;
-      this.nomVal = true;
-      this.nomErreurs = [];
-      const nomRegex = new RegExp('^[A-Za-z\\s-]+$');
-
-      if (val === "") {
-        this.nomErreurs.push("Est requis !");
-        this.nomVal = false;
-      }
-      if (val.length < 3 && val.length > 0) {
-        this.nomErreurs.push("Trop court !");
-        this.nomVal = false;
-      }
-      if (val.length > 50) {
-        this.nomErreurs.push("Trop long !");
-        this.nomVal = false;
-      }
-      if (nomRegex.test(val) === false && val.length > 0) {
-        this.nomErreurs.push("Format ou caractère invalide !");
-        this.nomVal = false;
-      }
+      const result = userValidator.checkIfNameIsValid(event.target.value);
+      this.nomErreurs = result[0];
+      this.nomVal = result[1];
     },
     valideCourriel(event) {
-      const val = event.target.value;
-      const emailRegex = new RegExp('^(\\w|\\.|\\_|\\-)+[@](\\w|\\_|\\-|\\.)+[.]\\w{2,3}$');
-      this.courrielVal = true;
-      this.courrielErreurs = [];
-
-      if (val === "") {
-        this.courrielVal = false;
-        this.courrielErreurs.push("Est requis !");
-      }
-      if (val.length > 50) {
-        this.courrielErreurs.push("Trop long !");
-        this.courrielVal = false;
-      }
-      if (emailRegex.test(val) === false && val.length > 0) {
-        this.courrielErreurs.push("Format ou caractère invalide !");
-        this.courrielVal = false;
-      }
-    },
-    mdpDiff() {
-      this.mdpErreurs = [];
-      this.mdpConfErreurs = [];
-      if (this.mdp !== this.mdpConf && this.mdp.length > 0 && this.mdpConf.length > 0) {
-        this.mdpVal = false;
-        this.mdpConfVal = false;
-        this.mdpErreurs.push("Est différent !");
-        this.mdpConfErreurs.push("Est différent !");
-        return false;
-      }
-      this.mdpVal = true;
-      this.mdpConfVal = true;
-      return true;
+      const result = userValidator.checkIfEmailIsValid(event.target.value);
+      this.courrielErreurs = result[0];
+      this.courrielVal = result[1];
     },
     valideMdp(event) {
-      const val = event.target.value;
-      const mdpRegex = new RegExp('^(?=.*\\d)(?=.*[aA-zZ])(?=.*[#?!@$%^&*-]).+$');
-      this.mdpErreurs = [];
-      this.mdpVal = this.mdpDiff();
-
-      if (val === "") {
-        this.mdpErreurs.push("Est requis !");
-        this.mdpVal = false;
-      }
-      if (val.length < 6 && val.length > 0) {
-        this.mdpErreurs.push("Trop court !");
-        this.mdpVal = false;
-      }
-      if (mdpRegex.test(val) === false && val.length > 0) {
-        this.mdpErreurs.push("Format ou caractère invalide !");
-        this.mdpVal = false;
-      }
+      const result = userValidator.checkIfPwdIsValid(event.target.value);
+      this.mdpErreurs = result[0];
+      this.mdpVal = result[1];
     },
     valideMdpConf(event) {
-      const val = event.target.value;
-      const mdpRegex = new RegExp('^(?=.*\\d)(?=.*[aA-zZ])(?=.*[#?!@$%^&*-]).+$');
-      this.mdpConfErreurs = [];
-      this.mdpConfVal = this.mdpDiff();
-
-      if (val === "") {
-        this.mdpConfErreurs.push("Est requis !");
-        this.mdpConfVal = false;
-      }
-      if (val.length < 6 && val.length > 0) {
-        this.mdpConfErreurs.push("Trop court !");
-        this.mdpConfVal = false;
-      }
-      if (mdpRegex.test(val) === false && val.length > 0) {
-        this.mdpConfErreurs.push("Format ou caractère invalide !");
-        this.mdpConfVal = false;
-      }
+      const result = userValidator.checkIfPwdIsValid(event.target.value);
+      this.mdpConfErreurs = result[0];
+      this.mdpConfVal = result[1];
     }
   }
 };

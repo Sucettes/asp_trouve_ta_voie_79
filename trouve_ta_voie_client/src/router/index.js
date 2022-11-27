@@ -70,11 +70,13 @@ const router = createRouter({
     }
 });
 
-router.beforeEach(function (to, _, next) {
+router.beforeEach(function (to, from, next) {
     if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
-        next("/auth");
+        // next({name: "connexion"});
+        next(false);
     } else if (to.meta.requiresUnauth && store.getters.isAuthenticated) {
-        next("/connexion");
+        // next({name: "accueil"});
+        next(false);
     } else {
         next();
     }

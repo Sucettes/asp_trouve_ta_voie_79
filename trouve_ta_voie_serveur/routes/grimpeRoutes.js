@@ -11,15 +11,12 @@ const Utilisateur = db.utilisateurs;
 
 const express = require("express");
 const authMidl = require("../fctUtils/auth");
-const path = require("path");
 const fs = require("fs");
 
 const routerGrimpe = express.Router();
 
-routerGrimpe.use(authMidl);
-
 routerGrimpe.route("/grimpe/create")
-            .post(async (req, res) => {
+            .post(authMidl, async (req, res) => {
                 // todo : faire les validations...
                 await db.sequelize.transaction(async (transaction) => {
                     let grimpe;
@@ -39,9 +36,7 @@ routerGrimpe.route("/grimpe/create")
                             const fileName = uuid.v4() + "-" + pic.name;
                             fs.writeFileSync(`public/img/grimpe/${fileName}`, buff);
                             imgs.push({
-                                nom: fileName,
-                                path: `/img/grimpe/${fileName}`,
-                                grimpeId: grimpe.id
+                                nom: fileName, path: `/img/grimpe/${fileName}`, grimpeId: grimpe.id
                             });
                         });
                         imgs = await Image.bulkCreate(imgs, {transaction: transaction});
@@ -52,7 +47,7 @@ routerGrimpe.route("/grimpe/create")
                     }
                 });
             })
-            .all((req, res) => {
+            .all(authMidl, (req, res) => {
                 res.status(405).end();
             });
 
@@ -64,7 +59,7 @@ routerGrimpe.route("/grimpe/:id")
                     res.status(400).end();
                 });
             })
-            .put((req, res) => {
+            .put(authMidl, (req, res) => {
                 Grimpe.findByPk(req.body.id).then(grimpe => {
                     if (grimpe) {
                         Grimpe.update({
@@ -79,23 +74,21 @@ routerGrimpe.route("/grimpe/:id")
                     }
                 });
             })
-            .all((req, res) => {
+            .all(authMidl, (req, res) => {
                 res.status(405).end();
             });
 
 routerGrimpe.route("/grimpes/:userId")
-            .get((req, res) => {
+            .get(authMidl, (req, res) => {
                 if (+req.params.userId !== +req.token.userId) return res.status(403).end(); // todo : quoi mettre si le gars veut voir ceux qui sont pas a lui?
 
                 Utilisateur.findByPk(req.token.userId).then(u => {
                     if (u) {
                         Grimpe.findAll({
-                            include: [Image, Lieu, Utilisateur],
-                            where: {utilisateurId: req.token.userId}
-                        })
-                              .then(g => {
-                                  res.status(200).json(g);
-                              }).catch(err => {
+                            include: [Image, Lieu, Utilisateur], where: {utilisateurId: req.token.userId}
+                        }).then(g => {
+                            res.status(200).json(g);
+                        }).catch(err => {
                             res.status(400).end();
                         });
                     } else {

@@ -11,10 +11,8 @@ const fs = require("fs");
 
 const routerImage = express.Router();
 
-routerImage.use(authMidl);
-
 routerImage.route("/image/:id")
-           .delete((req, res) => {
+           .delete(authMidl, (req, res) => {
                try {
                    Image.findByPk(req.params.id).then(image => {
                        Image.destroy({
@@ -30,12 +28,12 @@ routerImage.route("/image/:id")
                    res.status(500).end();
                }
            })
-           .all((req, res) => {
+           .all(authMidl, (req, res) => {
                res.status(405).end();
            });
 
 routerImage.route("/image")
-           .post(async (req, res) => {
+           .post(authMidl, async (req, res) => {
                await db.sequelize.transaction(async (transaction) => {
                    try {
                        const img = req.body.imgBase64;
@@ -57,7 +55,7 @@ routerImage.route("/image")
                    }
                });
            })
-           .all((req, res) => {
+           .all(authMidl, (req, res) => {
                res.status(405).end();
            });
 

@@ -70,6 +70,7 @@
 
 <script>
 import lieuValidator from "@/fctUtils/lieuValidator";
+import axios from "axios";
 
 
 export default {
@@ -124,28 +125,67 @@ export default {
       this.longitudeMsgErr = result[0];
       this.longitudeIsValid = result[1];
     },
-    async add() {
-      if (this.titleIsVaild && this.descIsValid && this.instrucIsValid && this.latitudeIsValid && this.longitudeIsValid) {
-        this.isLoading = true;
+    // checkIfTitleIsAlreadyUsed() {
+    //   axios.get(`http://localhost:8090/api/lieu/titre/${this.title}`, {
+    //     headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
+    //   }).then(res => {
+    //     if (res.status === 200) {
+    //       this.titleIsVaild = false;
+    //       this.titleMsgErr.push("Titre déjà utilisé !");
+    //     }
+    //   }).catch(err => {
+    //     console.error(err)
+    //   });
+    // },
+    add() {
+      let result = lieuValidator.checkDescriptionIsValid(this.description);
+      this.descriptionMsgErr = result[0];
+      this.descIsValid = result[1];
+      result = lieuValidator.checkInstructionIsValid(this.instruction);
+      this.instructionMsgErr = result[0];
+      this.instrucIsValid = result[1];
+      result = lieuValidator.checkLatitudeLongitudeIsValid(this.latitude);
+      this.latitudeMsgErr = result[0];
+      this.latitudeIsValid = result[1];
+      result = lieuValidator.checkLatitudeLongitudeIsValid(this.longitude);
+      this.longitudeMsgErr = result[0];
+      this.longitudeIsValid = result[1];
+      result = lieuValidator.checkTitleIsValid(this.title);
+      this.titleMsgErr = result[0];
+      this.titleIsVaild = result[1];
+      const prom = new Promise((resolve) => {
+        axios.get(`http://localhost:8090/api/lieu/titre/${this.title}`, {
+          headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
+        }).then(res => {
+          if (res.status === 200) {
+            this.titleIsVaild = false;
+            this.titleMsgErr.push("Titre déjà utilisé !");
+          }
+          resolve();
+        }).catch(() => {
+          resolve();
+        });
+      });
 
-        const payload = {
-          data: {
-            titre: this.title,
-            description: this.description,
-            directives: this.instruction,
-            latitude: this.latitude,
-            longitude: this.longitude
-          },
-          token: this.$store.getters.token
-        };
-        try {
-          await this.$store.dispatch("createLieu", payload);
-        } catch (err) {
-          console.log(err);
+      prom.then(() => {
+        if (this.titleIsVaild && this.descIsValid && this.instrucIsValid && this.latitudeIsValid && this.longitudeIsValid) {
+          const payload = {
+            data: {
+              titre: this.title,
+              description: this.description,
+              directives: this.instruction,
+              latitude: this.latitude,
+              longitude: this.longitude
+            },
+            token: this.$store.getters.token
+          };
+          try {
+            this.$store.dispatch("createLieu", payload);
+          } catch (err) {
+            console.log(err);
+          }
         }
-
-        this.isLoading = false;
-      }
+      });
     },
     cancel() {
       // this.$router.push({name: 'accueil'});

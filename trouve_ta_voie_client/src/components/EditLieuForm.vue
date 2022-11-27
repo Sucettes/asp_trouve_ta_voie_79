@@ -80,6 +80,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      id: "",
       title: "",
       description: "",
       instruction: "",
@@ -126,29 +127,59 @@ export default {
       this.longitudeMsgErr = result[0];
       this.longitudeIsValid = result[1];
     },
-    async edit() {
-      if (this.titleIsVaild && this.descIsValid && this.instrucIsValid && this.latitudeIsValid && this.longitudeIsValid) {
-        this.isLoading = true;
+    edit() {
+      let result = lieuValidator.checkDescriptionIsValid(this.description);
+      this.descriptionMsgErr = result[0];
+      this.descIsValid = result[1];
+      result = lieuValidator.checkInstructionIsValid(this.instruction);
+      this.instructionMsgErr = result[0];
+      this.instrucIsValid = result[1];
+      result = lieuValidator.checkLatitudeLongitudeIsValid(this.latitude);
+      this.latitudeMsgErr = result[0];
+      this.latitudeIsValid = result[1];
+      result = lieuValidator.checkLatitudeLongitudeIsValid(this.longitude);
+      this.longitudeMsgErr = result[0];
+      this.longitudeIsValid = result[1];
+      result = lieuValidator.checkTitleIsValid(this.title);
+      this.titleMsgErr = result[0];
+      this.titleIsVaild = result[1];
 
-        const payload = {
-          data: {
-            id: +this.$route.params.id,
-            titre: this.title,
-            description: this.description,
-            directives: this.instruction,
-            latitude: this.latitude,
-            longitude: this.longitude
-          },
-          token: this.$store.getters.token
-        };
-        try {
-          await this.$store.dispatch("editLieu", payload);
-        } catch (err) {
-          console.log(err);
+      const prom = new Promise((resolve) => {
+        axios.get(`http://localhost:8090/api/lieu/titre/${this.title}`, {
+          headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
+        }).then(res => {
+          if (res.status === 200 && res.data.id !== this.id) {
+            this.titleIsVaild = false;
+            this.titleMsgErr.push("Titre déjà utilisé !");
+          }
+          resolve();
+        }).catch(() => {
+          resolve();
+        });
+      });
+
+      prom.then(() => {
+        if (this.titleIsVaild && this.descIsValid && this.instrucIsValid && this.latitudeIsValid && this.longitudeIsValid) {
+          this.isLoading = true;
+
+          const payload = {
+            data: {
+              id: +this.$route.params.id,
+              titre: this.title,
+              description: this.description,
+              directives: this.instruction,
+              latitude: this.latitude,
+              longitude: this.longitude
+            },
+            token: this.$store.getters.token
+          };
+          try {
+            this.$store.dispatch("editLieu", payload);
+          } catch (err) {
+            console.log(err);
+          }
         }
-
-        this.isLoading = false;
-      }
+      });
     },
     cancel() {
       this.$router.go(-1);
@@ -164,6 +195,7 @@ export default {
       axios.get(`http://localhost:8090/api/lieu/${payload.id}`, {
         headers: {"Authorization": `Bearer ${payload.token}`}
       }).then(res => {
+        this.id = res.data.id;
         this.title = res.data.titre;
         this.description = res.data.description;
         this.instruction = res.data.directives;

@@ -10,10 +10,8 @@ const authMidl = require("../fctUtils/auth");
 
 const routerLieu = express.Router();
 
-routerLieu.use(authMidl);
-
 routerLieu.route("/lieux/dropFormat")
-          .get((req, res) => {
+          .get((req, res, next) => {
               Lieu.findAll({attributes: ["id", "titre"]}).then(l => {
                   res.status(200).json(l);
               }).catch(err => {
@@ -25,7 +23,7 @@ routerLieu.route("/lieux/dropFormat")
           });
 
 routerLieu.route("/lieu/create")
-          .post((req, res, next) => {
+          .post(authMidl, (req, res, next) => {
               const locationTitleIsValid = validatorFct.locationTitleIsValid(req.body.titre);
               const locationDescriptionIsValid = validatorFct.locationDescriptionIsValid(req.body.description);
               const locationInstructionIsValid = validatorFct.locationInstructionIsValid(req.body.directives);
@@ -64,7 +62,7 @@ routerLieu.route("/lieu/create")
                   res.status(400).end();
               }
           })
-          .all((req, res) => {
+          .all(authMidl, (req, res) => {
               res.status(405).end();
           });
 
@@ -76,7 +74,7 @@ routerLieu.route("/lieu/:id")
                   res.status(400).end();
               });
           })
-          .put((req, res) => {
+          .put(authMidl, (req, res) => {
               const locationTitleIsValid = validatorFct.locationTitleIsValid(req.body.titre);
               const locationDescriptionIsValid = validatorFct.locationDescriptionIsValid(req.body.description);
               const locationInstructionIsValid = validatorFct.locationInstructionIsValid(req.body.directives);
@@ -107,12 +105,12 @@ routerLieu.route("/lieu/:id")
                   res.status(400).end();
               }
           })
-          .all((req, res) => {
+          .all(authMidl, (req, res) => {
               res.status(405).end();
           });
 
 routerLieu.route("/lieux/:userId")
-          .get((req, res) => {
+          .get(authMidl, (req, res) => {
               if (+req.params.userId !== +req.token.userId) return res.status(403).end(); // todo : quoi mettre si le gars veut voir ceux qui sont pas a lui?
 
               Utilisateur.findByPk(req.token.userId).then(u => {
@@ -128,6 +126,20 @@ routerLieu.route("/lieux/:userId")
                   }
               }).catch(err => {
                   res.status(400).end();
+              });
+          })
+          .all(authMidl, (req, res) => {
+              res.status(405).end();
+          });
+
+routerLieu.route("/lieu/titre/:titre")
+          .get((req, res) => {
+              Lieu.findOne({where: {titre: req.params.titre}}).then(l => {
+                  if (l) {
+                      res.status(200).json(l);
+                  } else {
+                      res.status(404).end();
+                  }
               });
           })
           .all((req, res) => {

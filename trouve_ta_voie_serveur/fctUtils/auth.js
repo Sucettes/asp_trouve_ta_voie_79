@@ -10,7 +10,7 @@ function checkIfIsAuthenticated(req, callback) {
             callback(false, null);
         } else {
             const tokenEncode = authArray[1];
-            jwt.verify(tokenEncode, req.app.get("jwt-secret"), function (err, tokenDecode) {
+            jwt.verify(tokenEncode, req.app.get("jwt-secret"), (err, tokenDecode) => {
                 if (err) callback(false, null);
                 else {
                     callback(true, tokenDecode);

@@ -32,15 +32,18 @@
 
 <script>
 
+import userValidator from "@/fctUtils/userValidator";
+
+
 export default {
   name: "ConnexionForm",
   data() {
     return {
-      courriel: '',
-      errCourriel: '',
+      courriel: "",
+      errCourriel: "",
       courrielVal: undefined,
       mdpVal: undefined,
-      mdp: '',
+      mdp: "",
       isLoading: false,
       courrielErreurs: [],
       mdpErreurs: []
@@ -48,58 +51,36 @@ export default {
   },
   methods: {
     async login() {
-      this.isLoading = true;
+      let result = userValidator.checkIfEmailIsValid(this.courriel);
+      this.courrielErreurs = result[0];
+      this.courrielVal = result[1];
+      result = userValidator.checkIfPwdIsValid(this.mdp);
+      this.mdpErreurs = result[0];
+      this.mdpVal = result[1];
 
-      const actionPayload = {
-        "courriel": this.courriel,
-        "mdp": this.mdp
-      };
+      if (this.mdpVal && this.courrielVal) {
+        const actionPayload = {
+          "courriel": this.courriel,
+          "mdp": this.mdp
+        };
 
-      try {
-        await this.$store.dispatch("login", actionPayload);
-      } catch (err) {
-        console.log(err);
+        try {
+          await this.$store.dispatch("login", actionPayload);
+        } catch (err) {
+          console.log(err);
+        }
       }
 
-      this.isLoading = false;
     },
     valideCourriel(event) {
-      const val = event.target.value;
-      const emailRegex = new RegExp('^(\\w|\\.|\\_|\\-)+[@](\\w|\\_|\\-|\\.)+[.]\\w{2,3}$');
-      this.courrielVal = true;
-      this.courrielErreurs = [];
-
-      if (val === "") {
-        this.courrielVal = false;
-        this.courrielErreurs.push("Est requis !");
-      }
-      if (val.length > 50) {
-        this.courrielErreurs.push("Trop long !");
-        this.courrielVal = false;
-      }
-      if (emailRegex.test(val) === false && val.length > 0) {
-        this.courrielErreurs.push("Format ou caractère invalide !");
-        this.courrielVal = false;
-      }
+      const result = userValidator.checkIfEmailIsValid(event.target.value);
+      this.courrielErreurs = result[0];
+      this.courrielVal = result[1];
     },
     valideMdp(event) {
-      const val = event.target.value;
-      const mdpRegex = new RegExp('^(?=.*\\d)(?=.*[aA-zZ])(?=.*[#?!@$%^&*-]).+$');
-      this.mdpErreurs = [];
-      this.mdpVal = true;
-
-      if (val === "") {
-        this.mdpErreurs.push("Est requis !");
-        this.mdpVal = false;
-      }
-      if (val.length < 6 && val.length >0) {
-        this.mdpErreurs.push("Trop court !");
-        this.mdpVal = false;
-      }
-      if (mdpRegex.test(val) === false && val.length >0) {
-        this.mdpErreurs.push("Format ou caractère invalide !");
-        this.mdpVal = false;
-      }
+      const result = userValidator.checkIfPwdIsValid(event.target.value);
+      this.mdpErreurs = result[0];
+      this.mdpVal = result[1];
     }
   },
   computed: {

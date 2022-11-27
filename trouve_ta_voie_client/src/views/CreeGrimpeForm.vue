@@ -196,12 +196,15 @@ export default {
       result = grimpeValidator.checkIfLieuIsValid(this.lieu);
       this.lieuMsgErr = result[0];
       this.lieuIsValid = result[1];
+
       result = grimpeValidator.checkIfDifficultyLevelIsValid(this.diff);
       this.diffMsgErr = result[0];
       this.diffIsValid = result[1];
-      grimpeValidator.checkIfDescriptionIsValid(this.description);
+
+      result = grimpeValidator.checkIfDescriptionIsValid(this.description);
       this.descriptionMsgErr = result[0];
       this.descriptionIsValid = result[1];
+
       result = grimpeValidator.checkIfStyleIsValid(this.style);
       this.styleMsgErr = result[0];
       this.styleIsValid = result[1];
