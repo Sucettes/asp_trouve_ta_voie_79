@@ -13,6 +13,20 @@ const routerImage = express.Router();
 
 routerImage.use(authMidl);
 
+routerImage.route("/image/:id")
+           .delete((req, res) => {
+               Image.destroy({
+                   where: {
+                       id: req.params.id
+                   }
+               }).then(i => {
+                   res.status(200).json(i);
+               });
+           })
+           .all((req, res) => {
+               res.status(405).end();
+           });
+
 routerImage.route("/image")
            .post(async (req, res) => {
                await db.sequelize.transaction(async (transaction) => {

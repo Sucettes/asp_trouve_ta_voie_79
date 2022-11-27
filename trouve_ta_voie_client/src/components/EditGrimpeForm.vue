@@ -85,8 +85,9 @@
       <br>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
-        <div v-for="pic in pictures" :key="pic.id" class="picItem">
+        <div v-for="pic in pictures" :key="pic.id" class="picItem" id="dicImgSupp">
           <img :src="'http://localhost:8090'+pic.path" alt="" class="lstPic"/>
+          <a @click="deletePic(pic.id)">Supprimer</a>
         </div>
       </div>
     </form>
@@ -177,7 +178,14 @@ export default {
       }
     },
     async edit() {
-
+      // todo : faire mon edit
+    },
+    deletePic(iId) {
+      axios.delete(`http://localhost:8090/api/image/${this.id}/${iId}`, {
+        headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
+      }).then(res => {
+        console.log(res);
+      });
     }
   },
   created() {
@@ -189,6 +197,15 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
+
+#dicImgSupp {
+  display: flex;
+  flex-direction: column;
+  a {
+    color: red;
+    cursor: pointer;
+  }
+}
 
 .picItem {
   p {

@@ -5,7 +5,7 @@
     <form id="addLieuForm">
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
-        <input type="text" class="form-control" id="titre" placeholder="titre" v-model.trim="title"
+        <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="title"
                @blur="checkTitleIsValid" @input="checkTitleIsValid"
                :class="{ 'is-invalid': titleIsVaild===false }">
         <ul class="ulError" v-if="!titleIsVaild">

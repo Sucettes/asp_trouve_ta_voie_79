@@ -15,11 +15,11 @@ const lieuValidator = {
             titleMsgErr.push("Trop long !");
             titleIsVaild = false;
         }
-        const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
-        if (regex.test(title) === false && title.length > 0) {
-            titleMsgErr.push("Valeur invalide !");
-            titleIsVaild = false;
-        }
+        // const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
+        // if (regex.test(title) === false && title.length > 0) {
+        //     titleMsgErr.push("Valeur invalide !");
+        //     titleIsVaild = false;
+        // }
 
         return [titleMsgErr, titleIsVaild];
     },
@@ -39,11 +39,11 @@ const lieuValidator = {
             descriptionMsgErr.push("Trop long !");
             descIsValid = false;
         }
-        const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
-        if (regex.test(desc) === false && desc.length > 0) {
-            descriptionMsgErr.push("Valeur invalide !");
-            descIsValid = false;
-        }
+        // const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
+        // if (regex.test(desc) === false && desc.length > 0) {
+        //     descriptionMsgErr.push("Valeur invalide !");
+        //     descIsValid = false;
+        // }
 
         return [descriptionMsgErr, descIsValid];
     },
@@ -63,11 +63,11 @@ const lieuValidator = {
             instructionMsgErr.push("Trop long !");
             instrucIsValid = false;
         }
-        const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
-        if (regex.test(inst) === false && inst.length > 0) {
-            instructionMsgErr.push("Valeur invalide !");
-            instrucIsValid = false;
-        }
+        // const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
+        // if (regex.test(inst) === false && inst.length > 0) {
+        //     instructionMsgErr.push("Valeur invalide !");
+        //     instrucIsValid = false;
+        // }
 
         return [instructionMsgErr, instrucIsValid];
     },
@@ -76,8 +76,17 @@ const lieuValidator = {
         let valIsValid = true;
 
         if (val === "") {
-            this.valMsgErr.push("Est requis !");
-            this.valIsValid = false;
+            console.log(val)
+            valMsgErr.push("Est requis !");
+            valIsValid = false;
+        }
+        if (val > 180 || val < -180) {
+            valMsgErr.push("Dois être entre -180 et 180");
+            valIsValid = false;
+        }
+        if (!/^[-+]?([1-8]?\d(.\d+)?|90(.0+)?)$/.test(val) && val.length > 0) {
+            valMsgErr.push("Valeur invalide !");
+            valIsValid = false;
         }
 
         return [valMsgErr, valIsValid];
