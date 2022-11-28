@@ -1,5 +1,4 @@
 import axios from "axios";
-import router from "@/router";
 
 
 export default {
@@ -45,18 +44,20 @@ export default {
                 });
         });
     },
-    logout(context) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
-        localStorage.removeItem("name");
+    async logout(context) {
+        return new Promise((resolve) => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userId");
+            localStorage.removeItem("name");
 
-        context.commit("setUser", {
-            token: null,
-            userId: null,
-            name: null,
+            context.commit("setUser", {
+                token: null,
+                userId: null,
+                name: null,
+            });
+
+            resolve();
         });
-
-        router.push({name: "connexion"});
     },
     reloadGetDataFromLocalStorage(context) {
         context.commit("setUser", {

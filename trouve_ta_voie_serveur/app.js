@@ -1,7 +1,8 @@
 "use strict";
+const dotenv = require("dotenv");
+dotenv.config();
 
 const path = require("path");
-const config = require("./config/config");
 const cors = require("cors");
 const express = require("express");
 const app = express();
@@ -11,13 +12,12 @@ const jwt = require("jsonwebtoken");
 app.use(bodyParser.json({limit: "1024mb"}));
 app.use(bodyParser.urlencoded({limit: "1024mb", extended: true})); // todo : vraiment necessaire??? je crois pas
 
-app.use(cors({origin: config.origins}));
-app.set("jwt-secret", config.secret);
+app.use(cors({origin: [process.env.ORIGIN]}));
+app.set("jwt-secret", process.env.SECRET);
 app.use(express.static(path.join(__dirname, "public")));
 
-// todo : Regardé comment faut mettre ça pour pas causé de problèmes.
-const db = require("./models/dbSetup");
 // db.sequelize.sync({force: true}).then(() => {
+const db = require("./models/dbSetup");
 db.sequelize.sync().then(() => {
 });
 

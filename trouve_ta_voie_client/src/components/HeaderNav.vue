@@ -60,6 +60,9 @@
 </template>
 
 <script>
+import router from "@/router";
+
+
 export default {
   name: "HeaderNav",
   components: {},
@@ -69,8 +72,12 @@ export default {
     };
   },
   methods: {
-    logout() {
-      this.$store.dispatch("logout");
+    async logout() {
+      await this.$store.dispatch("logout").then(() => {
+        this.$toast.success("Déconnexion avec succès !");
+
+        router.push({name: "connexion"});
+      });
     }
   },
   computed: {
