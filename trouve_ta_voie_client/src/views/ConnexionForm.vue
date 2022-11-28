@@ -33,6 +33,7 @@
 <script>
 
 import userValidator from "@/fctUtils/userValidator";
+import {mapState} from "vuex";
 
 
 export default {
@@ -46,7 +47,7 @@ export default {
       mdp: "",
       isLoading: false,
       courrielErreurs: [],
-      mdpErreurs: []
+      mdpErreurs: [],
     };
   },
   methods: {
@@ -59,18 +60,30 @@ export default {
       this.mdpVal = result[1];
 
       if (this.mdpVal && this.courrielVal) {
-        const actionPayload = {
+        const payload = {
           "courriel": this.courriel,
-          "mdp": this.mdp
+          "mdp": this.mdp,
         };
 
         try {
-          await this.$store.dispatch("login", actionPayload);
+          await this.$store.dispatch("login", payload)
+              .then((res) => {
+                if (res.status) {
+                  this.$toast.success(`Connexion réussie !`);
+                  this.$router.push({name: "accueil"});
+                }
+              })
+              .catch(() => {
+                this.courrielErreurs = ["Mauvais courriel ?"];
+                this.courrielVal = false;
+                this.mdpErreurs = ["Mauvais mot de passe ?"];
+                this.mdpVal = false;
+                this.$toast.error("Connexion refusée !");
+              });
         } catch (err) {
-          console.log(err);
+          this.$toast.error("Une erreur est survenue !");
         }
       }
-
     },
     valideCourriel(event) {
       const result = userValidator.checkIfEmailIsValid(event.target.value);
@@ -81,13 +94,17 @@ export default {
       const result = userValidator.checkIfPwdIsValid(event.target.value);
       this.mdpErreurs = result[0];
       this.mdpVal = result[1];
-    }
+    },
   },
   computed: {
     isLoggedIn() {
       return this.$store.getters.isAuthenticated;
-    }
-  }
+    },
+    ...mapState({}),
+  },
+  created() {
+
+  },
 };
 </script>
 
@@ -122,7 +139,7 @@ export default {
 }
 
 .error {
-  color: #ff0000;
+  color: #ff6767;
   font-size: 0.9rem;
 }
 

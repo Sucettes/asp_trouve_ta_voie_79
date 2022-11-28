@@ -69,7 +69,6 @@
 <script>
 
 import userValidator from "@/fctUtils/userValidator";
-import axios from "axios";
 
 
 export default {
@@ -88,11 +87,12 @@ export default {
       courrielErreurs: [],
       mdpErreurs: [],
       mdpConfErreurs: [],
-      nomErreurs: []
+      nomErreurs: [],
     };
   },
   methods: {
     async register() {
+      // edit : Faire en mieux cette methods...
       let result = userValidator.checkIfNameIsValid(this.nom);
       this.nomErreurs = result[0];
       this.nomVal = result[1];
@@ -106,35 +106,32 @@ export default {
       this.mdpConfErreurs = result[0];
       this.mdpConfVal = result[1];
 
+      if (this.nomVal && this.courrielVal && this.mdpVal && this.mdpConfVal && this.mdp === this.mdpConf) {
+        const payload = {
+          nom: this.nom,
+          courriel: this.courriel,
+          mdp: this.mdp,
+          mdpConf: this.mdpConf,
+        };
 
-      const prom = new Promise((resolve) => {
-        axios.get(`http://localhost:8090/api/utilisateur/courriel/${this.courriel}`).then(res => {
-          if (res.status === 200) {
-            this.courrielVal = false;
-            this.courrielErreurs.push("Courriel déjà utilisé !");
-          }
-          resolve();
-        }).catch(() => {
-          resolve();
-        });
-      });
-
-      prom.then(() => {
-        if (this.nomVal && this.courrielVal && this.mdpVal && this.mdpConfVal && this.mdp === this.mdpConf) {
-          const actionPayload = {
-            "nom": this.nom,
-            "courriel": this.courriel,
-            "mdp": this.mdp,
-            "mdpConf": this.mdpConf
-          };
-
-          try {
-            this.$store.dispatch("signup", actionPayload);
-          } catch (err) {
-            console.log(err);
-          }
+        try {
+          this.$store.dispatch("signup", payload)
+              .then((res) => {
+                if (res.status) {
+                  this.$toast.success("Inscription réussie ! vous êtes connecté");
+                  this.$router.push({name: "accueil"});
+                }
+              }).catch((err) => {
+            if (err.data.err && err.data.err === "Courriel déjà utilisé !") {
+              this.courrielErreurs = ["Courriel déjà utilisé !"];
+              this.courrielVal = false;
+            }
+            this.$toast.error("Échec de l'inscription !");
+          });
+        } catch (err) {
+          this.$toast.error("Une erreur est survenue !");
         }
-      });
+      }
     },
     valideNom(event) {
       const result = userValidator.checkIfNameIsValid(event.target.value);
@@ -155,8 +152,8 @@ export default {
       const result = userValidator.checkIfPwdIsValid(event.target.value);
       this.mdpConfErreurs = result[0];
       this.mdpConfVal = result[1];
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -185,7 +182,7 @@ export default {
 }
 
 .error {
-  color: #ff0000;
+  color: #ff6767;
   font-size: 0.9rem;
 }
 

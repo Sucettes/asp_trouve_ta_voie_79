@@ -11,7 +11,7 @@ export default {
   components: {HeaderNav},
   mounted() {
     this.$store.dispatch("reloadGetDataFromLocalStorage");
-  }
+  },
 };
 </script>
 
