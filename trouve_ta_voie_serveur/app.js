@@ -15,11 +15,11 @@ app.use(cors({origin: config.origins}));
 app.set("jwt-secret", config.secret);
 app.use(express.static(path.join(__dirname, "public")));
 
-// const db = require("./models/dbSetup");
-// // db.sequelize.sync().then(() => {
+// todo : Regardé comment faut mettre ça pour pas causé de problèmes.
+const db = require("./models/dbSetup");
 // db.sequelize.sync({force: true}).then(() => {
-//     console.log("Drop and re-sync db.");
-// });
+db.sequelize.sync().then(() => {
+});
 
 const routerAuth = require("./routes/authRoutes");
 const routerUtilisateur = require("./routes/utilisateurRoutes");

@@ -83,7 +83,12 @@ const lieuValidator = {
             valMsgErr.push("Dois être entre -180 et 180");
             valIsValid = false;
         }
-        if (!/^[-+]?([1-8]?\d(.\d+)?|90(.0+)?)$/.test(val) && val.length > 0) {
+        // if (!/^[-+]?([1-8]?\d(.\d+)?|90(.0+)?)$/.test(val) && val.length > 0) {
+        //     valMsgErr.push("Valeur invalide !");
+        //     valIsValid = false;
+        // }
+        const regex = new RegExp("^[-0-9,.]+$");
+        if (regex.test(val) === false && val.length > 0) {
             valMsgErr.push("Valeur invalide !");
             valIsValid = false;
         }
