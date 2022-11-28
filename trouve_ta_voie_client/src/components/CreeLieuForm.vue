@@ -37,7 +37,7 @@
         <div class="col-6 mb-3">
           <label for="latitude" class="form-label">Latitude</label>
           <input type="number" class="form-control" id="latitude" placeholder="0" min="-180" max="180"
-                 step="0.01" v-model="latitude" @blur="checkLatitudeIsValid"
+                 step="0.01" v-model.trim="latitude" @blur="checkLatitudeIsValid"
                  :class="{ 'is-invalid': latitudeIsValid===false }"
                  @input="checkLatitudeIsValid">
           <ul class="ulError" v-if="!latitudeIsValid">
@@ -47,7 +47,7 @@
         <div class="col-6 mb-3">
           <label for="longitude" class="form-label">Longitude</label>
           <input type="number" class="form-control" id="longitude" placeholder="0" min="-180" max="180"
-                 step="0.01" v-model="longitude" @blur="checkLongitudeIsValid"
+                 step="0.01" v-model.trim="longitude" @blur="checkLongitudeIsValid"
                  :class="{ 'is-invalid': longitudeIsValid===false }"
                  @input="checkLongitudeIsValid">
           <ul class="ulError" v-if="!longitudeIsValid">
