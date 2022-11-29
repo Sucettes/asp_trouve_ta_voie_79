@@ -1,5 +1,5 @@
 <template>
-  <div id="grimpeContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
+  <div v-if="!errorOccurred" id="grimpeContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
     <h1>Grimpe a modifier</h1>
     <form id="addGrimpeForm">
       <div class="mb-3">
@@ -118,15 +118,19 @@
       </div>
     </form>
   </div>
+
+  <ErreurComponent v-if="errorOccurred" :code="errorCode" :statusText="statusText"></ErreurComponent>
 </template>
 
 <script>
 import grimpeValidator from "@/fctUtils/grimpeValidator";
+import ErreurComponent from "@/components/erreur/ErreurComponent";
 import axios from "axios";
 
 
 export default {
   name: "EditGrimpeForm",
+  components: {ErreurComponent},
   data() {
     return {
       lieux: [],
@@ -149,21 +153,26 @@ export default {
       descriptionIsValid: undefined,
       descriptionMsgErr: [],
       styleIsValid: undefined,
-      styleMsgErr: []
+      styleMsgErr: [],
+      titleNeedUpdated: false,
+
+      errorCode: undefined,
+      statusText: "",
+      errorOccurred: false,
     };
   },
   methods: {
     cancel() {
       this.$router.go(-1);
     },
-    loadGrimpeToEdit() {
+    async loadGrimpeToEdit() {
       const payload = {
         id: this.$route.params.id,
-        token: this.$store.getters.token
+        token: this.$store.getters.token,
       };
 
-      axios.get(`http://localhost:8090/api/grimpe/${payload.id}`, {
-        headers: {"Authorization": `Bearer ${payload.token}`}
+      await axios.get(`http://localhost:8090/api/grimpe/${this.$store.getters.userId}/${payload.id}`, {
+        headers: {"Authorization": `Bearer ${payload.token}`},
       }).then(res => {
         this.title = res.data.titre;
         this.lieu = res.data.lieuxId;
@@ -173,12 +182,14 @@ export default {
         this.id = res.data.id;
         this.pictures = res.data.images;
       }).catch(err => {
-        console.log(err);
+        this.errorCode = err.response.status;
+        this.statusText = err.response.statusText;
+        this.errorOccurred = true;
       });
     },
     loadDropLieux() {
       axios.get("http://localhost:8090/api/lieux/dropFormat", {
-        headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
+        headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
       }).then(res => {
         this.lieux = res.data;
       }).catch(err => {
@@ -201,26 +212,29 @@ export default {
             axios.post(`http://localhost:8090/api/image`, {
               imgBase64: {
                 base64: reader.result,
-                name: this.picture.name
+                name: this.picture.name,
               },
-              grimpeId: this.id
+              grimpeId: this.id,
             }, {
-              headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
+              headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
             }).then(pic => {
               this.pictures.push(pic.data);
             });
           };
           this.$refs.picInput.value = null;
           this.picturePreviewUrl = null;
+
+          this.imgIsVaild = true;
+          this.imgMsgErr = [];
+          if (this.pictures.length < 1) {
+            this.imgIsVaild = false;
+            this.imgMsgErr.push("Dois avoir une image au minimum !");
+          }
         }
       }
     },
     async edit() {
-      // todo : faire mon edit
-      let result = grimpeValidator.checkIfTitleIsValid(this.title);
-      this.titleMsgErr = result[0];
-      this.titleIsVaild = result[1];
-      result = grimpeValidator.checkIfLieuIsValid(this.lieu);
+      let result = grimpeValidator.checkIfLieuIsValid(this.lieu);
       this.lieuMsgErr = result[0];
       this.lieuIsValid = result[1];
       result = grimpeValidator.checkIfDifficultyLevelIsValid(this.diff);
@@ -232,31 +246,58 @@ export default {
       result = grimpeValidator.checkIfStyleIsValid(this.style);
       this.styleMsgErr = result[0];
       this.styleIsValid = result[1];
+      if (!this.titleNeedUpdated) {
+        result = grimpeValidator.checkIfTitleIsValid(this.title);
+        this.titleMsgErr = result[0];
+        this.titleIsVaild = result[1];
+      }
 
       if (this.titleIsVaild && this.lieuIsValid && this.diffIsValid && this.descriptionIsValid && this.styleIsValid) {
-        const payload = {
-          data: {
-            id: this.id,
-            titre: this.title,
-            style: this.style,
-            description: this.description,
-            difficulte: this.diff,
-            lieuxId: this.lieu
-          },
-          token: this.$store.getters.token
-        };
-
         try {
-          this.$store.dispatch("updateGrimpe", payload);
+          const payload = {
+            data: {
+              id: this.id,
+              titre: this.title,
+              style: this.style,
+              description: this.description,
+              difficulte: this.diff,
+              lieuxId: this.lieu,
+            },
+            token: this.$store.getters.token,
+          };
+
+          await this.$store.dispatch("editGrimpe", payload).then(res => {
+            if (res.status) {
+              this.$toast.success("Modification de la grimpe réussie !");
+            }
+          }).catch(err => {
+            if (err.status === 403) {
+              this.errorCode = 403;
+              this.statusText = err.statusText;
+              this.errorOccurred = true;
+            } else if (err.status === 404) {
+              this.errorCode = 404;
+              this.statusText = err.statusText;
+              this.errorOccurred = true;
+            } else {
+              if (err.data.err && err.data.err === "Titre déjà utilisé !") {
+                this.titleNeedUpdated = true;
+                this.titleIsVaild = false;
+                this.titleMsgErr.push("Titre déjà utilisé !");
+              }
+              this.$toast.error("Échec de la modification de la grimpe !");
+
+            }
+          });
         } catch (err) {
-          console.log(err);
+          this.$toast.error("Une erreur est survenue !");
         }
       }
     },
     deletePic(iId) {
       if (this.pictures.length > 1) {
         axios.delete(`http://localhost:8090/api/image/${iId}`, {
-          headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
+          headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
         }).then(() => {
           this.pictures.splice(this.pictures.findIndex(x => x.id === iId), 1);
         });
@@ -266,6 +307,7 @@ export default {
       const result = grimpeValidator.checkIfTitleIsValid(event.target.value);
       this.titleMsgErr = result[0];
       this.titleIsVaild = result[1];
+      this.titleNeedUpdated = false;
     },
     checkIfLieuIsValid(event) {
       const result = grimpeValidator.checkIfLieuIsValid(event.target.value);
@@ -286,12 +328,12 @@ export default {
       const result = grimpeValidator.checkIfStyleIsValid(event.target.value);
       this.styleMsgErr = result[0];
       this.styleIsValid = result[1];
-    }
+    },
   },
-  created() {
-    this.loadDropLieux();
-    this.loadGrimpeToEdit();
-  }
+  async created() {
+    await this.loadDropLieux();
+    await this.loadGrimpeToEdit();
+  },
 };
 </script>
 

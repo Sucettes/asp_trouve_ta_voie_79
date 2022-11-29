@@ -151,7 +151,8 @@ export default {
       styleIsValid: undefined,
       styleMsgErr: [],
       imgIsVaild: undefined,
-      imgMsgErr: []
+      imgMsgErr: [],
+      titleNeedUpdated: false,
     };
   },
   methods: {
@@ -174,6 +175,13 @@ export default {
           };
           this.$refs.picInput.value = null;
           this.picturePreviewUrl = null;
+
+          this.imgIsVaild = true;
+          this.imgMsgErr = [];
+          if (this.pictures.length < 1) {
+            this.imgIsVaild = false;
+            this.imgMsgErr.push("Dois avoir une image au minimum !");
+          }
         }
       }
     },
@@ -181,8 +189,15 @@ export default {
       this.pictures.splice(index, 1);
       this.picturesUrl.splice(index, 1);
       this.picturesBase64.splice(index, 1);
+
+      this.imgIsVaild = true;
+      this.imgMsgErr = [];
+      if (this.pictures.length < 1) {
+        this.imgIsVaild = false;
+        this.imgMsgErr.push("Dois avoir une image au minimum !");
+      }
     },
-    add() {
+    async add() {
       this.imgIsVaild = true;
       this.imgMsgErr = [];
       if (this.pictures.length < 1) {
@@ -190,10 +205,7 @@ export default {
         this.imgMsgErr.push("Dois avoir une image au minimum !");
       }
 
-      let result = grimpeValidator.checkIfTitleIsValid(this.title);
-      this.titleMsgErr = result[0];
-      this.titleIsVaild = result[1];
-      result = grimpeValidator.checkIfLieuIsValid(this.lieu);
+      let result = grimpeValidator.checkIfLieuIsValid(this.lieu);
       this.lieuMsgErr = result[0];
       this.lieuIsValid = result[1];
 
@@ -209,23 +221,40 @@ export default {
       this.styleMsgErr = result[0];
       this.styleIsValid = result[1];
 
-      if (this.titleIsVaild && this.lieuIsValid && this.diffIsValid && this.descriptionIsValid && this.styleIsValid && this.imgIsVaild) {
-        const payload = {
-          data: {
-            titre: this.title,
-            style: this.style,
-            description: this.description,
-            difficulte: this.diff,
-            lieuxId: this.lieu,
-            imgsBase64: this.picturesBase64
-          },
-          token: this.$store.getters.token
-        };
+      if (!this.titleNeedUpdated) {
+        result = grimpeValidator.checkIfTitleIsValid(this.title);
+        this.titleMsgErr = result[0];
+        this.titleIsVaild = result[1];
+      }
 
+      if (this.titleIsVaild && this.lieuIsValid && this.diffIsValid && this.descriptionIsValid && this.styleIsValid && this.imgIsVaild) {
         try {
-          this.$store.dispatch("createGrimpe", payload);
+          const payload = {
+            data: {
+              titre: this.title,
+              style: this.style,
+              description: this.description,
+              difficulte: this.diff,
+              lieuxId: this.lieu,
+              imgsBase64: this.picturesBase64,
+            },
+            token: this.$store.getters.token,
+          };
+
+          await this.$store.dispatch("createGrimpe", payload).then(res => {
+            if (res.status) {
+              this.$toast.success("Création de la grimpe réussie !");
+            }
+          }).catch(err => {
+            if (err.data.err && err.data.err === "Titre déjà utilisé !") {
+              this.titleIsVaild = false;
+              this.titleNeedUpdated = true;
+              this.titleMsgErr.push("Titre déjà utilisé !");
+            }
+            this.$toast.error("Échec de la création de la grimpe !");
+          })
         } catch (err) {
-          console.log(err);
+          this.$toast.error("Une erreur est survenue !");
         }
       }
     },
@@ -236,6 +265,7 @@ export default {
       const result = grimpeValidator.checkIfTitleIsValid(event.target.value);
       this.titleMsgErr = result[0];
       this.titleIsVaild = result[1];
+      this.titleNeedUpdated = false;
     },
     checkIfLieuIsValid(event) {
       const result = grimpeValidator.checkIfLieuIsValid(event.target.value);
@@ -256,17 +286,17 @@ export default {
       const result = grimpeValidator.checkIfStyleIsValid(event.target.value);
       this.styleMsgErr = result[0];
       this.styleIsValid = result[1];
-    }
+    },
   },
   created() {
     axios.get("http://localhost:8090/api/lieux/dropFormat", {
-      headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
+      headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
     }).then(res => {
       this.lieux = res.data;
     }).catch(err => {
       console.log(err);
     });
-  }
+  },
 };
 </script>
 

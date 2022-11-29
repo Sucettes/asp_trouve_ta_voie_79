@@ -1,15 +1,17 @@
-import EditGrimpeForm from "@/components/EditGrimpeForm";
-import UserGrimpeLstComponent from "@/components/UserGrimpeLstComponent";
+import EditGrimpeForm from "@/views/grimpe/EditGrimpeForm";
+import UserGrimpeLstComponent from "@/views/utilisateur/UserGrimpeLstComponent";
+// import erreur403View from "@/views/erreur/Erreur403View";
+import ErreurView from "@/views/erreur/ErreurView";
 import {createRouter, createWebHistory} from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import ConnexionForm from "@/views/ConnexionForm";
-import InscriptionForm from "@/views/InscriptionForm";
+import ConnexionForm from "@/views/auth/ConnexionForm";
+import InscriptionForm from "@/views/auth/InscriptionForm";
 // import ProfilView from "@/views/ProfilView";
 import store from "@/store/index.js";
-import CreeLieuForm from "@/components/CreeLieuForm";
-import CreeGrimpeForm from "@/views/CreeGrimpeForm";
-import UserLieuLstComponent from "@/components/UserLieuLstComponent";
-import EditLieuForm from "@/components/EditLieuForm";
+import CreeLieuForm from "@/views/lieu/CreeLieuForm";
+import CreeGrimpeForm from "@/views/grimpe/CreeGrimpeForm";
+import UserLieuLstComponent from "@/views/utilisateur/UserLieuLstComponent";
+import EditLieuForm from "@/views/lieu/EditLieuForm";
 
 
 const routes = [
@@ -54,7 +56,9 @@ const routes = [
         name: "modifierGrimpe",
         component: EditGrimpeForm,
         meta: {requiresAuth: true}
-    }
+    },
+    {path: "/:ErreurView(.*)", component: ErreurView, meta: {code: 404, errorText: "Not Found"}},
+    {path: "/401", name: "401", component: ErreurView, meta: {code: 401, errorText: "Unauthorized"}}
 ];
 
 const router = createRouter({
@@ -72,11 +76,11 @@ const router = createRouter({
 
 router.beforeEach(function (to, from, next) {
     if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
-        // next({name: "connexion"});
-        next(false);
+        next({name: "401"})
+        // next(false);
     } else if (to.meta.requiresUnauth && store.getters.isAuthenticated) {
-        // next({name: "accueil"});
-        next(false);
+        next({name: "accueil"});
+        // next(false);
     } else {
         next();
     }

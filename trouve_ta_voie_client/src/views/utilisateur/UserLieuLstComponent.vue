@@ -1,27 +1,26 @@
 <template>
+<!--  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">-->
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
-    <grimpe-card-component class="d-flex"
-                           v-for="x in refreshUserGrimpes"
-                           :key="x.id"
-                           :id="x.id"
-                           :titre="x.titre"
-                           :style="x.style"
-                           :description="x.description"
-                           :difficulte="x.difficulte"
-                           :nbEtoiles="x.nbEtoiles"
-                           :nbVotes="x.nbVotes"
-                           :images="x.images"
-                           :lieu="x.lieux"
-    ></grimpe-card-component>
+    <!--    d-flex align-items-stretch    pour avoir la meme hauteur...-->
+    <lieu-card-component class="d-flex"
+                         v-for="x in refreshUserLieux"
+                         :key="x.id"
+                         :id="x.id"
+                         :titre="x.titre"
+                         :description="x.description"
+                         :directives="x.directives"
+                         :latitude="x.latitude"
+                         :longitude="x.longitude"
+    ></lieu-card-component>
   </div>
-  <div v-if="refreshUserGrimpes.length === 0" class="alert alert-info shadow-sm" role="alert"
+  <div v-if="refreshUserLieux.length === 0" class="alert alert-info shadow-sm" role="alert"
        id="alertInfo">
-    Aucune grimpe a affiché ! <br> cliquez ici pour en ajouté une : <strong @click="addGrimpe">ajouté un
-    grimpe</strong>
+    Aucun lieu a affiché ! <br> cliquez ici pour en ajouté un : <strong @click="addLieu">ajouté un
+    lieu</strong>
   </div>
 
 
-  <div id="svgIconAddDiv" @click="addGrimpe">
+  <div id="svgIconAddDiv" @click="addLieu">
     <svg id="svgIconAdd" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
          class="bi bi-plus-circle-dotted" viewBox="0 0 16 16">
       <path
@@ -31,25 +30,25 @@
 </template>
 
 <script>
-import grimpeCardComponent from "@/components/grimpeCardComponent";
+import LieuCardComponent from "@/components/lieu/lieuCardComponent";
 
 
 export default {
-  name: "UserGrimpeLstComponent.vue",
-  components: {grimpeCardComponent},
+  name: "UserLieuLstComponent",
+  components: {LieuCardComponent},
   data() {
     return {
-      isLoading: true,
-      myGrimpes: []
+      isLoading: false,
+      myLieux: []
     };
   },
   computed: {
-    refreshUserGrimpes() {
-      return this.$store.getters.userGrimpes;
+    refreshUserLieux() {
+      return this.$store.getters.userLieux;
     }
   },
   methods: {
-    async loadUserGrimpes() {
+    async loadUserLieux() {
       this.isLoading = true;
 
       const payload = {
@@ -58,27 +57,27 @@ export default {
       };
 
       try {
-        await this.$store.dispatch("loadUserGrimpes", payload);
-        this.myGrimpes = this.$store.getters.userGrimpes;
-        this.isLoading = false;
+        await this.$store.dispatch("loadUserLieux", payload);
+        this.myLieux = this.$store.getters.userLieux;
       } catch (err) {
         console.log(err);
-        this.isLoading = false;
       }
+
+      this.isLoading = false;
     },
-    addGrimpe() {
-      this.$router.push({name: "grimpeAjouter"});
+    addLieu() {
+      this.$router.push({name: "lieuAjouter"});
     }
   },
   created() {
-    this.loadUserGrimpes();
+    this.loadUserLieux();
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
-@import '@/../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'bootstrap/scss/bootstrap.scss';
 
 #svgIconAddDiv {
   position: fixed;

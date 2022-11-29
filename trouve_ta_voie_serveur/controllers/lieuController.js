@@ -20,6 +20,7 @@ exports.getDropdownData = async (req, res, next) => {
 };
 
 exports.createLieu = async (req, res, next) => {
+
     try {
         const locationTitleIsValid = validatorFct.locationTitleIsValid(req.body.titre);
         const locationDescriptionIsValid = validatorFct.locationDescriptionIsValid(req.body.description);
@@ -31,9 +32,8 @@ exports.createLieu = async (req, res, next) => {
 
             if (user) {
                 const location = await Lieu.findOne({where: {titre: req.body.titre}});
-
                 if (location) {
-                    res.status(400).end();
+                    res.status(400).json({err: "Titre déjà utilisé !"});
                 } else {
                     await Lieu.create({
                         titre: req.body.titre,
@@ -47,7 +47,7 @@ exports.createLieu = async (req, res, next) => {
                     });
                 }
             } else {
-                res.status(400).end();
+                res.status(401).end();
             }
         } else {
             res.status(400).end();
@@ -71,6 +71,26 @@ exports.getLieuById = async (req, res, next) => {
     }
 };
 
+exports.getLieuByIdToEdit = async (req, res, next) => {
+    try {
+        await Lieu.findByPk(+req.params.id)
+            .then(location => {
+                if (!location) {
+                    res.status(404).end();
+                } else if (+location.utilisateurId === +req.params.userId) {
+                    res.status(200).json(location);
+                } else {
+                    res.status(403).end();
+                }
+            })
+            .catch(() => {
+                res.status(400).end();
+            });
+    } catch (e) {
+        res.status(500).end();
+    }
+};
+
 exports.editLieu = async (req, res, next) => {
     try {
         const locationTitleIsValid = validatorFct.locationTitleIsValid(req.body.titre);
@@ -79,24 +99,34 @@ exports.editLieu = async (req, res, next) => {
         const locationGEOIsValid = validatorFct.locationGEOIsValid(req.body.latitude, req.body.longitude);
 
         if (locationTitleIsValid && locationDescriptionIsValid && locationInstructionIsValid && locationGEOIsValid) {
-            let location = await Lieu.findByPk(req.body.id);
+            let user = await Utilisateur.findByPk(req.token.userId);
 
-            if (location) {
-                if (+location.utilisateurId === +req.token.userId) {
-                    // edit : Faire en sorte de pas pouvoir prendre un autre nom qui existe déjà...
-                    await Lieu.update({
-                        titre: req.body.titre,
-                        description: req.body.description,
-                        directives: req.body.directives,
-                        longitude: req.body.longitude,
-                        latitude: req.body.latitude,
-                    }, {where: {id: req.body.id}});
-                    res.status(204).end();
+            if (user) {
+                let location = await Lieu.findByPk(req.body.id);
+
+                if (location) {
+                    if (+location.utilisateurId === +req.token.userId) {
+                        const location2 = await Lieu.findOne({where: {titre: req.body.titre}});
+                        if (location2 && location2.id !== req.body.id) {
+                            res.status(400).json({err: "Titre déjà utilisé !"});
+                        } else {
+                            await Lieu.update({
+                                titre: req.body.titre,
+                                description: req.body.description,
+                                directives: req.body.directives,
+                                longitude: req.body.longitude,
+                                latitude: req.body.latitude,
+                            }, {where: {id: req.body.id}});
+                            res.status(204).end();
+                        }
+                    } else {
+                        res.status(403).end();
+                    }
                 } else {
-                    res.status(403).end();
+                    res.status(404).end();
                 }
             } else {
-                res.status(404).end();
+                res.status(401).end();
             }
         } else {
             res.status(400).end();

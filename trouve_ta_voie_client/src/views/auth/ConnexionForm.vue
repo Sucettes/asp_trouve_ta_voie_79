@@ -33,7 +33,6 @@
 <script>
 
 import userValidator from "@/fctUtils/userValidator";
-import {mapState} from "vuex";
 
 
 export default {
@@ -69,7 +68,7 @@ export default {
           await this.$store.dispatch("login", payload)
               .then((res) => {
                 if (res.status) {
-                  this.$toast.success(`Connexion réussie !`);
+                  this.$toast.success("Connexion réussie !");
                   this.$router.push({name: "accueil"});
                 }
               })
@@ -100,7 +99,6 @@ export default {
     isLoggedIn() {
       return this.$store.getters.isAuthenticated;
     },
-    ...mapState({}),
   },
   created() {
 

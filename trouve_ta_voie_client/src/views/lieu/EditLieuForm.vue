@@ -1,5 +1,5 @@
 <template>
-  <div id="lieuContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
+  <div v-if="!errorOccurred" id="lieuContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
     <h1>Modifier un lieu</h1>
     <hr>
     <form id="addLieuForm">
@@ -66,16 +66,19 @@
       </div>
     </form>
   </div>
+
+  <ErreurComponent v-if="errorOccurred" :code="errorCode" :statusText="statusText"></ErreurComponent>
 </template>
 
 <script>
 import lieuValidator from "@/fctUtils/lieuValidator";
+import ErreurComponent from "@/components/erreur/ErreurComponent";
 import axios from "axios";
 
 
 export default {
   name: "EditLieuForm",
-  components: {},
+  components: {ErreurComponent},
 
   data() {
     return {
@@ -95,7 +98,12 @@ export default {
       descriptionMsgErr: [],
       instructionMsgErr: [],
       latitudeMsgErr: [],
-      longitudeMsgErr: []
+      longitudeMsgErr: [],
+      titleNeedUpdated: false,
+
+      errorCode: undefined,
+      statusText: "",
+      errorOccurred: false,
     };
   },
   methods: {
@@ -104,6 +112,7 @@ export default {
 
       this.titleMsgErr = result[0];
       this.titleIsVaild = result[1];
+      this.titleNeedUpdated = false;
     },
     checkDescriptionIsValid(event) {
       const result = lieuValidator.checkDescriptionIsValid(event.target.value);
@@ -127,7 +136,7 @@ export default {
       this.longitudeMsgErr = result[0];
       this.longitudeIsValid = result[1];
     },
-    edit() {
+    async edit() {
       let result = lieuValidator.checkDescriptionIsValid(this.description);
       this.descriptionMsgErr = result[0];
       this.descIsValid = result[1];
@@ -140,28 +149,14 @@ export default {
       result = lieuValidator.checkLatitudeLongitudeIsValid(this.longitude);
       this.longitudeMsgErr = result[0];
       this.longitudeIsValid = result[1];
-      result = lieuValidator.checkTitleIsValid(this.title);
-      this.titleMsgErr = result[0];
-      this.titleIsVaild = result[1];
+      if (!this.titleNeedUpdated) {
+        result = lieuValidator.checkTitleIsValid(this.title);
+        this.titleMsgErr = result[0];
+        this.titleIsVaild = result[1];
+      }
 
-      const prom = new Promise((resolve) => {
-        axios.get(`http://localhost:8090/api/lieu/titre/${this.title}`, {
-          headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
-        }).then(res => {
-          if (res.status === 200 && res.data.id !== this.id) {
-            this.titleIsVaild = false;
-            this.titleMsgErr.push("Titre déjà utilisé !");
-          }
-          resolve();
-        }).catch(() => {
-          resolve();
-        });
-      });
-
-      prom.then(() => {
-        if (this.titleIsVaild && this.descIsValid && this.instrucIsValid && this.latitudeIsValid && this.longitudeIsValid) {
-          this.isLoading = true;
-
+      if (this.titleIsVaild && this.descIsValid && this.instrucIsValid && this.latitudeIsValid && this.longitudeIsValid) {
+        try {
           const payload = {
             data: {
               id: +this.$route.params.id,
@@ -169,31 +164,49 @@ export default {
               description: this.description,
               directives: this.instruction,
               latitude: this.latitude,
-              longitude: this.longitude
+              longitude: this.longitude,
             },
-            token: this.$store.getters.token
+            token: this.$store.getters.token,
           };
-          try {
-            this.$store.dispatch("editLieu", payload);
-          } catch (err) {
-            console.log(err);
-          }
+
+          await this.$store.dispatch("editLieu", payload).then(res => {
+            if (res.status) {
+              this.$toast.success("Modification du lieu réussie !");
+            }
+          }).catch(err => {
+            if (err.status === 403) {
+              this.errorCode = 403;
+              this.statusText = err.statusText;
+              this.errorOccurred = true;
+            } else if (err.status === 404) {
+              this.errorCode = 404;
+              this.statusText = err.statusText;
+              this.errorOccurred = true;
+            } else {
+              if (err.data.err && err.data.err === "Titre déjà utilisé !") {
+                this.titleNeedUpdated = true;
+                this.titleIsVaild = false;
+                this.titleMsgErr.push("Titre déjà utilisé !");
+              }
+              this.$toast.error("Échec de la modification du lieu !");
+            }
+          });
+        } catch (err) {
+          this.$toast.error("Une erreur est survenue !");
         }
-      });
+      }
     },
     cancel() {
       this.$router.go(-1);
     },
-    loadLieuToEdit() {
-      this.isLoading = true;
-
+    async loadLieuToEdit() {
       const payload = {
         id: this.$route.params.id,
-        token: this.$store.getters.token
+        token: this.$store.getters.token,
       };
 
-      axios.get(`http://localhost:8090/api/lieu/${payload.id}`, {
-        headers: {"Authorization": `Bearer ${payload.token}`}
+      await axios.get(`http://localhost:8090/api/lieu/${this.$store.getters.userId}/${payload.id}`, {
+        headers: {"Authorization": `Bearer ${payload.token}`},
       }).then(res => {
         this.id = res.data.id;
         this.title = res.data.titre;
@@ -208,15 +221,15 @@ export default {
         this.latitudeIsValid = true;
         this.longitudeIsValid = true;
       }).catch(err => {
-        console.log(err);
+        this.errorCode = err.response.status;
+        this.statusText = err.response.statusText;
+        this.errorOccurred = true;
       });
-
-      this.isLoading = false;
-    }
+    },
   },
-  created() {
-    this.loadLieuToEdit();
-  }
+  async created() {
+    await this.loadLieuToEdit();
+  },
 };
 </script>
 

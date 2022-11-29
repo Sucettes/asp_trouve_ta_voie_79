@@ -70,7 +70,7 @@
 
 <script>
 import lieuValidator from "@/fctUtils/lieuValidator";
-import axios from "axios";
+// import axios from "axios";
 
 
 export default {
@@ -93,7 +93,8 @@ export default {
       descriptionMsgErr: [],
       instructionMsgErr: [],
       latitudeMsgErr: [],
-      longitudeMsgErr: []
+      longitudeMsgErr: [],
+      titleNeedUpdated: false,
     };
   },
   methods: {
@@ -102,6 +103,7 @@ export default {
 
       this.titleMsgErr = result[0];
       this.titleIsVaild = result[1];
+      this.titleNeedUpdated = false;
     },
     checkDescriptionIsValid(event) {
       const result = lieuValidator.checkDescriptionIsValid(event.target.value);
@@ -125,19 +127,7 @@ export default {
       this.longitudeMsgErr = result[0];
       this.longitudeIsValid = result[1];
     },
-    // checkIfTitleIsAlreadyUsed() {
-    //   axios.get(`http://localhost:8090/api/lieu/titre/${this.title}`, {
-    //     headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
-    //   }).then(res => {
-    //     if (res.status === 200) {
-    //       this.titleIsVaild = false;
-    //       this.titleMsgErr.push("Titre déjà utilisé !");
-    //     }
-    //   }).catch(err => {
-    //     console.error(err)
-    //   });
-    // },
-    add() {
+    async add() {
       let result = lieuValidator.checkDescriptionIsValid(this.description);
       this.descriptionMsgErr = result[0];
       this.descIsValid = result[1];
@@ -150,49 +140,48 @@ export default {
       result = lieuValidator.checkLatitudeLongitudeIsValid(this.longitude);
       this.longitudeMsgErr = result[0];
       this.longitudeIsValid = result[1];
-      result = lieuValidator.checkTitleIsValid(this.title);
-      this.titleMsgErr = result[0];
-      this.titleIsVaild = result[1];
-      const prom = new Promise((resolve) => {
-        axios.get(`http://localhost:8090/api/lieu/titre/${this.title}`, {
-          headers: {"Authorization": `Bearer ${this.$store.getters.token}`}
-        }).then(res => {
-          if (res.status === 200) {
-            this.titleIsVaild = false;
-            this.titleMsgErr.push("Titre déjà utilisé !");
-          }
-          resolve();
-        }).catch(() => {
-          resolve();
-        });
-      });
+      if (!this.titleNeedUpdated) {
+        result = lieuValidator.checkTitleIsValid(this.title);
+        this.titleMsgErr = result[0];
+        this.titleIsVaild = result[1];
+      }
 
-      prom.then(() => {
-        if (this.titleIsVaild && this.descIsValid && this.instrucIsValid && this.latitudeIsValid && this.longitudeIsValid) {
+      if (this.titleIsVaild && this.descIsValid && this.instrucIsValid && this.latitudeIsValid && this.longitudeIsValid) {
+        try {
           const payload = {
             data: {
               titre: this.title,
               description: this.description,
               directives: this.instruction,
               latitude: this.latitude,
-              longitude: this.longitude
+              longitude: this.longitude,
             },
-            token: this.$store.getters.token
+            token: this.$store.getters.token,
           };
-          try {
-            this.$store.dispatch("createLieu", payload);
-          } catch (err) {
-            console.log(err);
-          }
+
+          await this.$store.dispatch("createLieu", payload).then(res => {
+            if (res.status) {
+              this.$toast.success("Création du lieu réussie !");
+            }
+          }).catch(err => {
+            if (err.data.err && err.data.err === "Titre déjà utilisé !") {
+              this.titleIsVaild = false;
+              this.titleNeedUpdated = true;
+              this.titleMsgErr.push("Titre déjà utilisé !");
+            }
+            this.$toast.error("Échec de la création du lieu !");
+          });
+        } catch (err) {
+          this.$toast.error("Une erreur est survenue !");
         }
-      });
+      }
     },
     cancel() {
       // this.$router.push({name: 'accueil'});
       this.$router.go(-1);
-    }
+    },
   },
-  computed: {}
+  computed: {},
 };
 </script>
 
