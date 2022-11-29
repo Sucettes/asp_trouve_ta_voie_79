@@ -29,12 +29,20 @@ export default {
         });
     },
     async loadUserGrimpes(context, payload) {
-        axios.get(`http://localhost:8090/api/grimpes/${payload.userId}`, {
-            headers: {"Authorization": `Bearer ${payload.token}`},
-        }).then(res => {
-            context.commit("setUserGrimpes", res.data);
-        }).catch(err => {
-            console.log(err);
+        return new Promise((resolve, reject) => {
+            axios.get(`http://localhost:8090/api/grimpes/${payload.userId}`, {
+                headers: {"Authorization": `Bearer ${payload.token}`},
+            }).then(response => {
+                context.commit("setUserGrimpes", response.data);
+
+                resolve(response);
+            }).catch(error => {
+                reject(error.response);
+            });
         });
+    },
+    async clearDataGrimpe(context) {
+        context.commit("setGrimpe", {});
+        context.commit("setUserGrimpes", []);
     },
 };

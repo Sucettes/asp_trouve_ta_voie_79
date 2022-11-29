@@ -76,6 +76,9 @@ export default {
       await this.$store.dispatch("logout").then(() => {
         this.$toast.success("Déconnexion avec succès !");
 
+        this.$store.dispatch("clearDataLieu");
+        this.$store.dispatch("clearDataGrimpe");
+
         router.push({name: "connexion"});
       });
     }

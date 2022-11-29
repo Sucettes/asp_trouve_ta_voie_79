@@ -5,9 +5,7 @@ import getters from './getters.js';
 export default {
     state() {
         return {
-            userId: localStorage.getItem("userId"),
-            token: localStorage.getItem("token"),
-            // todo : Faire un requete au back-end avec c'est donne pour voir si il est connecte sinon le deco...
+            nbLoading: 0
         };
     },
     mutations,

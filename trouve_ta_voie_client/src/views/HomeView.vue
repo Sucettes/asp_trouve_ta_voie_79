@@ -8,8 +8,7 @@
 <script>
 
 export default {
-  name: 'HomeView',
-  components: {}
+  name: "HomeView",
 };
 </script>
 
@@ -23,6 +22,7 @@ export default {
 body {
   background-color: #f3f4f6;
 }
+
 h1 {
   color: $accent;
   text-align: center;

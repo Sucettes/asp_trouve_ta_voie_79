@@ -27,17 +27,17 @@ export default {
 
 #spinnerBack {
   z-index: 90;
-  background-color: rgba(0, 0, 0, 0.16);
+  background-color: rgba(0, 0, 0, 0.09);
   width: calc(100vw);
-  height: calc(100vh);
-  position: absolute;
+  min-height: calc(100vh + 56px);
+  position: fixed;
   top: 0;
 
 }
 #spinner {
-  position: absolute;
+  position: fixed;
   top:50%;
-  right: 50%;
+  left: calc(50vw - 40px);
   z-index: 100;
 }
 
@@ -50,9 +50,9 @@ export default {
 
 .lds-default div {
   position: absolute;
-  width: 6px;
-  height: 6px;
-  background: $primary;
+  width: 7px;
+  height: 7px;
+  background: $green;
   border-radius: 50%;
   animation: lds-default 1.2s linear infinite;
 }

@@ -39,13 +39,8 @@ export default {
             console.log(err);
         });
     },
-    // async loadLieuToEdit(context, payload) {
-    //     axios.get(`http://localhost:8090/api/lieu/${payload.id}`, {
-    //         headers: {'Authorization': `Bearer ${payload.token}`}
-    //     }).then(res => {
-    //         context.commit('setLieu', res.data)
-    //     }).catch(err => {
-    //         console.log(err);
-    //     });
-    // }
+    async clearDataLieu(context) {
+        context.commit("setLieu", {});
+        context.commit("setUserLieux", []);
+    },
 };

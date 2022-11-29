@@ -5,7 +5,7 @@
       <h1>{{ code }}</h1>
       <h3>{{ statusText }}</h3>
     </div>
-    <p v-if="!this.$store.getters.isAuthenticated" id="errMsg">Ohh ohh, une erreur est survenue! <br>
+    <p v-if="!this.$store.getters.isAuthenticated || code===401" id="errMsg">Ohh ohh, une erreur est survenue! <br>
       Vous pouvez essayer de retourner sur la page <span @click="this.$router.push({name: 'accueil'})">d'accueil</span>
       ou allez sur la page de <span @click="this.$router.push({name: 'connexion'})">connexion</span>.</p>
     <p v-else id="errMsg">Ohh ohh, une erreur est survenue! <br>

@@ -1,4 +1,6 @@
 <template>
+  <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
+
   <div v-if="!errorOccurred" id="grimpeContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
     <h1>Grimpe a modifier</h1>
     <form id="addGrimpeForm">
@@ -123,6 +125,7 @@
 </template>
 
 <script>
+import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import grimpeValidator from "@/fctUtils/grimpeValidator";
 import ErreurComponent from "@/components/erreur/ErreurComponent";
 import axios from "axios";
@@ -130,7 +133,7 @@ import axios from "axios";
 
 export default {
   name: "EditGrimpeForm",
-  components: {ErreurComponent},
+  components: {ErreurComponent, LoadingSpinnerComponent},
   data() {
     return {
       lieux: [],
@@ -161,6 +164,11 @@ export default {
       errorOccurred: false,
     };
   },
+  computed: {
+    isLoading() {
+      return this.$store.getters.isLoading;
+    },
+  },
   methods: {
     cancel() {
       this.$router.go(-1);
@@ -188,12 +196,15 @@ export default {
       });
     },
     loadDropLieux() {
+      this.$store.dispatch("startLoading");
       axios.get("http://localhost:8090/api/lieux/dropFormat", {
         headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
       }).then(res => {
         this.lieux = res.data;
+        this.$store.dispatch("stopLoading");
       }).catch(err => {
         console.log(err);
+        this.$store.dispatch("stopLoading");
       });
     },
     pictureChange(e) {
@@ -208,6 +219,7 @@ export default {
           const reader = new FileReader();
           reader.readAsDataURL(this.picture);
           reader.onload = () => {
+            this.$store.dispatch("startLoading");
 
             axios.post(`http://localhost:8090/api/image`, {
               imgBase64: {
@@ -219,6 +231,11 @@ export default {
               headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
             }).then(pic => {
               this.pictures.push(pic.data);
+              this.$store.dispatch("stopLoading");
+              this.$toast.success("Image ajoutée !");
+            }).catch(() => {
+              this.$store.dispatch("stopLoading");
+              this.$toast.error("L'image a rencontré un problème !");
             });
           };
           this.$refs.picInput.value = null;
@@ -254,6 +271,8 @@ export default {
 
       if (this.titleIsVaild && this.lieuIsValid && this.diffIsValid && this.descriptionIsValid && this.styleIsValid) {
         try {
+          this.$store.dispatch("startLoading");
+
           const payload = {
             data: {
               id: this.id,
@@ -270,6 +289,7 @@ export default {
             if (res.status) {
               this.$toast.success("Modification de la grimpe réussie !");
             }
+            this.$store.dispatch("stopLoading");
           }).catch(err => {
             if (err.status === 403) {
               this.errorCode = 403;
@@ -286,20 +306,25 @@ export default {
                 this.titleMsgErr.push("Titre déjà utilisé !");
               }
               this.$toast.error("Échec de la modification de la grimpe !");
-
             }
+            this.$store.dispatch("stopLoading");
           });
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
+          this.$store.dispatch("stopLoading");
         }
       }
     },
     deletePic(iId) {
       if (this.pictures.length > 1) {
+        this.$store.dispatch("startLoading");
         axios.delete(`http://localhost:8090/api/image/${iId}`, {
           headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
         }).then(() => {
           this.pictures.splice(this.pictures.findIndex(x => x.id === iId), 1);
+          this.$store.dispatch("stopLoading");
+        }).catch(() => {
+          this.$store.dispatch("stopLoading");
         });
       }
     },

@@ -1,4 +1,6 @@
 <template>
+  <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
+
   <div id="grimpeContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
     <h1>Ajouter une grimpe</h1>
 
@@ -118,15 +120,16 @@
 </template>
 
 <script>
+import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import grimpeValidator from "@/fctUtils/grimpeValidator";
 import axios from "axios";
 
 
 export default {
   name: "CreeGrimpeForm",
+  components: {LoadingSpinnerComponent},
   data() {
     return {
-      isLoading: false,
       title: "",
       style: "Choisir le style",
       diff: "Choisir la difficulté",
@@ -154,6 +157,11 @@ export default {
       imgMsgErr: [],
       titleNeedUpdated: false,
     };
+  },
+  computed: {
+    isLoading() {
+      return this.$store.getters.isLoading;
+    },
   },
   methods: {
     pictureChange(e) {
@@ -197,6 +205,32 @@ export default {
         this.imgMsgErr.push("Dois avoir une image au minimum !");
       }
     },
+    clearField() {
+      this.title = "";
+      this.style = "Choisir le style";
+      this.diff = "Choisir la difficulté";
+      this.lieu = "Choisir le lieu";
+      this.description = "";
+      this.picture = null;
+      this.picturePreviewUrl = null;
+      this.pictures = [];
+      this.picturesBase64 = [];
+      this.picturesUrl = [];
+      this.canAddPicture = true;
+      this.titleIsVaild = undefined;
+      this.titleMsgErr = [];
+      this.lieuIsValid = undefined;
+      this.lieuMsgErr = [];
+      this.diffIsValid = undefined;
+      this.diffMsgErr = [];
+      this.descriptionIsValid = undefined;
+      this.descriptionMsgErr = [];
+      this.styleIsValid = undefined;
+      this.styleMsgErr = [];
+      this.imgIsVaild = undefined;
+      this.imgMsgErr = [];
+      this.titleNeedUpdated = false;
+    },
     async add() {
       this.imgIsVaild = true;
       this.imgMsgErr = [];
@@ -229,6 +263,8 @@ export default {
 
       if (this.titleIsVaild && this.lieuIsValid && this.diffIsValid && this.descriptionIsValid && this.styleIsValid && this.imgIsVaild) {
         try {
+          this.$store.dispatch("startLoading");
+
           const payload = {
             data: {
               titre: this.title,
@@ -244,6 +280,9 @@ export default {
           await this.$store.dispatch("createGrimpe", payload).then(res => {
             if (res.status) {
               this.$toast.success("Création de la grimpe réussie !");
+              this.$store.dispatch("stopLoading");
+
+              this.clearField();
             }
           }).catch(err => {
             if (err.data.err && err.data.err === "Titre déjà utilisé !") {
@@ -252,9 +291,11 @@ export default {
               this.titleMsgErr.push("Titre déjà utilisé !");
             }
             this.$toast.error("Échec de la création de la grimpe !");
-          })
+            this.$store.dispatch("stopLoading");
+          });
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
+          this.$store.dispatch("stopLoading");
         }
       }
     },
@@ -289,12 +330,15 @@ export default {
     },
   },
   created() {
+    this.$store.dispatch("startLoading");
     axios.get("http://localhost:8090/api/lieux/dropFormat", {
       headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
     }).then(res => {
       this.lieux = res.data;
-    }).catch(err => {
-      console.log(err);
+      this.$store.dispatch("stopLoading");
+    }).catch(() => {
+      this.$toast.error("Une erreur est survenue !");
+      this.$store.dispatch("stopLoading");
     });
   },
 };

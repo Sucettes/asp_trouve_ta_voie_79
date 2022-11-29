@@ -1,4 +1,6 @@
 <template>
+  <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
+
   <div v-if="!errorOccurred" id="lieuContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
     <h1>Modifier un lieu</h1>
     <hr>
@@ -71,6 +73,7 @@
 </template>
 
 <script>
+import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import lieuValidator from "@/fctUtils/lieuValidator";
 import ErreurComponent from "@/components/erreur/ErreurComponent";
 import axios from "axios";
@@ -78,11 +81,9 @@ import axios from "axios";
 
 export default {
   name: "EditLieuForm",
-  components: {ErreurComponent},
-
+  components: {ErreurComponent, LoadingSpinnerComponent},
   data() {
     return {
-      isLoading: false,
       id: "",
       title: "",
       description: "",
@@ -157,6 +158,8 @@ export default {
 
       if (this.titleIsVaild && this.descIsValid && this.instrucIsValid && this.latitudeIsValid && this.longitudeIsValid) {
         try {
+          this.$store.dispatch("startLoading");
+
           const payload = {
             data: {
               id: +this.$route.params.id,
@@ -172,6 +175,7 @@ export default {
           await this.$store.dispatch("editLieu", payload).then(res => {
             if (res.status) {
               this.$toast.success("Modification du lieu réussie !");
+              this.$store.dispatch("stopLoading");
             }
           }).catch(err => {
             if (err.status === 403) {
@@ -190,9 +194,11 @@ export default {
               }
               this.$toast.error("Échec de la modification du lieu !");
             }
+            this.$store.dispatch("stopLoading");
           });
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
+          this.$store.dispatch("stopLoading");
         }
       }
     },
@@ -200,6 +206,8 @@ export default {
       this.$router.go(-1);
     },
     async loadLieuToEdit() {
+      this.$store.dispatch("startLoading");
+
       const payload = {
         id: this.$route.params.id,
         token: this.$store.getters.token,
@@ -220,11 +228,19 @@ export default {
         this.instrucIsValid = true;
         this.latitudeIsValid = true;
         this.longitudeIsValid = true;
+
+        this.$store.dispatch("stopLoading");
       }).catch(err => {
         this.errorCode = err.response.status;
         this.statusText = err.response.statusText;
         this.errorOccurred = true;
+        this.$store.dispatch("stopLoading");
       });
+    },
+  },
+  computed: {
+    isLoading() {
+      return this.$store.getters.isLoading;
     },
   },
   async created() {

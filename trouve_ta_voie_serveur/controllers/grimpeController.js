@@ -96,17 +96,21 @@ exports.getGrimpeByIdToEdit = async (req, res, next) => {
 
 exports.editGrimpe = async (req, res, next) => {
     try {
+        // fixme : Modification des grimpes est casse
         // todo : Faire les validations
         let grimpe = await Grimpe.findOne({
             where: {
                 lieuxId: req.body.lieuxId,
                 titre: req.body.titre,
-            },
+            }, LIMIT: 1
         });
-
-        if (grimpe.userId !== req.token.userId) {
+        console.log(grimpe)
+        if (grimpe && grimpe.utilisateurId !== req.token.userId) {
             res.status(403).end();
         } else {
+            if (grimpe) {
+                res.status(404).end();
+            }
             // Titre déjà utilisé
             if (grimpe && grimpe.id !== req.body.id) {
                 res.status(400).json({err: "Titre déjà utilisé !"});

@@ -1,4 +1,6 @@
 <template>
+  <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
+
   <div id="lieuContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
     <h1>Ajouter un lieu</h1>
 
@@ -69,16 +71,15 @@
 </template>
 
 <script>
+import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import lieuValidator from "@/fctUtils/lieuValidator";
-// import axios from "axios";
 
 
 export default {
-  components: [],
+  components: {LoadingSpinnerComponent},
   name: "CreeLieuForm",
   data() {
     return {
-      isLoading: false,
       title: "",
       description: "",
       instruction: "",
@@ -127,6 +128,24 @@ export default {
       this.longitudeMsgErr = result[0];
       this.longitudeIsValid = result[1];
     },
+    clearField() {
+      this.title = "";
+      this.description = "";
+      this.instruction = "";
+      this.latitude = "";
+      this.longitude = "";
+      this.titleIsVaild = undefined;
+      this.descIsValid = undefined;
+      this.instrucIsValid = undefined;
+      this.latitudeIsValid = undefined;
+      this.longitudeIsValid = undefined;
+      this.titleMsgErr = [];
+      this.descriptionMsgErr = [];
+      this.instructionMsgErr = [];
+      this.latitudeMsgErr = [];
+      this.longitudeMsgErr = [];
+      this.titleNeedUpdated = false;
+    },
     async add() {
       let result = lieuValidator.checkDescriptionIsValid(this.description);
       this.descriptionMsgErr = result[0];
@@ -148,6 +167,8 @@ export default {
 
       if (this.titleIsVaild && this.descIsValid && this.instrucIsValid && this.latitudeIsValid && this.longitudeIsValid) {
         try {
+          this.$store.dispatch("startLoading");
+
           const payload = {
             data: {
               titre: this.title,
@@ -162,6 +183,8 @@ export default {
           await this.$store.dispatch("createLieu", payload).then(res => {
             if (res.status) {
               this.$toast.success("Création du lieu réussie !");
+              this.clearField();
+              this.$store.dispatch("stopLoading");
             }
           }).catch(err => {
             if (err.data.err && err.data.err === "Titre déjà utilisé !") {
@@ -170,18 +193,23 @@ export default {
               this.titleMsgErr.push("Titre déjà utilisé !");
             }
             this.$toast.error("Échec de la création du lieu !");
+            this.$store.dispatch("stopLoading");
           });
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
+          this.$store.dispatch("stopLoading");
         }
       }
     },
     cancel() {
-      // this.$router.push({name: 'accueil'});
       this.$router.go(-1);
     },
   },
-  computed: {},
+  computed: {
+    isLoading() {
+      return this.$store.getters.isLoading;
+    },
+  },
 };
 </script>
 

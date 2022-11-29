@@ -1,4 +1,6 @@
 <template>
+  <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
+
   <div id="container">
     <form id="authForm" class="backgroundGlass">
       <h2>Connexion</h2>
@@ -32,11 +34,13 @@
 
 <script>
 
+import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import userValidator from "@/fctUtils/userValidator";
 
 
 export default {
   name: "ConnexionForm",
+  components: {LoadingSpinnerComponent},
   data() {
     return {
       courriel: "",
@@ -44,7 +48,6 @@ export default {
       courrielVal: undefined,
       mdpVal: undefined,
       mdp: "",
-      isLoading: false,
       courrielErreurs: [],
       mdpErreurs: [],
     };
@@ -65,11 +68,14 @@ export default {
         };
 
         try {
+          this.$store.dispatch("startLoading");
+
           await this.$store.dispatch("login", payload)
               .then((res) => {
                 if (res.status) {
                   this.$toast.success("Connexion réussie !");
                   this.$router.push({name: "accueil"});
+                  this.$store.dispatch("stopLoading");
                 }
               })
               .catch(() => {
@@ -78,9 +84,11 @@ export default {
                 this.mdpErreurs = ["Mauvais mot de passe ?"];
                 this.mdpVal = false;
                 this.$toast.error("Connexion refusée !");
+                this.$store.dispatch("stopLoading");
               });
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
+          this.$store.dispatch("stopLoading");
         }
       }
     },
@@ -98,6 +106,9 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters.isAuthenticated;
+    },
+    isLoading() {
+      return this.$store.getters.isLoading;
     },
   },
   created() {

@@ -1,4 +1,6 @@
 <template>
+  <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
+
   <div id="container">
     <form id="authForm" class="backgroundGlass">
       <h2>Inscription</h2>
@@ -68,11 +70,13 @@
 
 <script>
 
+import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import userValidator from "@/fctUtils/userValidator";
 
 
 export default {
   name: "InscriptionForm",
+  components: {LoadingSpinnerComponent},
   data() {
     return {
       nom: "",
@@ -83,7 +87,6 @@ export default {
       courrielVal: undefined,
       mdpVal: undefined,
       mdpConfVal: undefined,
-      isLoading: false,
       courrielErreurs: [],
       mdpErreurs: [],
       mdpConfErreurs: [],
@@ -115,21 +118,27 @@ export default {
         };
 
         try {
+          this.$store.dispatch("startLoading");
+
           this.$store.dispatch("signup", payload)
               .then((res) => {
                 if (res.status) {
                   this.$toast.success("Inscription réussie ! vous êtes connecté");
                   this.$router.push({name: "accueil"});
+                  this.$store.dispatch("stopLoading");
                 }
-              }).catch((err) => {
-            if (err.data.err && err.data.err === "Courriel déjà utilisé !") {
-              this.courrielErreurs = ["Courriel déjà utilisé !"];
-              this.courrielVal = false;
-            }
-            this.$toast.error("Échec de l'inscription !");
-          });
+              })
+              .catch((err) => {
+                if (err.data.err && err.data.err === "Courriel déjà utilisé !") {
+                  this.courrielErreurs = ["Courriel déjà utilisé !"];
+                  this.courrielVal = false;
+                }
+                this.$toast.error("Échec de l'inscription !");
+                this.$store.dispatch("stopLoading");
+              });
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
+          this.$store.dispatch("stopLoading");
         }
       }
     },
@@ -152,6 +161,11 @@ export default {
       const result = userValidator.checkIfPwdIsValid(event.target.value);
       this.mdpConfErreurs = result[0];
       this.mdpConfVal = result[1];
+    },
+  },
+  computed: {
+    isLoading() {
+      return this.$store.getters.isLoading;
     },
   },
 };

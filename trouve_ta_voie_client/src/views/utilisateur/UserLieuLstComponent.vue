@@ -1,5 +1,7 @@
 <template>
-<!--  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">-->
+  <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
+
+  <!--  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">-->
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
     <!--    d-flex align-items-stretch    pour avoir la meme hauteur...-->
     <lieu-card-component class="d-flex"
@@ -13,7 +15,7 @@
                          :longitude="x.longitude"
     ></lieu-card-component>
   </div>
-  <div v-if="refreshUserLieux.length === 0" class="alert alert-info shadow-sm" role="alert"
+  <div v-if="refreshUserLieux.length === 0 && !isLoading && pageLoaded" class="alert alert-info shadow-sm" role="alert"
        id="alertInfo">
     Aucun lieu a affiché ! <br> cliquez ici pour en ajouté un : <strong @click="addLieu">ajouté un
     lieu</strong>
@@ -31,47 +33,55 @@
 
 <script>
 import LieuCardComponent from "@/components/lieu/lieuCardComponent";
+import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 
 
 export default {
   name: "UserLieuLstComponent",
-  components: {LieuCardComponent},
+  components: {LieuCardComponent, LoadingSpinnerComponent},
   data() {
     return {
-      isLoading: false,
-      myLieux: []
+      pageLoaded: false,
+      myLieux: [],
     };
   },
   computed: {
     refreshUserLieux() {
       return this.$store.getters.userLieux;
-    }
+    },
+    isLoading() {
+      return this.$store.getters.isLoading;
+    },
   },
   methods: {
     async loadUserLieux() {
-      this.isLoading = true;
-
       const payload = {
         userId: this.$store.getters.userId,
-        token: this.$store.getters.token
+        token: this.$store.getters.token,
       };
 
       try {
-        await this.$store.dispatch("loadUserLieux", payload);
+        await this.$store.dispatch("loadUserLieux", payload).then(() => {
+          this.$store.dispatch("stopLoading");
+        }).catch(() => {
+          this.$store.dispatch("stopLoading");
+        });
         this.myLieux = this.$store.getters.userLieux;
       } catch (err) {
-        console.log(err);
+        this.$store.dispatch("stopLoading");
       }
-
-      this.isLoading = false;
     },
     addLieu() {
       this.$router.push({name: "lieuAjouter"});
-    }
+    },
   },
   created() {
+    this.$store.dispatch("startLoading");
     this.loadUserLieux();
-  }
+  },
+  mounted() {
+    this.pageLoaded = true;
+  },
 };
 </script>
 
