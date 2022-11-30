@@ -6,18 +6,19 @@
         <div v-if="images[0]">
           <img class="lstPic" :src="'http://localhost:8090' + images[0].path"/>
         </div>
-        <h3>{{ titre }}</h3>
+        <h3 @click="seeDetails">{{ titre }}</h3>
         <hr>
-        <ul>
-          <li>Style : {{ style }}</li>
-          <li>Difficulté : {{ difficulte }}</li>
-          <li>Lieu : {{ lieu.titre }}</li> <!-- todo : mettre un lien pour consulté le lieu... -->
-        </ul>
-        <!--todo : Afficher les ratings-->
-        <!--        <div id="ratingDiv">-->
-        <!--          <p><strong>Étoiles : </strong>{{ nbEtoiles }}</p>-->
-        <!--          <p><strong>Votes : </strong>{{ nbVotes }}</p>-->
-        <!--        </div>-->
+
+        <p>Style : <strong class="accColorTxt">{{style}}</strong></p>
+        <p>Difficulté : <strong class="accColorTxt">{{ difficulte }}</strong></p>
+        <p @click="seeLieuDetails">Lieu : <strong class="accColorTxt cursorPointer">{{ lieu.titre }}</strong></p>
+
+        <br>
+
+        <div id="ratingDiv">
+          <p>Étoiles : <strong class="accColorTxt">{{ nbEtoiles }}</strong></p>
+          <p>Votes : <strong class="accColorTxt">{{ nbVotes }}</strong></p>
+        </div>
 
         <hr>
         <h6>Description</h6>
@@ -31,7 +32,7 @@
 
       <div>
         <div id="btnWrapper">
-<!--          <p @click="seeDetails" id="detailsBtn">Détails</p>-->
+          <p @click="seeDetails" id="detailsBtn">Détails</p>
           <button @click="editGrimpe" type="button" class="btn btn-outline-secondary">Modifier</button>
         </div>
       </div>
@@ -44,18 +45,21 @@ export default {
   name: "grimpeCardComponent",
   props: ["id", "titre", "style", "description", "difficulte", "nbEtoiles", "nbVotes", "images", "lieu"],
   methods: {
+    seeLieuDetails() {
+      this.$router.push({name: "lieuDetails", params: {id: this.lieu.id}});
+    },
     seeDetails() {
-
+      console.log("Sprint 3...");
     },
     editGrimpe() {
       this.$router.push({
         name: "modifierGrimpe",
         params: {
-          id: this.id
-        }
+          id: this.id,
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -87,8 +91,10 @@ export default {
 
 #card {
   padding: 15px;
+
   p {
     overflow: auto;
+    margin: 0;
   }
 }
 
@@ -103,11 +109,28 @@ export default {
 
   h3 {
     text-align: center;
-    color: $primary
+    color: $primary;
+    cursor: pointer;
+  }
+
+  h3:hover {
+    color: $Darkaccent;
   }
 
   span {
     height: 10px;
+  }
+
+  .accColorTxt {
+    color: $Darkaccent;
+  }
+
+  .cursorPointer {
+    cursor: pointer;
+  }
+
+  .cursorPointer:hover {
+    color: $accent;
   }
 }
 
@@ -122,7 +145,13 @@ export default {
 
   #detailsBtn {
     cursor: pointer;
-    color: $primary
+    color: $primary;
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+
+  #detailsBtn:hover {
+    color: $Darkaccent;
   }
 }
 </style>

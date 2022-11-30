@@ -24,22 +24,16 @@ const validatorFct = {
         return true;
     },
     locationTitleIsValid(title) {
-        if (title.length < 3 || title.length > 50) return false;
-        // const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
-        // return regex.test(title) !== false;
-        return true;
+        return !(title.length < 3 || title.length > 50);
+
     },
     locationDescriptionIsValid(description) {
-        if (description.length < 3 || description.length > 500) return false;
-        // const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
-        // return regex.test(description) !== false;
-        return true;
+        return !(description.length < 3 || description.length > 500);
+
     },
     locationInstructionIsValid(instruction) {
-        if (instruction.length < 3 || instruction.length > 500) return false;
-        // const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
-        // return regex.test(instruction) !== false;
-        return true;
+        return !(instruction.length < 3 || instruction.length > 500);
+
     },
     locationGEOIsValid(latitude, longitude) {
         if (latitude < -90 || latitude > 90) return false;

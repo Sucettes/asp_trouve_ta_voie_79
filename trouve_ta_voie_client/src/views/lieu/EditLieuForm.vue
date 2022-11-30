@@ -38,7 +38,7 @@
       <div class="row">
         <div class="col-6 mb-3">
           <label for="latitude" class="form-label">Latitude</label>
-          <input type="number" class="form-control" id="latitude" placeholder="0"
+          <input type="text" class="form-control" id="latitude" placeholder="0"
                  v-model.trim="latitude" @blur="checkLatitudeIsValid"
                  :class="{ 'is-invalid': latitudeIsValid===false }"
                  @input="checkLatitudeIsValid">
@@ -48,7 +48,7 @@
         </div>
         <div class="col-6 mb-3">
           <label for="longitude" class="form-label">Longitude</label>
-          <input type="number" class="form-control" id="longitude" placeholder="0"
+          <input type="text" class="form-control" id="longitude" placeholder="0"
                  v-model.trim="longitude" @blur="checkLongitudeIsValid"
                  :class="{ 'is-invalid': longitudeIsValid===false }"
                  @input="checkLongitudeIsValid">
@@ -144,10 +144,10 @@ export default {
       result = lieuValidator.checkInstructionIsValid(this.instruction);
       this.instructionMsgErr = result[0];
       this.instrucIsValid = result[1];
-      result = lieuValidator.checkLatitudeLongitudeIsValid(this.latitude);
+      result = lieuValidator.checkLatitudeIsValid(this.latitude);
       this.latitudeMsgErr = result[0];
       this.latitudeIsValid = result[1];
-      result = lieuValidator.checkLatitudeLongitudeIsValid(this.longitude);
+      result = lieuValidator.checkLongitudeIsValid(this.longitude);
       this.longitudeMsgErr = result[0];
       this.longitudeIsValid = result[1];
       if (!this.titleNeedUpdated) {

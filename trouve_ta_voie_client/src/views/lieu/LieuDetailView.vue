@@ -47,8 +47,7 @@
             </thead>
             <tbody>
             <tr v-for="(diff, index) in grimpeDiffRows" :key="diff + index">
-              <td v-if="diff.difficulte !== '5.10'">{{ diff.difficulte.replace('0', '') }}</td>
-              <td v-else>{{ diff.difficulte }}</td>
+              <td>5.{{ diff.difficulte }}</td>
               <td>{{ grimpeDiffCount[index].count }}</td>
             </tr>
             </tbody>
@@ -56,16 +55,40 @@
         </div>
       </div>
 
+      <br>
+
+      <h6 class="accColorTxt">Liste des grimpes</h6>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Grimpe</th>
+          <th>Style</th>
+          <th>Difficulté</th>
+          <th>Étoiles</th>
+          <th>Vote</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="grimpe in grimpes" :key="grimpe.id">
+          <td>{{ grimpe.titre }}</td>
+          <td>{{ grimpe.style }}</td>
+          <td>5.{{ grimpe.difficulte }}</td>
+          <td>{{ grimpe.nbEtoiles }}</td>
+          <td>{{ grimpe.nbVotes }}</td>
+          <td class="accColorTxt cursorPointer" @click="goToGrimpeDetails(grimpe.id)">Détails</td>
+        </tr>
+        </tbody>
+      </table>
 
     </div>
 
     <div class="body shadow-sm p-3 mb-5 bg-body rounded">
-      <!--   Informations en liens avec la position   -->
       <h3>Position géographique</h3>
 
       <div class="row">
         <div class="col-md-6">
-          <p>coordonnées :    Latitude :  <strong>{{ latitude }}</strong>  |  longitude :  <strong>{{ longitude }}</strong></p>
+          <p>coordonnées : Latitude : <strong>{{ latitude }}</strong> | longitude : <strong>{{ longitude }}</strong></p>
 
           <l-map :center="mapPosition" :zoom="15" v-if="mapPosition">
             <l-tile-layer :url="url"/>
@@ -80,10 +103,18 @@
         </div>
       </div>
 
-
     </div>
   </div>
 
+  <div id="svgIconEditDiv" @click="goToEditLieu" v-if="userCanEdit">
+    <svg id="svgIconEdit" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+         class="bi bi-pencil-square" viewBox="0 0 16 16">
+      <path
+          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+      <path fill-rule="evenodd"
+            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+    </svg>
+  </div>
 </template>
 
 <script>
@@ -109,10 +140,9 @@ export default {
       grimpeStyleRows: undefined,
       grimpeDiffCount: undefined,
       grimpeDiffRows: undefined,
-      grimpeDetails: [],
-
+      grimpes: [],
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      positionTest: latLng(47.41422, -1.250482),
+      userCanEdit: false,
     };
   },
   computed: {
@@ -135,14 +165,16 @@ export default {
                 this.directives = response.data.lieu.directives;
                 this.latitude = response.data.lieu.latitude;
                 this.longitude = response.data.lieu.longitude;
-                this.mapPosition = latLng(response.data.lieu.latitude, response.data.lieu.longitude)
+                this.mapPosition = latLng(response.data.lieu.latitude, response.data.lieu.longitude);
 
                 this.totalGrimpe = response.data.totalGrimpe;
                 this.grimpeStyleCount = response.data.grimpeStyle.count;
                 this.grimpeStyleRows = response.data.grimpeStyle.rows;
                 this.grimpeDiffCount = response.data.grimpeDiff.count;
                 this.grimpeDiffRows = response.data.grimpeDiff.rows;
-                this.grimpeDetails = response.data.grimpeDetails;
+                this.grimpes = response.data.grimpes;
+
+                this.userCanEdit = response.data.lieu.utilisateurId === this.$store.getters.userId;
               }
             })
             .catch(() => {
@@ -154,18 +186,44 @@ export default {
         this.$store.dispatch("stopLoading");
       }
     },
+    goToGrimpeDetails(id) {
+      console.log(id);
+    },
+    goToEditLieu() {
+      this.$router.push({name: "modifierLieu", params: {id: this.id}});
+    },
   },
   created() {
     this.id = this.$route.params.id;
     this.loadLieuDetails();
-
-    // console.log(Process.)
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
+@import 'bootstrap/scss/bootstrap.scss';
+
+#svgIconEditDiv {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  cursor: pointer;
+
+  #svgIconEdit {
+    fill: $secondary;
+  }
+}
+
+#svgIconEditDiv:hover {
+  path {
+    fill: $primary;
+  }
+}
+
+td, th {
+  text-align: center;
+}
 
 #map {
   height: 300px !important;
@@ -203,6 +261,14 @@ export default {
 
     .accColorTxt {
       color: $Darkaccent;
+    }
+
+    .cursorPointer {
+      cursor: pointer;
+    }
+
+    .cursorPointer:hover {
+      color: $accent;
     }
   }
 }

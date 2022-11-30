@@ -153,10 +153,10 @@ export default {
       result = lieuValidator.checkInstructionIsValid(this.instruction);
       this.instructionMsgErr = result[0];
       this.instrucIsValid = result[1];
-      result = lieuValidator.checkLatitudeLongitudeIsValid(this.latitude);
+      result = lieuValidator.checkLatitudeIsValid(this.latitude);
       this.latitudeMsgErr = result[0];
       this.latitudeIsValid = result[1];
-      result = lieuValidator.checkLatitudeLongitudeIsValid(this.longitude);
+      result = lieuValidator.checkLongitudeIsValid(this.longitude);
       this.longitudeMsgErr = result[0];
       this.longitudeIsValid = result[1];
       if (!this.titleNeedUpdated) {

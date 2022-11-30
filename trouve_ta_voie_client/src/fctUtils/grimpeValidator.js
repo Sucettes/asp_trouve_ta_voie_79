@@ -57,7 +57,8 @@ const grimpeValidator = {
             diffMsgErr.push("Est requis !");
             diffIsVaild = false;
         }
-        const regex = new RegExp("^5\\.+((1[0-5])|([6-9]+0?))$");
+        // const regex = new RegExp("^5\\.+((1[0-5])|([6-9]+0?))$");
+        const regex = new RegExp("^[0-9]{1,2}$");
         if (regex.test(diff) === false && diff.length > 0 && diff !== "Choisir la difficulté") {
             diffMsgErr.push("Valeur invalide ! 5.6 à 5.15");
             diffIsVaild = false;

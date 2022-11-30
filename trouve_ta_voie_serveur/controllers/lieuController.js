@@ -88,17 +88,14 @@ exports.getLieuDetailsById = async (req, res, next) => {
             where: {lieuxId: req.params.id},
             order: []
         });
-        let grimpeDetails = await Grimpe.findAll({
-            where: {lieuxId: req.params.id},
-            attributes: ["id", "titre", "style", "difficulte", "nbEtoiles", "nbVotes"],
-        });
+        let grimpes = await Grimpe.findAll({where: {lieuxId: req.params.id}})
 
         res.status(200).json({
             lieu: location,
             totalGrimpe: nbGrimpe,
             grimpeStyle: grimpeStyle,
             grimpeDiff: grimpeDiff,
-            grimpeDetails: grimpeDetails,
+            grimpes: grimpes,
         });
     } catch (e) {
         res.status(500).end();

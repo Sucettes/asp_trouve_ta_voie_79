@@ -17,7 +17,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         // todo : regarde pour bien les mettre dans la bd car les valeurs ne sont pas exact... 5.6 = 5.60 dans bd.
         difficulte: {
-            type: DataTypes.DECIMAL(10,2),
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         nbEtoiles: {
@@ -25,7 +25,7 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: 0
         },
         nbVotes: {
-            type: DataTypes.DECIMAL(10,2),
+            type: DataTypes.INTEGER,
             defaultValue: 0
         }
     });

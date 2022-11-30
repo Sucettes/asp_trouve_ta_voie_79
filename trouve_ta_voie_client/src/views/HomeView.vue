@@ -1,21 +1,234 @@
 <template>
+  <div id="banner"></div>
+
+  <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
+
   <div id="homeContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
-    <h1>Accueil</h1>
-    <hr>
+    <h1>Trouve ta voie</h1>
+
+    <br>
+    <br>
+
+    <!--  fixme : corrige le francais ici  -->
+    <p class="blockquote">Notre objectif est simple, vous offrir un guide de qualité supérieure avec un inventaire de
+      lieux tous plus impressionnant les uns des autres à travers le monde entier. Nous voulons aider et accompagner les
+      passionnés de sensation forte dans leur quête à la recherche d'une nouvelle aventure. Nous voulons vous aidez à
+      trouver votre voie et vivre une expérience digne d'un film d'action. Vous êtes passionné d'escalade comme nous?
+      Vous êtes au bon endroit. Venez consulter notre catalogue afin de trouvé votre lieu et a partir a l'aventure.</p>
+
   </div>
+
+  <br>
+  <h2 id="top10Titre">Top 10</h2>
+  <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xl-5 g-4" style="margin-left: 20px; margin-right: 20px">
+    <grimpe-card-component class="d-flex"
+                           v-for="x in top10Grimpes"
+                           :key="x.id"
+                           :id="x.id"
+                           :titre="x.titre"
+                           :style="x.style"
+                           :description="x.description"
+                           :difficulte="x.difficulte"
+                           :nbEtoiles="x.nbEtoiles"
+                           :nbVotes="x.nbVotes"
+                           :images="x.images"
+                           :lieu="x.lieux"
+    ></grimpe-card-component>
+  </div>
+
+  <div class="shadow-sm p-3 mb-5 bg-body rounded" style="margin-left: 30px; margin-right: 30px; margin-bottom: 0 !important;"><h2 id="top10Titre">Votre recherche</h2></div>
+  <div id="filterContainer" class="row">
+    <div class="shadow-sm p-3 mb-5 bg-body rounded col-md-2" id="filterMenu">
+      <h3>Filtre</h3>
+      <hr>
+
+      <label for="styleDrop" class="form-label">Style</label>
+      <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style">
+        <option value="all">Tout les styles</option>
+        <option value="Traditionnelle">Traditionnelle</option>
+        <option value="Sportive">Sportive</option>
+        <option value="Moulinette">Moulinette</option>
+      </select>
+
+      <br>
+
+      <label for="starsDrop" class="form-label">Étoiles</label>
+      <select id="starsDrop" class="form-select" aria-label="Choisir le nombre d'étoiles" v-model.trim="stars">
+        <option value="0">1 à 5</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+
+      <br>
+
+      <label for="lieuDrop" class="form-label">Lieu</label>
+      <select id="lieuDrop" class="form-select" aria-label="Choisir le style" v-model.trim="lieu">
+        <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
+      </select>
+
+      <br>
+
+      <label for="diffDrop1" class="form-label">Difficulté <br> entre</label>
+      <select id="diffDrop1" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff1">
+        <option value="6">5.6</option>
+        <option value="7">5.7</option>
+        <option value="8">5.8</option>
+        <option value="9">5.9</option>
+        <option value="10">5.10</option>
+        <option value="11">5.11</option>
+        <option value="12">5.12</option>
+        <option value="13">5.13</option>
+        <option value="14">5.14</option>
+        <option value="15">5.15</option>
+      </select>
+
+      <label for="diffDrop2" class="form-label">et</label>
+      <select id="diffDrop2" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff2">
+        <option value="6">5.6</option>
+        <option value="7">5.7</option>
+        <option value="8">5.8</option>
+        <option value="9">5.9</option>
+        <option value="10">5.10</option>
+        <option value="11">5.11</option>
+        <option value="12">5.12</option>
+        <option value="13">5.13</option>
+        <option value="14">5.14</option>
+        <option value="15">5.15</option>
+      </select>
+      <br>
+      <br>
+      <div id="btnWrapper">
+        <button type="button" class="btn btn-outline-primary" @click="search()">Rechercher</button>
+      </div>
+
+    </div>
+    <div class="col-md-10">
+      ici les carte du resultats...
+      {{ style }}
+      {{ stars }}
+      {{ lieu }}
+      {{ diff1 }}
+      {{ diff2 }}
+    </div>
+  </div>
+
 </template>
 
 <script>
 
+import grimpeCardComponent from "@/components/grimpe/grimpeCardComponent";
+import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
+import axios from "axios";
+
+
 export default {
   name: "HomeView",
+  components: {LoadingSpinnerComponent, grimpeCardComponent},
+  data() {
+    return {
+      lieux: [],
+      lieu: undefined,
+      style: undefined,
+      stars: undefined,
+      diff1: undefined,
+      diff2: undefined,
+      top10Grimpes: []
+    };
+  },
+  computed: {
+    isLoading() {
+      return this.$store.getters.isLoading;
+    },
+  },
+  methods: {
+    loadDropLieux() {
+      this.$store.dispatch("startLoading");
+      axios.get("http://localhost:8090/api/lieux/dropFormat", {
+        headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
+      }).then(res => {
+        this.lieux = res.data;
+        this.$store.dispatch("stopLoading");
+      }).catch(err => {
+        console.log(err);
+        this.$store.dispatch("stopLoading");
+      });
+    },
+    loadTop10() {
+      this.$store.dispatch("startLoading");
+      axios.get("http://localhost:8090/api/grimpes/top10", {
+        headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
+      }).then(res => {
+        this.top10Grimpes = res.data;
+        this.$store.dispatch("stopLoading");
+      }).catch(() => {
+        this.$toast.error("Une erreur est survenue !");
+        this.$store.dispatch("stopLoading");
+      });
+    },
+    async search() {
+      this.$store.dispatch("startLoading");
+      const payload = {
+        style: this.style,
+        stars: this.stars === "0" ? undefined : this.stars,
+        lieu: this.lieu,
+        diff1: this.diff1,
+        diff2: this.diff2,
+      };
+      await axios.post("http://localhost:8090/api/grimpes/filtre", payload, {
+        headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
+      }).then(response => {
+        console.log(response.data);
+        this.$store.dispatch("stopLoading");
+      }).catch(() => {
+        this.$toast.error("Une erreur est survenue !");
+        this.$store.dispatch("stopLoading");
+      })
+    },
+  },
+  async created() {
+    await this.loadDropLieux();
+    await this.loadTop10();
+  },
 };
 </script>
 
 <style lang="scss">
 @import '@/assets/styles/custom.scss';
 
+#filterMenu {
+  h3 {
+    color: $accent;
+    text-align: center;
+  }
+
+  #btnWrapper {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+#top10Titre {
+  color: $accent;
+  text-align: center;
+}
+
+#banner {
+  background-color: #396839;
+  height: calc(40vh);
+  background-image: url("@/assets/MontagneBack.jpg") !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 #homeContainer {
+  margin: 30px;
+}
+
+#filterContainer {
   margin: 30px;
 }
 

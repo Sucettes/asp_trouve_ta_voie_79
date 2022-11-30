@@ -35,16 +35,16 @@
                   :class="{ 'is-invalid': diffIsValid===false }" @blur="checkIfDiffIsValid"
                   @input="checkIfDiffIsValid" @focusout="checkIfDiffIsValid">
             <option selected disabled>Choisir la difficulté</option>
-            <option value="5.60">5.6</option>
-            <option value="5.70">5.7</option>
-            <option value="5.80">5.8</option>
-            <option value="5.90">5.9</option>
-            <option value="5.10">5.10</option>
-            <option value="5.11">5.11</option>
-            <option value="5.12">5.12</option>
-            <option value="5.13">5.13</option>
-            <option value="5.14">5.14</option>
-            <option value="5.15">5.15</option>
+            <option value="6">5.6</option>
+            <option value="7">5.7</option>
+            <option value="8">5.8</option>
+            <option value="9">5.9</option>
+            <option value="10">5.10</option>
+            <option value="11">5.11</option>
+            <option value="12">5.12</option>
+            <option value="13">5.13</option>
+            <option value="14">5.14</option>
+            <option value="15">5.15</option>
           </select>
           <ul class="ulError" v-if="!diffIsValid">
             <li class="error" v-for="err in diffMsgErr" :key="err">{{ err }}</li>

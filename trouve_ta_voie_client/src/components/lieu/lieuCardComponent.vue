@@ -80,6 +80,7 @@ export default {
     color: $primary;
     cursor: pointer;
   }
+
   h3:hover {
     color: $Darkaccent;
   }
@@ -104,6 +105,7 @@ export default {
     margin-top: 10px;
     margin-bottom: 0;
   }
+
   #detailsBtn:hover {
     color: $Darkaccent;
   }
