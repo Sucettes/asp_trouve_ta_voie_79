@@ -42,15 +42,9 @@ const validatorFct = {
         return true;
     },
     locationGEOIsValid(latitude, longitude) {
-        if (latitude < -180 || latitude > 180) return false;
+        if (latitude < -90 || latitude > 90) return false;
         if (longitude < -180 || longitude > 180) return false;
-        // if (!/^[-+]?([1-8]?\d(.\d+)?|90(.0+)?)$/.test(latitude) && latitude.length > 0) {
-        //     return false;
-        // }
-        // if (!/^[-+]?([1-8]?\d(.\d+)?|90(.0+)?)$/.test(longitude) && longitude.length > 0) {
-        //     return false;
-        // }
-        const regex = new RegExp("^[-0-9,.]+$");
+        const regex = new RegExp("^[-0-9.]+$");
         if (regex.test(latitude) === false && latitude.length > 0) {
             return false;
         }
@@ -59,7 +53,7 @@ const validatorFct = {
         }
 
         return true;
-    }
+    },
 };
 
 module.exports = validatorFct;

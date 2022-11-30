@@ -23,10 +23,10 @@ module.exports = (sequelize, Sequelize) => {
             }
         },
         latitude: {
-            type: DataTypes.DECIMAL(10, 2)
+            type: DataTypes.FLOAT
         },
         longitude: {
-            type: DataTypes.DECIMAL(10, 2)
+            type: DataTypes.FLOAT
         }
     });
 };

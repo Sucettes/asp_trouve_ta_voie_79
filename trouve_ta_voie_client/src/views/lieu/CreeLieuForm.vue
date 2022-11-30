@@ -38,8 +38,8 @@
       <div class="row">
         <div class="col-6 mb-3">
           <label for="latitude" class="form-label">Latitude</label>
-          <input type="number" class="form-control" id="latitude" placeholder="0" min="-180" max="180"
-                 step="0.01" v-model.trim="latitude" @blur="checkLatitudeIsValid"
+          <input type="text" class="form-control" id="latitude" placeholder="0"
+                 v-model.trim="latitude" @blur="checkLatitudeIsValid"
                  :class="{ 'is-invalid': latitudeIsValid===false }"
                  @input="checkLatitudeIsValid">
           <ul class="ulError" v-if="!latitudeIsValid">
@@ -48,8 +48,8 @@
         </div>
         <div class="col-6 mb-3">
           <label for="longitude" class="form-label">Longitude</label>
-          <input type="number" class="form-control" id="longitude" placeholder="0" min="-180" max="180"
-                 step="0.01" v-model.trim="longitude" @blur="checkLongitudeIsValid"
+          <input type="text" class="form-control" id="longitude" placeholder="0"
+                 v-model.trim="longitude" @blur="checkLongitudeIsValid"
                  :class="{ 'is-invalid': longitudeIsValid===false }"
                  @input="checkLongitudeIsValid">
           <ul class="ulError" v-if="!longitudeIsValid">
@@ -119,12 +119,12 @@ export default {
       this.instrucIsValid = result[1];
     },
     checkLatitudeIsValid(event) {
-      const result = lieuValidator.checkLatitudeLongitudeIsValid(event.target.value);
+      const result = lieuValidator.checkLatitudeIsValid(event.target.value);
       this.latitudeMsgErr = result[0];
       this.latitudeIsValid = result[1];
     },
     checkLongitudeIsValid(event) {
-      const result = lieuValidator.checkLatitudeLongitudeIsValid(event.target.value);
+      const result = lieuValidator.checkLongitudeIsValid(event.target.value);
       this.longitudeMsgErr = result[0];
       this.longitudeIsValid = result[1];
     },

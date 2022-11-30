@@ -13,6 +13,7 @@
     "axios": "^1.2.0",
     "bootstrap": "^5.2.3",
     "core-js": "^3.8.3",
+    "leaflet": "^1.9.3",
     "register-service-worker": "^1.7.2",
     "stylus": "^0.59.0",
     "stylus-loader": "^3.0.2",
@@ -20,6 +21,7 @@
     "vue-jwt-decode": "^0.1.0",
     "vue-router": "^4.0.3",
     "vue-toasted": "^1.1.28",
+    "vue3-leaflet": "^1.0.43",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

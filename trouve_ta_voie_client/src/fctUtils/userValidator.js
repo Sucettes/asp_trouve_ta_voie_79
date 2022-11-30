@@ -9,10 +9,11 @@ const userValidator = {
             courrielErreurs.push("Est requis !");
         }
         if (email.length > 50) {
-            courrielErreurs.push("Trop long !");
+            courrielErreurs.push("Trop long ! Max : 50");
             courrielVal = false;
         }
         if (emailRegex.test(email) === false && email.length > 0) {
+            // fixme : changé message pour dire c'est quoi les caractère obligatoire
             courrielErreurs.push("Format ou caractère invalide !");
             courrielVal = false;
         }
@@ -29,10 +30,11 @@ const userValidator = {
             mdpVal = false;
         }
         if (pwd.length < 6 && pwd.length > 0) {
-            mdpErreurs.push("Trop court !");
+            mdpErreurs.push("Trop court ! Min : 6");
             mdpVal = false;
         }
         if (mdpRegex.test(pwd) === false && pwd.length > 0) {
+            // fixme : changé message pour dire c'est quoi les caractère obligatoire
             mdpErreurs.push("Format ou caractère invalide !");
             mdpVal = false;
         }
@@ -49,15 +51,15 @@ const userValidator = {
             nomVal = false;
         }
         if (name && name.length < 3 && name.length > 0) {
-            nomErreurs.push("Trop court !");
+            nomErreurs.push("Trop court ! Min : 3");
             nomVal = false;
         }
         if (name && name.length > 50) {
-            nomErreurs.push("Trop long !");
+            nomErreurs.push("Trop long ! Max : 50");
             nomVal = false;
         }
         if (nomRegex.test(name) === false && name.length > 0) {
-            nomErreurs.push("Format ou caractère invalide !");
+            nomErreurs.push("Format ou caractère invalide ! Autorisé : (A à z, espace et -)");
             nomVal = false;
         }
 

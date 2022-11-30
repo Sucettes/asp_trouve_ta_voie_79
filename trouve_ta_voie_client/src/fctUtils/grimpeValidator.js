@@ -8,11 +8,11 @@ const grimpeValidator = {
             titleIsVaild = false;
         }
         if (title.length < 3 && title.length > 0) {
-            titleMsgErr.push("Trop court !");
+            titleMsgErr.push("Trop court ! Min : 3");
             titleIsVaild = false;
         }
         if (title.length > 50) {
-            titleMsgErr.push("Trop long !");
+            titleMsgErr.push("Trop long ! Max : 50");
             titleIsVaild = false;
         }
         return [titleMsgErr, titleIsVaild];
@@ -26,7 +26,7 @@ const grimpeValidator = {
             styleIsValid = false;
         }
         if (style !== "Traditionnelle" && style !== "Sportive" && style !== "Moulinette" && style !== "" && style !== "Choisir le style") {
-            styleMsgErr.push("Valeur invalide !");
+            styleMsgErr.push("Valeur invalide ! Traditionnelle, Sportive, Moulinette");
             styleIsValid = false;
         }
         return [styleMsgErr, styleIsValid];
@@ -40,18 +40,13 @@ const grimpeValidator = {
             descIsValid = false;
         }
         if (desc.length < 3 && desc.length > 0) {
-            descriptionMsgErr.push("Trop court !");
+            descriptionMsgErr.push("Trop court ! Min : 3");
             descIsValid = false;
         }
         if (desc.length > 500) {
-            descriptionMsgErr.push("Trop long !");
+            descriptionMsgErr.push("Trop long ! Max : 500");
             descIsValid = false;
         }
-        // const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
-        // if (regex.test(desc) === false && desc.length > 0) {
-        //     descriptionMsgErr.push("Valeur invalide !");
-        //     descIsValid = false;
-        // }
 
         return [descriptionMsgErr, descIsValid];
     },
@@ -64,7 +59,7 @@ const grimpeValidator = {
         }
         const regex = new RegExp("^5\\.+((1[0-5])|([6-9]+0?))$");
         if (regex.test(diff) === false && diff.length > 0 && diff !== "Choisir la difficulté") {
-            diffMsgErr.push("Valeur invalide !");
+            diffMsgErr.push("Valeur invalide ! 5.6 à 5.15");
             diffIsVaild = false;
         }
         return [diffMsgErr, diffIsVaild];

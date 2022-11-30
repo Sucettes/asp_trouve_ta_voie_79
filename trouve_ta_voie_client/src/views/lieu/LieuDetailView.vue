@@ -5,15 +5,9 @@
 
     <div class="body shadow-sm p-3 mb-5 bg-body rounded">
       <h1>{{ titre }}</h1>
-      <div class="row">
-        <div class="col-md-6 blockTxt">
-          <h6>Description</h6>
-          <p>{{ description }}</p>
-        </div>
-        <div class="col-md-6 blockTxt">
-          <h6>Directives pour s'y rendre</h6>
-          <p>{{ directives }}</p>
-        </div>
+      <div class="blockTxt">
+        <h6>Description</h6>
+        <p>{{ description }}</p>
       </div>
     </div>
 
@@ -53,7 +47,8 @@
             </thead>
             <tbody>
             <tr v-for="(diff, index) in grimpeDiffRows" :key="diff + index">
-              <td>{{ diff.difficulte }}</td>
+              <td v-if="diff.difficulte !== '5.10'">{{ diff.difficulte.replace('0', '') }}</td>
+              <td v-else>{{ diff.difficulte }}</td>
               <td>{{ grimpeDiffCount[index].count }}</td>
             </tr>
             </tbody>
@@ -68,8 +63,24 @@
       <!--   Informations en liens avec la position   -->
       <h3>Position géographique</h3>
 
-      <p>Latitude : <strong>{{ latitude }}</strong>   |   longitude : <strong>{{ longitude }}</strong></p>
-      <p>TODO : mettre une carte de google map ici...</p>
+      <div class="row">
+        <div class="col-md-6">
+          <p>coordonnées :    Latitude :  <strong>{{ latitude }}</strong>  |  longitude :  <strong>{{ longitude }}</strong></p>
+
+          <l-map :center="mapPosition" :zoom="15" v-if="mapPosition">
+            <l-tile-layer :url="url"/>
+            <l-marker :lat-lng="mapPosition"></l-marker>
+          </l-map>
+        </div>
+        <div class="col-md-6">
+          <div>
+            <h6 style="margin-bottom: 15px">Directives pour s'y rendre</h6>
+            <p>{{ directives }}</p>
+          </div>
+        </div>
+      </div>
+
+
     </div>
   </div>
 
@@ -77,10 +88,13 @@
 
 <script>
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
+import {latLng} from "leaflet";
+import {LMap, LTileLayer, LMarker} from "vue3-leaflet";
+
 
 export default {
   name: "LieuDetailView",
-  components: {LoadingSpinnerComponent},
+  components: {LoadingSpinnerComponent, LMap, LTileLayer, LMarker},
   data() {
     return {
       id: "",
@@ -89,6 +103,7 @@ export default {
       directives: "",
       latitude: 0,
       longitude: 0,
+      mapPosition: latLng(this.latitude, this.longitude),
       totalGrimpe: 0,
       grimpeStyleCount: undefined,
       grimpeStyleRows: undefined,
@@ -96,7 +111,8 @@ export default {
       grimpeDiffRows: undefined,
       grimpeDetails: [],
 
-      center: { lat: 40.689247, lng: -74.044502 }
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      positionTest: latLng(47.41422, -1.250482),
     };
   },
   computed: {
@@ -119,6 +135,7 @@ export default {
                 this.directives = response.data.lieu.directives;
                 this.latitude = response.data.lieu.latitude;
                 this.longitude = response.data.lieu.longitude;
+                this.mapPosition = latLng(response.data.lieu.latitude, response.data.lieu.longitude)
 
                 this.totalGrimpe = response.data.totalGrimpe;
                 this.grimpeStyleCount = response.data.grimpeStyle.count;
@@ -144,12 +161,18 @@ export default {
 
     // console.log(Process.)
   },
-
 };
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
+
+#map {
+  height: 300px !important;
+  width: 100% !important;
+  min-height: 0;
+  position: relative;
+}
 
 #container {
   margin: 30px;

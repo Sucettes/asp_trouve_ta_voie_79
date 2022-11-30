@@ -16,8 +16,8 @@ app.use(cors({origin: [process.env.ORIGIN]}));
 app.set("jwt-secret", process.env.SECRET);
 app.use(express.static(path.join(__dirname, "public")));
 
-// db.sequelize.sync({force: true}).then(() => {
 const db = require("./models/dbSetup");
+// db.sequelize.sync({force: true}).then(() => {
 db.sequelize.sync().then(() => {
 });
 
