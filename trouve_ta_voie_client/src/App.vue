@@ -25,6 +25,15 @@ export default {
 
 html {
   background-color: #f3f4f6;
+  ::-moz-selection {
+    color:white;
+    background: $green;
+  }
+
+  ::selection {
+    color: white;
+    background: $green;
+  }
 }
 
 .backgroundGlass {

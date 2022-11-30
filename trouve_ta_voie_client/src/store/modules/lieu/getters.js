@@ -4,5 +4,9 @@ export default {
     },
     lieu(state) {
         return state.lieu;
-    }
+    },
+    lieuDetails(state) {
+        return state.lieuDetails;
+    },
+
 };

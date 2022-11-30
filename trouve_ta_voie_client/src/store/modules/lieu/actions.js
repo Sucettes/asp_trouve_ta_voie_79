@@ -30,6 +30,19 @@ export default {
                 });
         });
     },
+    async loadLieuDetails(context, payload) {
+        return new Promise((resolve, reject) => {
+            axios.get(`http://localhost:8090/api/lieu/details/${payload.id}`)
+                .then(response => {
+                    context.commit("setLieuDetails", response.data);
+
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error.response);
+                });
+        });
+    },
     async loadUserLieux(context, payload) {
         axios.get(`http://localhost:8090/api/lieux/${payload.userId}`, {
             headers: {"Authorization": `Bearer ${payload.token}`},

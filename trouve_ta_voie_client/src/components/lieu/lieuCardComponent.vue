@@ -2,7 +2,7 @@
   <div id="card">
     <div id="cardBody" class="shadow-sm p-3 mb-5 bg-body rounded">
       <div>
-        <h3>{{ titre }}</h3>
+        <h3 @click="seeDetails">{{ titre }}</h3>
         <hr>
         <h6>Description</h6>
 
@@ -27,7 +27,7 @@
 
       <div>
         <div id="btnWrapper">
-<!--          <p @click="seeDetails" id="detailsBtn">Détails</p>-->
+          <p @click="seeDetails" id="detailsBtn">Détails</p>
           <button @click="editLieu" type="button" class="btn btn-outline-secondary">Modifier</button>
         </div>
       </div>
@@ -41,16 +41,17 @@ export default {
   props: ["id", "titre", "description", "directives", "latitude", "longitude"],
   methods: {
     seeDetails() {
+      this.$router.push({name: "lieuDetails", params: {id: this.id}});
     },
     editLieu() {
       this.$router.push({
         name: "modifierLieu",
         params: {
-          id: this.id
-        }
+          id: this.id,
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -59,6 +60,7 @@ export default {
 
 #card {
   padding: 15px;
+
   p {
     overflow: auto;
   }
@@ -75,7 +77,11 @@ export default {
 
   h3 {
     text-align: center;
-    color: $primary
+    color: $primary;
+    cursor: pointer;
+  }
+  h3:hover {
+    color: $Darkaccent;
   }
 
   span {
@@ -94,7 +100,12 @@ export default {
 
   #detailsBtn {
     cursor: pointer;
-    color: $primary
+    color: $primary;
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+  #detailsBtn:hover {
+    color: $Darkaccent;
   }
 }
 </style>

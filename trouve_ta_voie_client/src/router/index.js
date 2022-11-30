@@ -1,4 +1,5 @@
 import EditGrimpeForm from "@/views/grimpe/EditGrimpeForm";
+import LieuDetailView from "@/views/lieu/LieuDetailView";
 import UserGrimpeLstComponent from "@/views/utilisateur/UserGrimpeLstComponent";
 // import erreur403View from "@/views/erreur/Erreur403View";
 import ErreurView from "@/views/erreur/ErreurView";
@@ -32,7 +33,7 @@ const routes = [
         component: UserLieuLstComponent,
         meta: {requiresAuth: true}
     },
-    // {path: "/lieu/:id", name: "lieuDetails", component: UserLieuLstComponent},
+    {path: "/lieu/:id", name: "lieuDetails", component: LieuDetailView},
     {
         path: "/lieu/modifier/:id",
         name: "modifierLieu",

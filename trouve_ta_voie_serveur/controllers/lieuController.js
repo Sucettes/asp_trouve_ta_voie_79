@@ -4,6 +4,7 @@ const db = require("../models/dbSetup");
 const validatorFct = require("../fctUtils/validations");
 const Lieu = db.lieux;
 const Utilisateur = db.utilisateurs;
+const Grimpe = db.grimpes;
 
 exports.getDropdownData = async (req, res, next) => {
     try {
@@ -66,6 +67,39 @@ exports.getLieuById = async (req, res, next) => {
             .catch(() => {
                 res.status(400).end();
             });
+    } catch (e) {
+        res.status(500).end();
+    }
+};
+
+exports.getLieuDetailsById = async (req, res, next) => {
+    // edit : travail ici...
+    try {
+        let location = await Lieu.findByPk(+req.params.id);
+        let nbGrimpe = await Grimpe.count({where: {lieuxId: req.params.id}});
+        let grimpeStyle = await Grimpe.findAndCountAll({
+            attributes: ["style"],
+            group: "style",
+            where: {lieuxId: req.params.id},
+        });
+        let grimpeDiff = await Grimpe.findAndCountAll({
+            attributes: ["difficulte"],
+            group: "difficulte",
+            where: {lieuxId: req.params.id},
+            order: []
+        });
+        let grimpeDetails = await Grimpe.findAll({
+            where: {lieuxId: req.params.id},
+            attributes: ["id", "titre", "style", "difficulte", "nbEtoiles", "nbVotes"],
+        });
+
+        res.status(200).json({
+            lieu: location,
+            totalGrimpe: nbGrimpe,
+            grimpeStyle: grimpeStyle,
+            grimpeDiff: grimpeDiff,
+            grimpeDetails: grimpeDetails,
+        });
     } catch (e) {
         res.status(500).end();
     }

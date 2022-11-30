@@ -96,37 +96,39 @@ exports.getGrimpeByIdToEdit = async (req, res, next) => {
 
 exports.editGrimpe = async (req, res, next) => {
     try {
-        // fixme : Modification des grimpes est casse
-        // todo : Faire les validations
+        // todo : Faire les validation
         let grimpe = await Grimpe.findOne({
-            where: {
-                lieuxId: req.body.lieuxId,
-                titre: req.body.titre,
-            }, LIMIT: 1
+            where: {id: req.body.id},
         });
-        console.log(grimpe)
-        if (grimpe && grimpe.utilisateurId !== req.token.userId) {
-            res.status(403).end();
-        } else {
-            if (grimpe) {
-                res.status(404).end();
-            }
-            // Titre déjà utilisé
-            if (grimpe && grimpe.id !== req.body.id) {
-                res.status(400).json({err: "Titre déjà utilisé !"});
-            } else {
-                await Grimpe.update({
-                        titre: req.body.titre,
-                        style: req.body.style,
-                        description: req.body.description,
-                        difficulte: req.body.difficulte,
+
+        if (grimpe) {
+            if (grimpe.utilisateurId === req.token.userId) {
+                let grimpe2 = await Grimpe.findOne({
+                    where: {
                         lieuxId: req.body.lieuxId,
+                        titre: req.body.titre,
                     },
-                    {where: {id: req.body.id}},
-                ).then(grimpe => {
-                    res.status(204).json(grimpe);
                 });
+                if (grimpe2 && grimpe2.id !== req.body.id) {
+                    res.status(400).json({err: "Titre déjà utilisé !"});
+                } else {
+                    await Grimpe.update({
+                            titre: req.body.titre,
+                            style: req.body.style,
+                            description: req.body.description,
+                            difficulte: req.body.difficulte,
+                            lieuxId: req.body.lieuxId,
+                        },
+                        {where: {id: req.body.id}},
+                    ).then(grimpe => {
+                        res.status(204).json(grimpe);
+                    });
+                }
+            } else {
+                res.status(403).end();
             }
+        } else {
+            res.status(404).end();
         }
     } catch (e) {
         res.status(500).end();
