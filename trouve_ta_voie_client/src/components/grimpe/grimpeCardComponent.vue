@@ -15,10 +15,8 @@
 
         <br>
 
-        <div id="ratingDiv">
-          <p>Étoiles : <strong class="accColorTxt">{{ nbEtoiles }}</strong></p>
           <p>Votes : <strong class="accColorTxt">{{ nbVotes }}</strong></p>
-        </div>
+          <star-rating-component :nbStars="nbEtoiles"></star-rating-component>
 
         <section v-if="hideDescription !== 'true'">
           <hr>
@@ -43,9 +41,13 @@
 </template>
 
 <script>
+import starRatingComponent from "@/components/starRatingComponent";
+
+
 export default {
   name: "grimpeCardComponent",
   props: ["id", "titre", "style", "description", "difficulte", "nbEtoiles", "nbVotes", "images", "lieu", "hideDescription"],
+  components: {starRatingComponent},
   methods: {
     seeLieuDetails() {
       this.$router.push({name: "lieuDetails", params: {id: this.lieu.id}});

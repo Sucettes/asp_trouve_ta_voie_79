@@ -19,8 +19,7 @@
   </div>
 
   <br>
-  <h2 id="top10Titre">Top 10</h2>
-
+    <h2 id="top10Titre">Top 10</h2>
 
   <!-- Fixme : Faire en sorte d'avoir toujours 1 lignes jamais 2. Trouver une solution quand on redimentionne. -->
   <div id="top10Carousel" class="carousel carousel-dark slide" data-bs-ride="carousel">

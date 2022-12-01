@@ -74,7 +74,7 @@
           <td>{{ grimpe.titre }}</td>
           <td>{{ grimpe.style }}</td>
           <td>5.{{ grimpe.difficulte }}</td>
-          <td>{{ grimpe.nbEtoiles }}</td>
+          <td><star-rating-component :nbStars="grimpe.nbEtoiles"></star-rating-component></td>
           <td>{{ grimpe.nbVotes }}</td>
           <td class="accColorTxt cursorPointer" @click="goToGrimpeDetails(grimpe.id)">Détails</td>
         </tr>
@@ -119,13 +119,14 @@
 
 <script>
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
+import starRatingComponent from "@/components/starRatingComponent";
 import {latLng} from "leaflet";
 import {LMap, LTileLayer, LMarker} from "vue3-leaflet";
 
 
 export default {
   name: "LieuDetailView",
-  components: {LoadingSpinnerComponent, LMap, LTileLayer, LMarker},
+  components: {LoadingSpinnerComponent, LMap, LTileLayer, LMarker, starRatingComponent},
   data() {
     return {
       id: "",
@@ -221,9 +222,9 @@ export default {
   }
 }
 
-td, th {
-  text-align: center;
-}
+//td, th {
+//  text-align: center;
+//}
 
 #map {
   height: 300px !important;
