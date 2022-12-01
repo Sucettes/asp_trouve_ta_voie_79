@@ -42,7 +42,8 @@ exports.createGrimpe = async (req, res, next) => {
                         await req.body.imgsBase64.forEach(pic => {
                             const matches = pic.base64.match(/^data:([A-Za-z+/]+);base64,(.+)$/);
                             let buff = Buffer.from(matches[2], "base64");
-                            const fileName = uuid.v4() + "-" + pic.name;
+                            const dotIndex = pic.name.lastIndexOf('.');
+                            const fileName = uuid.v4() + pic.name.substring(dotIndex);
 
                             fs.writeFileSync(`public/img/grimpe/${fileName}`, buff);
                             imgs.push({
@@ -54,6 +55,7 @@ exports.createGrimpe = async (req, res, next) => {
                         res.status(201).json({grimpe: newGrimpe, img: imgs});
                     }
                 } catch (e) {
+                    // fixme : Supprimé les images qui on été ajouté
                     res.status(400).end();
                 }
             });

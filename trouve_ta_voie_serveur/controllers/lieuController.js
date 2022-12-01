@@ -73,7 +73,6 @@ exports.getLieuById = async (req, res, next) => {
 };
 
 exports.getLieuDetailsById = async (req, res, next) => {
-    // edit : travail ici...
     try {
         let location = await Lieu.findByPk(+req.params.id);
         let nbGrimpe = await Grimpe.count({where: {lieuxId: req.params.id}});
@@ -86,9 +85,9 @@ exports.getLieuDetailsById = async (req, res, next) => {
             attributes: ["difficulte"],
             group: "difficulte",
             where: {lieuxId: req.params.id},
-            order: []
+            order: [],
         });
-        let grimpes = await Grimpe.findAll({where: {lieuxId: req.params.id}})
+        let grimpes = await Grimpe.findAll({where: {lieuxId: req.params.id}});
 
         res.status(200).json({
             lieu: location,

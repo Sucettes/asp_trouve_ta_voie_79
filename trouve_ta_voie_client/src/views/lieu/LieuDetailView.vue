@@ -38,7 +38,6 @@
           <h6 class="accColorTxt">Nombre de grimpes pour chacune des difficultés.</h6>
           <!--      <table class="table table-borderless">-->
           <table class="table table-bordered">
-            <!--     edit: Faire en sorte de bien affiche les difficulte       -->
             <thead>
             <tr>
               <th>Difficulté</th>

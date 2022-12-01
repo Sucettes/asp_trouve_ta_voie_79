@@ -148,7 +148,7 @@
     <div class="col-lg-10">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <grimpe-card-component class="d-flex"
-                               v-for="x in filteredGrimpes"
+                               v-for="x in filteredGrimpes.slice((currPage * 8), (currPage * 8) + 8)"
                                :key="x.id"
                                :id="x.id"
                                :titre="x.titre"
@@ -163,6 +163,25 @@
         ></grimpe-card-component>
       </div>
 
+      <div class="row">
+        <nav aria-label="Page navigation grimpes recherche" v-if="nbPages > 0">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" aria-label="Previous" @click="beforePage">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+
+            <li class="page-item" v-for="p in nbPages" :key="'page-' + p"><a class="page-link" @click="setPage(p)">{{p}}</a></li>
+
+            <li class="page-item">
+              <a class="page-link" aria-label="Next" @click="nextPage()">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
 
     </div>
   </div>
@@ -173,7 +192,6 @@
 import grimpeCardComponent from "@/components/grimpe/grimpeCardComponent";
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import axios from "axios";
-
 
 export default {
   name: "HomeView",
@@ -188,6 +206,10 @@ export default {
       diff2: undefined,
       top10Grimpes: [],
       filteredGrimpes: [],
+
+      filteredGrimpesSplice: [],
+      nbPages: 0,
+      currPage: 0
     };
   },
   computed: {
@@ -196,6 +218,19 @@ export default {
     },
   },
   methods: {
+    nextPage() {
+      if (this.currPage < this.nbPages -1) {
+        this.currPage += 1;
+      }
+    },
+    beforePage() {
+      if (this.currPage > 0) {
+        this.currPage -= 1;
+      }
+    },
+    setPage(page) {
+      this.currPage = page - 1;
+    },
     loadDropLieux() {
       this.$store.dispatch("startLoading");
       axios.get("http://localhost:8090/api/lieux/dropFormat", {
@@ -233,6 +268,7 @@ export default {
         headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
       }).then(response => {
         this.filteredGrimpes = response.data;
+        this.nbPages = Math.ceil(response.data.length / 8);
         this.$store.dispatch("stopLoading");
       }).catch(() => {
         this.$toast.error("Une erreur est survenue !");
@@ -249,6 +285,10 @@ export default {
 
 <style lang="scss">
 @import '@/assets/styles/custom.scss';
+
+.pagination {
+  justify-content: center;
+}
 
 #top10Carousel>button {
     max-width: 40px;

@@ -70,36 +70,10 @@ export default {
 <style scoped lang="scss">
 @import '@/assets/styles/custom.scss';
 
-.containerImg {
-  display: inline-block;
-  position: relative;
-
-  .text {
-    backdrop-filter: blur(15px) saturate(72%);
-    -webkit-backdrop-filter: blur(15px) saturate(72%);
-    background-color: rgba(221, 160, 122, 0);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.125);
-    z-index: 1;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    width: 100%;
-  }
-}
-
 .lstPic {
   width: 100%;
-  //height: 200px;
-  //object-fit: contain;
-  /* edit: Faire en sorte que une grande image fuck pas.....*/
-  //object-fit: contain;
-  //height: 150px;
-  //max-width: 300px;
-  //max-height: 124px;
-  //width: auto;
-  //height: auto;
+  height: 123px;
+  object-fit: contain;
 }
 
 #card {

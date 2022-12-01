@@ -15,7 +15,6 @@ module.exports = (sequelize, Sequelize) => {
             type: DataTypes.STRING(500),
             allowNull: false
         },
-        // todo : regarde pour bien les mettre dans la bd car les valeurs ne sont pas exact... 5.6 = 5.60 dans bd.
         difficulte: {
             type: DataTypes.INTEGER,
             allowNull: false

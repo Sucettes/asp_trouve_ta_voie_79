@@ -95,7 +95,6 @@ export default {
   },
   methods: {
     async register() {
-      // edit : Faire en mieux cette methods...
       let result = userValidator.checkIfNameIsValid(this.nom);
       this.nomErreurs = result[0];
       this.nomVal = result[1];

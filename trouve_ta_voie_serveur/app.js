@@ -10,7 +10,7 @@ const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 
 app.use(bodyParser.json({limit: "1024mb"}));
-app.use(bodyParser.urlencoded({limit: "1024mb", extended: true})); // todo : vraiment necessaire??? je crois pas
+app.use(bodyParser.urlencoded({limit: "1024mb", extended: true}));
 
 app.use(cors({origin: [process.env.ORIGIN]}));
 app.set("jwt-secret", process.env.SECRET);

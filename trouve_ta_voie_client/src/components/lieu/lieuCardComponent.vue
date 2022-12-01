@@ -67,7 +67,7 @@ export default {
 }
 
 #cardBody {
-  min-height: 520px; // todo : hauteur de carte
+  min-height: 520px;
 
   display: flex;
   flex-direction: column;

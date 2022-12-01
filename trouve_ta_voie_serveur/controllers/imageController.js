@@ -32,8 +32,8 @@ exports.addImg = async (req, res, next) => {
                 const imgb64 = req.body.imgBase64;
                 const matches = imgb64.base64.match(/^data:([A-Za-z+/]+);base64,(.+)$/);
                 let buff = Buffer.from(matches[2], "base64");
-                // fixme : Fichier avec caractere invalide peut faire crash! ?
-                const fileName = uuid.v4() + "-" + imgb64.name;
+                const dotIndex = imgb64.name.lastIndexOf('.');
+                const fileName = uuid.v4() + imgb64.name.substring(dotIndex);
 
                 fs.writeFileSync(`public/img/grimpe/${fileName}`, buff);
 
