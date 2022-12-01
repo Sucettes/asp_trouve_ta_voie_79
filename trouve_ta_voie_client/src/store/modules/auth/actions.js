@@ -14,7 +14,7 @@ export default {
                         token: response.data.token,
                         userId: response.data.userId,
                         name: response.data.name,
-                        tokenExp: response.data.tokenExp
+                        tokenExp: response.data.tokenExp,
                     });
 
                     resolve(response);
@@ -36,7 +36,7 @@ export default {
                         token: response.data.token,
                         userId: response.data.userId,
                         name: response.data.name,
-                        tokenExp: response.data.tokenExp
+                        tokenExp: response.data.tokenExp,
                     });
 
                     resolve(response);
@@ -54,17 +54,38 @@ export default {
                 token: null,
                 userId: null,
                 name: null,
-                tokenExp: null
+                tokenExp: null,
             });
 
             resolve();
         });
     },
-    reloadGetDataFromLocalStorage(context) {
-        context.commit("setUser", {
-            token: localStorage.getItem("token"),
-            userId: localStorage.getItem("userId"),
-            name: localStorage.getItem("name"),
+    async checkIfLocalStorageTokenIsValid(context, token) {
+        return new Promise((resolve, reject) => {
+            axios.post("http://localhost:8090/api/valideToken", {}, {
+                headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
+            }).then(response => {
+                if (response.status !== 200) {
+                    localStorage.clear();
+                    context.commit("setUser", {
+                        token: null,
+                        userId: null,
+                        name: null,
+                        tokenExp: null,
+                    });
+                }
+                resolve();
+            }).catch(() => {
+                localStorage.clear();
+                context.commit("setUser", {
+                    token: null,
+                    userId: null,
+                    name: null,
+                    tokenExp: null,
+                });
+                reject();
+            });
         });
+
     },
 };

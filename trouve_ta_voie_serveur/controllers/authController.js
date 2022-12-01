@@ -71,14 +71,14 @@ exports.register = async (req, res, next) => {
 
                 if (newUser) {
                     const jwtToken = jwt.sign({userId: newUser.id}, req.app.get("jwt-secret"), {
-                        expiresIn: "15s",
+                        expiresIn: "12h",
                     });
 
                     res.status(201).json({
                         token: jwtToken,
                         userId: newUser.id,
                         name: newUser.nom,
-                        tokenExp: "15s",
+                        tokenExp: "12h",
                     });
                 } else {
                     res.status(400).end();
@@ -90,4 +90,8 @@ exports.register = async (req, res, next) => {
     } catch (e) {
         res.status(500).end();
     }
+};
+
+exports.valideToken = async (req, res, next) => {
+    res.status(200).end();
 };

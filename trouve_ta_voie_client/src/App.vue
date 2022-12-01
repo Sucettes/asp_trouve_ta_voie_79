@@ -9,8 +9,8 @@ import HeaderNav from "@/components/HeaderNav";
 
 export default {
   components: {HeaderNav},
-  mounted() {
-    this.$store.dispatch("reloadGetDataFromLocalStorage");
+  async mounted() {
+    await this.$store.dispatch("checkIfLocalStorageTokenIsValid", this.$store.getters.token);
   },
 };
 </script>
@@ -25,8 +25,9 @@ export default {
 
 html {
   background-color: #f3f4f6;
+
   ::-moz-selection {
-    color:white;
+    color: white;
     background: $green;
   }
 
