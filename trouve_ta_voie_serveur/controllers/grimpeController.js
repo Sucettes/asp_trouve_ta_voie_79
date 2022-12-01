@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../models/dbSetup");
-const {QueryTypes} = require("sequelize");
+const Op = db.Sequelize.Op;
 const Grimpe = db.grimpes;
 const Utilisateur = db.utilisateurs;
 const Image = db.images;
@@ -179,43 +179,31 @@ exports.getGrimpesTop10 = async (req, res, next) => {
 
 exports.getFilteredGrimpes = async (req, res, next) => {
     try {
+        // Création du filtre : where
         let whereStr = {};
-        console.log(whereStr);
         if (req.body.style) whereStr.style = req.body.style;
         if (req.body.stars) whereStr.nbEtoiles = req.body.stars;
         if (req.body.lieu) whereStr.lieuxId = req.body.lieu;
-
         if (req.body.diff1 && req.body.diff2) {
-            whereStr.difficulte = {};
+            whereStr.difficulte = {
+                [Op.between]: [+req.body.diff1, +req.body.diff2],
+            };
         } else if (req.body.diff1) {
             whereStr.difficulte = {
                 [Op.gte]: +req.body.diff1,
             };
         } else if (req.body.diff2) {
             whereStr.difficulte = {
-                [db.Op.lte]: +req.body.diff2,
+                [Op.lte]: +req.body.diff2,
             };
         }
 
-
-        console.log(whereStr);
         const grimpes = await Grimpe.findAll({
             where: whereStr,
             include: [Image, Lieu, Utilisateur],
         });
 
-        // where: {}
-        // select * from grimpes order by nbEtoiles desc, nbVotes desc, titre asc limit 10
-        // const grimpes = await Grimpe.findAll({
-        //     order: [['nbEtoiles', 'DESC'], ['nbVotes', 'DESC'], ['titre', 'ASC']],
-        //     include: [Image, Lieu, Utilisateur],
-        //     limit: 10
-        // });
-        if (grimpes) {
-            res.status(200).json(grimpes);
-        } else {
-            res.status(200).end();
-        }
+        res.status(200).json(grimpes);
     } catch (e) {
         res.status(500).end();
     }

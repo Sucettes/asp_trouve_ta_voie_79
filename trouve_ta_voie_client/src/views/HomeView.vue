@@ -20,101 +20,153 @@
 
   <br>
   <h2 id="top10Titre">Top 10</h2>
-  <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xl-5 g-4" style="margin-left: 20px; margin-right: 20px">
-    <grimpe-card-component class="d-flex"
-                           v-for="x in top10Grimpes"
-                           :key="x.id"
-                           :id="x.id"
-                           :titre="x.titre"
-                           :style="x.style"
-                           :description="x.description"
-                           :difficulte="x.difficulte"
-                           :nbEtoiles="x.nbEtoiles"
-                           :nbVotes="x.nbVotes"
-                           :images="x.images"
-                           :lieu="x.lieux"
-    ></grimpe-card-component>
+
+
+  <!-- Fixme : Faire en sorte d'avoir toujours 1 lignes jamais 2. Trouver une solution quand on redimentionne. -->
+  <div id="top10Carousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-bs-interval="4000">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xl-5 g-4"
+             style="margin-left: 20px; margin-right: 20px">
+          <grimpe-card-component class="d-flex"
+                                 v-for="(x) in top10Grimpes.slice(0, 5)"
+                                 :key="x.id"
+                                 :id="x.id"
+                                 :titre="x.titre"
+                                 :style="x.style"
+                                 :description="x.description"
+                                 :difficulte="x.difficulte"
+                                 :nbEtoiles="x.nbEtoiles"
+                                 :nbVotes="x.nbVotes"
+                                 :images="x.images"
+                                 :lieu="x.lieux"
+                                 :hideDescription="'true'"
+          ></grimpe-card-component>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="4000">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xl-5 g-4"
+             style="margin-left: 20px; margin-right: 20px">
+          <grimpe-card-component class="d-flex"
+                                 v-for="(x) in top10Grimpes.slice(5, 10)"
+                                 :key="x.id"
+                                 :id="x.id"
+                                 :titre="x.titre"
+                                 :style="x.style"
+                                 :description="x.description"
+                                 :difficulte="x.difficulte"
+                                 :nbEtoiles="x.nbEtoiles"
+                                 :nbVotes="x.nbVotes"
+                                 :images="x.images"
+                                 :lieu="x.lieux"
+                                 :hideDescription="'true'"
+          ></grimpe-card-component>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#top10Carousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#top10Carousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
 
-  <div class="shadow-sm p-3 mb-5 bg-body rounded" style="margin-left: 30px; margin-right: 30px; margin-bottom: 0 !important;"><h2 id="top10Titre">Votre recherche</h2></div>
+  <div class="shadow-sm p-3 mb-5 bg-body rounded"
+       style="margin-left: 30px; margin-right: 30px; margin-bottom: 0 !important;"><h2 id="top10Titre">Votre
+    recherche</h2></div>
   <div id="filterContainer" class="row">
-    <div class="shadow-sm p-3 mb-5 bg-body rounded col-md-2" id="filterMenu">
-      <h3>Filtre</h3>
-      <hr>
+    <div class="col-lg-2" id="filterMenu">
+      <div class="shadow-sm p-3 mb-5 bg-body rounded margLG-10">
+        <h3>Filtre</h3>
+        <hr>
 
-      <label for="styleDrop" class="form-label">Style</label>
-      <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style">
-        <option value="all">Tout les styles</option>
-        <option value="Traditionnelle">Traditionnelle</option>
-        <option value="Sportive">Sportive</option>
-        <option value="Moulinette">Moulinette</option>
-      </select>
+        <label for="styleDrop" class="form-label">Style</label>
+        <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style">
+          <option value="all">Tout les styles</option>
+          <option value="Traditionnelle">Traditionnelle</option>
+          <option value="Sportive">Sportive</option>
+          <option value="Moulinette">Moulinette</option>
+        </select>
 
-      <br>
+        <br>
 
-      <label for="starsDrop" class="form-label">Étoiles</label>
-      <select id="starsDrop" class="form-select" aria-label="Choisir le nombre d'étoiles" v-model.trim="stars">
-        <option value="0">1 à 5</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
+        <label for="starsDrop" class="form-label">Étoiles</label>
+        <select id="starsDrop" class="form-select" aria-label="Choisir le nombre d'étoiles" v-model.trim="stars">
+          <option value="0">1 à 5</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
 
-      <br>
+        <br>
 
-      <label for="lieuDrop" class="form-label">Lieu</label>
-      <select id="lieuDrop" class="form-select" aria-label="Choisir le style" v-model.trim="lieu">
-        <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
-      </select>
+        <label for="lieuDrop" class="form-label">Lieu</label>
+        <select id="lieuDrop" class="form-select" aria-label="Choisir le style" v-model.trim="lieu">
+          <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
+        </select>
 
-      <br>
+        <br>
 
-      <label for="diffDrop1" class="form-label">Difficulté <br> entre</label>
-      <select id="diffDrop1" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff1">
-        <option value="6">5.6</option>
-        <option value="7">5.7</option>
-        <option value="8">5.8</option>
-        <option value="9">5.9</option>
-        <option value="10">5.10</option>
-        <option value="11">5.11</option>
-        <option value="12">5.12</option>
-        <option value="13">5.13</option>
-        <option value="14">5.14</option>
-        <option value="15">5.15</option>
-      </select>
+        <label for="diffDrop1" class="form-label">Difficulté <br> entre</label>
+        <select id="diffDrop1" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff1">
+          <option value="6">5.6</option>
+          <option value="7">5.7</option>
+          <option value="8">5.8</option>
+          <option value="9">5.9</option>
+          <option value="10">5.10</option>
+          <option value="11">5.11</option>
+          <option value="12">5.12</option>
+          <option value="13">5.13</option>
+          <option value="14">5.14</option>
+          <option value="15">5.15</option>
+        </select>
 
-      <label for="diffDrop2" class="form-label">et</label>
-      <select id="diffDrop2" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff2">
-        <option value="6">5.6</option>
-        <option value="7">5.7</option>
-        <option value="8">5.8</option>
-        <option value="9">5.9</option>
-        <option value="10">5.10</option>
-        <option value="11">5.11</option>
-        <option value="12">5.12</option>
-        <option value="13">5.13</option>
-        <option value="14">5.14</option>
-        <option value="15">5.15</option>
-      </select>
-      <br>
-      <br>
-      <div id="btnWrapper">
-        <button type="button" class="btn btn-outline-primary" @click="search()">Rechercher</button>
+        <label for="diffDrop2" class="form-label">et</label>
+        <select id="diffDrop2" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff2">
+          <option value="6">5.6</option>
+          <option value="7">5.7</option>
+          <option value="8">5.8</option>
+          <option value="9">5.9</option>
+          <option value="10">5.10</option>
+          <option value="11">5.11</option>
+          <option value="12">5.12</option>
+          <option value="13">5.13</option>
+          <option value="14">5.14</option>
+          <option value="15">5.15</option>
+        </select>
+        <br>
+        <br>
+        <div id="btnWrapper">
+          <button type="button" class="btn btn-outline-primary" @click="search()">Rechercher</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-10">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        <grimpe-card-component class="d-flex"
+                               v-for="x in filteredGrimpes"
+                               :key="x.id"
+                               :id="x.id"
+                               :titre="x.titre"
+                               :style="x.style"
+                               :description="x.description"
+                               :difficulte="x.difficulte"
+                               :nbEtoiles="x.nbEtoiles"
+                               :nbVotes="x.nbVotes"
+                               :images="x.images"
+                               :lieu="x.lieux"
+                               :hideDescription="'true'"
+        ></grimpe-card-component>
       </div>
 
-    </div>
-    <div class="col-md-10">
-      ici les carte du resultats...
-      {{ style }}
-      {{ stars }}
-      {{ lieu }}
-      {{ diff1 }}
-      {{ diff2 }}
+
     </div>
   </div>
-
 </template>
 
 <script>
@@ -135,7 +187,8 @@ export default {
       stars: undefined,
       diff1: undefined,
       diff2: undefined,
-      top10Grimpes: []
+      top10Grimpes: [],
+      filteredGrimpes: [],
     };
   },
   computed: {
@@ -180,12 +233,12 @@ export default {
       await axios.post("http://localhost:8090/api/grimpes/filtre", payload, {
         headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
       }).then(response => {
-        console.log(response.data);
+        this.filteredGrimpes = response.data;
         this.$store.dispatch("stopLoading");
       }).catch(() => {
         this.$toast.error("Une erreur est survenue !");
         this.$store.dispatch("stopLoading");
-      })
+      });
     },
   },
   async created() {
@@ -197,6 +250,15 @@ export default {
 
 <style lang="scss">
 @import '@/assets/styles/custom.scss';
+
+#top10Carousel>button {
+    max-width: 40px;
+}
+
+.margLG-10 {
+  margin-right: -10px;
+  margin-left: -10px;
+}
 
 #filterMenu {
   h3 {

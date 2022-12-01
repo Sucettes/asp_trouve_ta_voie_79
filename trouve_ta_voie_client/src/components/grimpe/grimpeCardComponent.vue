@@ -1,6 +1,6 @@
 <template>
   <div id="card">
-    <div id="cardBody" class=" shadow-sm p-3 mb-5 bg-body rounded">
+    <div id="cardBody" class="shadow-sm p-3 mb-5 bg-body rounded" :class="{cardBodyShort: hideDescription === 'true'}">
 
       <div>
         <div v-if="images[0]">
@@ -9,8 +9,8 @@
         <h3 @click="seeDetails">{{ titre }}</h3>
         <hr>
 
-        <p>Style : <strong class="accColorTxt">{{style}}</strong></p>
-        <p>Difficulté : <strong class="accColorTxt">{{ difficulte }}</strong></p>
+        <p>Style : <strong class="accColorTxt">{{ style }}</strong></p>
+        <p>Difficulté : <strong class="accColorTxt">5.{{ difficulte }}</strong></p>
         <p @click="seeLieuDetails">Lieu : <strong class="accColorTxt cursorPointer">{{ lieu.titre }}</strong></p>
 
         <br>
@@ -20,10 +20,12 @@
           <p>Votes : <strong class="accColorTxt">{{ nbVotes }}</strong></p>
         </div>
 
-        <hr>
-        <h6>Description</h6>
-        <p v-if="description.length > 170">{{ description.substring(0, 170) + "..." }}</p>
-        <p v-else>{{ description }}</p>
+        <section v-if="hideDescription !== 'true'">
+          <hr>
+          <h6>Description</h6>
+          <p v-if="description.length > 170">{{ description.substring(0, 170) + "..." }}</p>
+          <p v-else>{{ description }}</p>
+        </section>
 
         <span></span>
         <span></span>
@@ -43,7 +45,7 @@
 <script>
 export default {
   name: "grimpeCardComponent",
-  props: ["id", "titre", "style", "description", "difficulte", "nbEtoiles", "nbVotes", "images", "lieu"],
+  props: ["id", "titre", "style", "description", "difficulte", "nbEtoiles", "nbVotes", "images", "lieu", "hideDescription"],
   methods: {
     seeLieuDetails() {
       this.$router.push({name: "lieuDetails", params: {id: this.lieu.id}});
@@ -87,6 +89,15 @@ export default {
 
 .lstPic {
   width: 100%;
+  //height: 200px;
+  //object-fit: contain;
+  /* edit: Faire en sorte que une grande image fuck pas.....*/
+  //object-fit: contain;
+  //height: 150px;
+  //max-width: 300px;
+  //max-height: 124px;
+  //width: auto;
+  //height: auto;
 }
 
 #card {
@@ -98,8 +109,14 @@ export default {
   }
 }
 
+
+
+.cardBodyShort {
+  min-height: 380px !important;
+}
+
 #cardBody {
-  min-height: 520px; // todo : hauteur de carte
+  min-height: 520px;
 
   display: flex;
   flex-direction: column;
