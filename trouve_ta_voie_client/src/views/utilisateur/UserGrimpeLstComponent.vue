@@ -14,6 +14,7 @@
                            :nbVotes="x.nbVotes"
                            :images="x.images"
                            :lieu="x.lieux"
+                           :userId="x.utilisateurId"
     ></grimpe-card-component>
   </div>
   <div v-if="refreshUserGrimpes.length === 0 && !isLoading && pageLoaded" class="alert alert-info shadow-sm"

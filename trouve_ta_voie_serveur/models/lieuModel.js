@@ -22,11 +22,12 @@ module.exports = (sequelize, Sequelize) => {
                 len: [3, 500]
             }
         },
+        // edit: Verifié si les co sont valide dans la bd genre qu'il manque pas de chiffre
         latitude: {
-            type: DataTypes.FLOAT
+            type: DataTypes.FLOAT(4, 18)
         },
         longitude: {
-            type: DataTypes.FLOAT
+            type: DataTypes.FLOAT(4, 18)
         }
     });
 };

@@ -33,7 +33,7 @@
       <div>
         <div id="btnWrapper">
           <p @click="seeDetails" id="detailsBtn">Détails</p>
-          <button @click="editGrimpe" type="button" class="btn btn-outline-secondary">Modifier</button>
+          <button @click="editGrimpe" type="button" class="btn btn-outline-secondary" v-if="+this.userId === +this.$store.getters.userId">Modifier</button>
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@ import starRatingComponent from "@/components/starRatingComponent";
 
 export default {
   name: "grimpeCardComponent",
-  props: ["id", "titre", "style", "description", "difficulte", "nbEtoiles", "nbVotes", "images", "lieu", "hideDescription"],
+  props: ["id", "titre", "style", "description", "difficulte", "nbEtoiles", "nbVotes", "images", "lieu", "hideDescription", "userId"],
   components: {starRatingComponent},
   methods: {
     seeLieuDetails() {
@@ -63,7 +63,7 @@ export default {
         },
       });
     },
-  },
+  }
 };
 </script>
 
@@ -86,7 +86,7 @@ export default {
 }
 
 .cardBodyShort {
-  min-height: 380px !important;
+  min-height: 470px !important;
 }
 
 #cardBody {

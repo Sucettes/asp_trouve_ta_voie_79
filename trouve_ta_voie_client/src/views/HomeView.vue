@@ -40,6 +40,7 @@
                                  :images="x.images"
                                  :lieu="x.lieux"
                                  :hideDescription="'true'"
+                                 :userId="x.utilisateurId"
           ></grimpe-card-component>
         </div>
       </div>
@@ -59,6 +60,7 @@
                                  :images="x.images"
                                  :lieu="x.lieux"
                                  :hideDescription="'true'"
+                                 :userId="x.utilisateurId"
           ></grimpe-card-component>
         </div>
       </div>
@@ -154,6 +156,7 @@
                                :images="x.images"
                                :lieu="x.lieux"
                                :hideDescription="'true'"
+                               :userId="x.utilisateurId"
         ></grimpe-card-component>
       </div>
 
