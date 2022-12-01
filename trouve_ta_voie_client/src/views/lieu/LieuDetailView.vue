@@ -18,7 +18,6 @@
       <div class="row">
         <div class="col-md-6">
           <h6 class="accColorTxt">Nombre de grimpes pour chaque style.</h6>
-          <!--      <table class="table table-borderless">-->
           <table class="table table-bordered">
             <thead>
             <tr>
@@ -36,7 +35,6 @@
         </div>
         <div class="col-md-6">
           <h6 class="accColorTxt">Nombre de grimpes pour chacune des difficultés.</h6>
-          <!--      <table class="table table-borderless">-->
           <table class="table table-bordered">
             <thead>
             <tr>
@@ -73,7 +71,9 @@
           <td>{{ grimpe.titre }}</td>
           <td>{{ grimpe.style }}</td>
           <td>5.{{ grimpe.difficulte }}</td>
-          <td><star-rating-component :nbStars="grimpe.nbEtoiles"></star-rating-component></td>
+          <td>
+            <star-rating-component :nbStars="grimpe.nbEtoiles"></star-rating-component>
+          </td>
           <td>{{ grimpe.nbVotes }}</td>
           <td class="accColorTxt cursorPointer" @click="goToGrimpeDetails(grimpe.id)">Détails</td>
         </tr>
@@ -187,7 +187,7 @@ export default {
       }
     },
     goToGrimpeDetails(id) {
-      console.log(id);
+      console.log("sprint 3 " + id);
     },
     goToEditLieu() {
       this.$router.push({name: "modifierLieu", params: {id: this.id}});

@@ -92,15 +92,9 @@
 
         <br>
 
-        <label for="starsDrop" class="form-label">Étoiles</label>
-        <select id="starsDrop" class="form-select" aria-label="Choisir le nombre d'étoiles" v-model.trim="stars">
-          <option value="0">1 à 5</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
+        <label for="starsRange" class="form-label" v-if="stars === '5'">Étoiles : <strong>{{stars}}</strong></label>
+        <label for="starsRange" class="form-label" v-else>Étoiles : <strong>{{stars}}</strong>+</label>
+        <input type="range" class="form-range" min="1" max="5" step="0.5" id="starsRange" v-model.trim="stars">
 
         <br>
 
@@ -201,7 +195,7 @@ export default {
       lieux: [],
       lieu: undefined,
       style: undefined,
-      stars: undefined,
+      stars: 1,
       diff1: undefined,
       diff2: undefined,
       top10Grimpes: [],

@@ -23,13 +23,14 @@ exports.login = async (req, res, next) => {
                     const payload = {userId: user.id};
 
                     const jwtToken = jwt.sign(payload, req.app.get("jwt-secret"), {
-                        expiresIn: "8h",
+                        expiresIn: "12h",
                     });
 
                     res.status(201).json({
                         token: jwtToken,
                         userId: user.id,
                         name: user.nom,
+                        tokenExp: "12h",
                     });
                 }
             }
@@ -54,7 +55,6 @@ exports.register = async (req, res, next) => {
             let user = await Utilisateur.findOne({where: {courriel: req.body.courriel}});
 
             if (user) {
-                console.log(user);
                 res.status(400).json({err: "Courriel déjà utilisé !"});
             } else {
                 // Pas de possibilité de créer un utilisateur admin autre que manuellement.
@@ -71,20 +71,22 @@ exports.register = async (req, res, next) => {
 
                 if (newUser) {
                     const jwtToken = jwt.sign({userId: newUser.id}, req.app.get("jwt-secret"), {
-                        expiresIn: "8h",
+                        expiresIn: "15s",
                     });
 
                     res.status(201).json({
                         token: jwtToken,
                         userId: newUser.id,
                         name: newUser.nom,
+                        tokenExp: "15s",
                     });
                 } else {
                     res.status(400).end();
                 }
             }
+        } else {
+            res.status(400).end();
         }
-
     } catch (e) {
         res.status(500).end();
     }

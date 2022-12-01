@@ -121,6 +121,7 @@
 
 <script>
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
+import {errorManager} from "@/fctUtils/errorManager";
 import grimpeValidator from "@/fctUtils/grimpeValidator";
 import axios from "axios";
 
@@ -292,10 +293,12 @@ export default {
             }
             this.$toast.error("Échec de la création de la grimpe !");
             this.$store.dispatch("stopLoading");
+            errorManager(err, this.$store, this.$router);
           });
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
           this.$store.dispatch("stopLoading");
+          errorManager(err, this.$store, this.$router);
         }
       }
     },
@@ -336,9 +339,10 @@ export default {
     }).then(res => {
       this.lieux = res.data;
       this.$store.dispatch("stopLoading");
-    }).catch(() => {
+    }).catch(err => {
       this.$toast.error("Une erreur est survenue !");
       this.$store.dispatch("stopLoading");
+      errorManager(err, this.$store, this.$router);
     });
   },
 };

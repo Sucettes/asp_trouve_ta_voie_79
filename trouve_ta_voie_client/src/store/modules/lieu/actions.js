@@ -44,12 +44,16 @@ export default {
         });
     },
     async loadUserLieux(context, payload) {
-        axios.get(`http://localhost:8090/api/lieux/${payload.userId}`, {
-            headers: {"Authorization": `Bearer ${payload.token}`},
-        }).then(res => {
-            context.commit("setUserLieux", res.data);
-        }).catch(err => {
-            console.log(err);
+        return  new Promise((resolve, reject) => {
+            axios.get(`http://localhost:8090/api/lieux/${payload.userId}`, {
+                headers: {"Authorization": `Bearer ${payload.token}`},
+            }).then(response => {
+                context.commit("setUserLieux", response.data);
+
+                resolve(response);
+            }).catch(error => {
+                reject(error.response);
+            });
         });
     },
     async clearDataLieu(context) {

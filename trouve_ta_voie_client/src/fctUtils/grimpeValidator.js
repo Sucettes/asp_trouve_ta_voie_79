@@ -75,7 +75,7 @@ const grimpeValidator = {
         }
 
         return [lieuMsgErr, lieuIsVaild];
-    }
+    },
 };
 
 module.exports = grimpeValidator;

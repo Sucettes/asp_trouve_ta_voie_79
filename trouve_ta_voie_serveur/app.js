@@ -17,8 +17,8 @@ app.set("jwt-secret", process.env.SECRET);
 app.use(express.static(path.join(__dirname, "public")));
 
 const db = require("./models/dbSetup");
-// db.sequelize.sync({force: true}).then(() => {
-db.sequelize.sync().then(() => {
+db.sequelize.sync({force: true}).then(() => {
+// db.sequelize.sync().then(() => {
 });
 
 const routerAuth = require("./routes/authRoutes");

@@ -15,8 +15,8 @@
 
         <br>
 
-          <p>Votes : <strong class="accColorTxt">{{ nbVotes }}</strong></p>
-          <star-rating-component :nbStars="nbEtoiles"></star-rating-component>
+        <p>Votes : <strong class="accColorTxt">{{ nbVotes }}</strong></p>
+        <star-rating-component :nbStars="nbEtoiles"></star-rating-component>
 
         <section v-if="hideDescription !== 'true'">
           <hr>
@@ -84,8 +84,6 @@ export default {
     margin: 0;
   }
 }
-
-
 
 .cardBodyShort {
   min-height: 380px !important;

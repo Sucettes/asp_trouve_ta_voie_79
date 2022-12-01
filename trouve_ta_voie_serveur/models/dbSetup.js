@@ -27,6 +27,7 @@ db.utilisateurs = require("./utilisateurModel.js")(sequelize, Sequelize);
 db.grimpes = require("./grimpeModel.js")(sequelize, Sequelize);
 db.lieux = require("./lieuModel.js")(sequelize, Sequelize);
 db.images = require("./imageModel")(sequelize, Sequelize);
+db.votes = require("./voteModel")(sequelize, Sequelize);
 
 db.utilisateurs.hasMany(db.lieux);
 db.lieux.belongsTo(db.utilisateurs);
@@ -38,5 +39,10 @@ db.lieux.hasMany(db.grimpes);
 db.grimpes.belongsTo(db.lieux);
 
 db.grimpes.hasMany(db.images);
+
+db.grimpes.hasMany(db.votes);
+db.votes.belongsTo(db.grimpes);
+db.utilisateurs.hasMany(db.votes);
+db.votes.belongsTo(db.utilisateurs);
 
 module.exports = db;

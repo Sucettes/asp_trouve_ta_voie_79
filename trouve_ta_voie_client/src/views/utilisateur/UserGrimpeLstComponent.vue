@@ -34,6 +34,7 @@
 <script>
 import grimpeCardComponent from "@/components/grimpe/grimpeCardComponent";
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
+import {errorManager} from "@/fctUtils/errorManager";
 
 
 export default {
@@ -65,12 +66,14 @@ export default {
             .then(() => {
               this.$store.dispatch("stopLoading");
             })
-            .catch(() => {
+            .catch(err => {
               this.$store.dispatch("stopLoading");
+              errorManager(err, this.$store, this.$router);
             });
         this.myGrimpes = this.$store.getters.userGrimpes;
       } catch (err) {
         this.$store.dispatch("stopLoading");
+        await errorManager(err, this.$store, this.$router);
       }
     },
     addGrimpe() {

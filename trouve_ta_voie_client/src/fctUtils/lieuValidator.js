@@ -95,7 +95,7 @@ const lieuValidator = {
         }
 
         return [valMsgErr, valIsValid];
-    }
+    },
 };
 
 module.exports = lieuValidator;

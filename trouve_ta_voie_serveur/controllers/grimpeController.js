@@ -42,7 +42,7 @@ exports.createGrimpe = async (req, res, next) => {
                         await req.body.imgsBase64.forEach(pic => {
                             const matches = pic.base64.match(/^data:([A-Za-z+/]+);base64,(.+)$/);
                             let buff = Buffer.from(matches[2], "base64");
-                            const dotIndex = pic.name.lastIndexOf('.');
+                            const dotIndex = pic.name.lastIndexOf(".");
                             const fileName = uuid.v4() + pic.name.substring(dotIndex);
 
                             fs.writeFileSync(`public/img/grimpe/${fileName}`, buff);
@@ -72,7 +72,7 @@ exports.getGrimpeById = async (req, res, next) => {
         if (grimpe) {
             res.status(200).json(grimpe);
         } else {
-            res.status(400).end();
+            res.status(404).end();
         }
     } catch (e) {
         res.status(500).end();
@@ -163,17 +163,12 @@ exports.getGrimpesForUserId = async (req, res, next) => {
 
 exports.getGrimpesTop10 = async (req, res, next) => {
     try {
-        // select * from grimpes order by nbEtoiles desc, nbVotes desc, titre asc limit 10
         const grimpes = await Grimpe.findAll({
             order: [["nbEtoiles", "DESC"], ["nbVotes", "DESC"], ["titre", "ASC"]],
             include: [Image, Lieu, Utilisateur],
             limit: 10,
         });
-        if (grimpes) {
-            res.status(200).json(grimpes);
-        } else {
-            res.status(200).end();
-        }
+        res.status(200).json(grimpes);
     } catch (e) {
         res.status(500).end();
     }
@@ -184,17 +179,23 @@ exports.getFilteredGrimpes = async (req, res, next) => {
         // Création du filtre : where
         let whereStr = {};
         if (req.body.style) whereStr.style = req.body.style;
-        if (req.body.stars) whereStr.nbEtoiles = req.body.stars;
+        if (req.body.stars) {
+            whereStr.nbEtoiles = {
+                [Op.gte]: req.body.stars
+            };
+        }
         if (req.body.lieu) whereStr.lieuxId = req.body.lieu;
         if (req.body.diff1 && req.body.diff2) {
             whereStr.difficulte = {
                 [Op.between]: [+req.body.diff1, +req.body.diff2],
             };
-        } else if (req.body.diff1) {
+        }
+        else if (req.body.diff1) {
             whereStr.difficulte = {
                 [Op.gte]: +req.body.diff1,
             };
-        } else if (req.body.diff2) {
+        }
+        else if (req.body.diff2) {
             whereStr.difficulte = {
                 [Op.lte]: +req.body.diff2,
             };
@@ -202,6 +203,7 @@ exports.getFilteredGrimpes = async (req, res, next) => {
 
         const grimpes = await Grimpe.findAll({
             where: whereStr,
+            order: [["nbEtoiles", "DESC"], ["nbVotes", "DESC"], ["titre", "ASC"]],
             include: [Image, Lieu, Utilisateur],
         });
 

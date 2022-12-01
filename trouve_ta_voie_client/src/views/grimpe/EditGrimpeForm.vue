@@ -120,20 +120,18 @@
       </div>
     </form>
   </div>
-
-  <ErreurComponent v-if="errorOccurred" :code="errorCode" :statusText="statusText"></ErreurComponent>
 </template>
 
 <script>
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
+import {errorManager} from "@/fctUtils/errorManager";
 import grimpeValidator from "@/fctUtils/grimpeValidator";
-import ErreurComponent from "@/components/erreur/ErreurComponent";
 import axios from "axios";
 
 
 export default {
   name: "EditGrimpeForm",
-  components: {ErreurComponent, LoadingSpinnerComponent},
+  components: {LoadingSpinnerComponent},
   data() {
     return {
       lieux: [],
@@ -174,6 +172,7 @@ export default {
       this.$router.go(-1);
     },
     async loadGrimpeToEdit() {
+      this.$store.dispatch("startLoading");
       const payload = {
         id: this.$route.params.id,
         token: this.$store.getters.token,
@@ -189,10 +188,10 @@ export default {
         this.style = res.data.style;
         this.id = res.data.id;
         this.pictures = res.data.images;
+        this.$store.dispatch("stopLoading");
       }).catch(err => {
-        this.errorCode = err.response.status;
-        this.statusText = err.response.statusText;
-        this.errorOccurred = true;
+        this.$store.dispatch("stopLoading");
+        errorManager(err.response, this.$store, this.$router);
       });
     },
     loadDropLieux() {
@@ -202,9 +201,10 @@ export default {
       }).then(res => {
         this.lieux = res.data;
         this.$store.dispatch("stopLoading");
-      }).catch(() => {
+      }).catch(err => {
         this.$toast.error("Une erreur est survenue !");
         this.$store.dispatch("stopLoading");
+        errorManager(err.response, this.$store, this.$router);
       });
     },
     pictureChange(e) {
@@ -233,9 +233,10 @@ export default {
               this.pictures.push(pic.data);
               this.$store.dispatch("stopLoading");
               this.$toast.success("Image ajoutée !");
-            }).catch(() => {
+            }).catch(err => {
               this.$store.dispatch("stopLoading");
               this.$toast.error("L'image a rencontré un problème !");
+              errorManager(err.response, this.$store, this.$router);
             });
           };
           this.$refs.picInput.value = null;
@@ -291,27 +292,20 @@ export default {
             }
             this.$store.dispatch("stopLoading");
           }).catch(err => {
-            if (err.status === 403) {
-              this.errorCode = 403;
-              this.statusText = err.statusText;
-              this.errorOccurred = true;
-            } else if (err.status === 404) {
-              this.errorCode = 404;
-              this.statusText = err.statusText;
-              this.errorOccurred = true;
-            } else {
-              if (err.data.err && err.data.err === "Titre déjà utilisé !") {
-                this.titleNeedUpdated = true;
-                this.titleIsVaild = false;
-                this.titleMsgErr.push("Titre déjà utilisé !");
-              }
-              this.$toast.error("Échec de la modification de la grimpe !");
+            if (err.data.err && err.data.err === "Titre déjà utilisé !") {
+              this.titleNeedUpdated = true;
+              this.titleIsVaild = false;
+              this.titleMsgErr.push("Titre déjà utilisé !");
             }
+            this.$toast.error("Échec de la modification de la grimpe !");
             this.$store.dispatch("stopLoading");
+
+            errorManager(err, this.$store, this.$router);
           });
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
           this.$store.dispatch("stopLoading");
+          errorManager(err, this.$store, this.$router);
         }
       }
     },
@@ -323,8 +317,9 @@ export default {
         }).then(() => {
           this.pictures.splice(this.pictures.findIndex(x => x.id === iId), 1);
           this.$store.dispatch("stopLoading");
-        }).catch(() => {
+        }).catch(err => {
           this.$store.dispatch("stopLoading");
+          errorManager(err.response, this.$store, this.$router);
         });
       }
     },

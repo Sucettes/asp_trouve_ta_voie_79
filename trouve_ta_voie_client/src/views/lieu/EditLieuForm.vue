@@ -68,20 +68,18 @@
       </div>
     </form>
   </div>
-
-  <ErreurComponent v-if="errorOccurred" :code="errorCode" :statusText="statusText"></ErreurComponent>
 </template>
 
 <script>
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
+import {errorManager} from "@/fctUtils/errorManager";
 import lieuValidator from "@/fctUtils/lieuValidator";
-import ErreurComponent from "@/components/erreur/ErreurComponent";
 import axios from "axios";
 
 
 export default {
   name: "EditLieuForm",
-  components: {ErreurComponent, LoadingSpinnerComponent},
+  components: {LoadingSpinnerComponent},
   data() {
     return {
       id: "",
@@ -178,27 +176,20 @@ export default {
               this.$store.dispatch("stopLoading");
             }
           }).catch(err => {
-            if (err.status === 403) {
-              this.errorCode = 403;
-              this.statusText = err.statusText;
-              this.errorOccurred = true;
-            } else if (err.status === 404) {
-              this.errorCode = 404;
-              this.statusText = err.statusText;
-              this.errorOccurred = true;
-            } else {
-              if (err.data.err && err.data.err === "Titre déjà utilisé !") {
-                this.titleNeedUpdated = true;
-                this.titleIsVaild = false;
-                this.titleMsgErr.push("Titre déjà utilisé !");
-              }
-              this.$toast.error("Échec de la modification du lieu !");
+            if (err.data.err && err.data.err === "Titre déjà utilisé !") {
+              this.titleNeedUpdated = true;
+              this.titleIsVaild = false;
+              this.titleMsgErr.push("Titre déjà utilisé !");
             }
+            this.$toast.error("Échec de la modification du lieu !");
+
             this.$store.dispatch("stopLoading");
+            errorManager(err, this.$store, this.$router);
           });
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
           this.$store.dispatch("stopLoading");
+          errorManager(err, this.$store, this.$router);
         }
       }
     },
@@ -231,10 +222,11 @@ export default {
 
         this.$store.dispatch("stopLoading");
       }).catch(err => {
-        this.errorCode = err.response.status;
-        this.statusText = err.response.statusText;
-        this.errorOccurred = true;
+        // this.errorCode = err.response.status;
+        // this.statusText = err.response.statusText;
+        // this.errorOccurred = true;
         this.$store.dispatch("stopLoading");
+        errorManager(err.response, this.$store, this.$router);
       });
     },
   },

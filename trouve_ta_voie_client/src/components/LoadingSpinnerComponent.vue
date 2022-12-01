@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "LoadingSpinnerComponent"
+  name: "LoadingSpinnerComponent",
 };
 </script>
 
@@ -34,9 +34,10 @@ export default {
   top: 0;
 
 }
+
 #spinner {
   position: fixed;
-  top:50%;
+  top: 50%;
   left: calc(50vw - 40px);
   z-index: 100;
 }

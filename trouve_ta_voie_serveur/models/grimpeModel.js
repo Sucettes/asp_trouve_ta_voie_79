@@ -1,31 +1,31 @@
-'use strict';
+"use strict";
 
 const {DataTypes} = require("sequelize");
 module.exports = (sequelize, Sequelize) => {
-    return sequelize.define('grimpes', {
+    return sequelize.define("grimpes", {
         titre: {
             type: DataTypes.STRING(50),
-            allowNull: false
+            allowNull: false,
         },
         style: {
-            type: DataTypes.ENUM('Traditionnelle', 'Sportive', 'Moulinette'),
-            allowNull: false
+            type: DataTypes.ENUM("Traditionnelle", "Sportive", "Moulinette"),
+            allowNull: false,
         },
         description: {
             type: DataTypes.STRING(500),
-            allowNull: false
+            allowNull: false,
         },
         difficulte: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: false,
         },
         nbEtoiles: {
-            type: DataTypes.DECIMAL(10,2),
-            defaultValue: 0
+            type: DataTypes.DECIMAL(10, 2),
+            defaultValue: 1,
         },
         nbVotes: {
             type: DataTypes.INTEGER,
-            defaultValue: 0
-        }
+            defaultValue: 0,
+        },
     });
 };

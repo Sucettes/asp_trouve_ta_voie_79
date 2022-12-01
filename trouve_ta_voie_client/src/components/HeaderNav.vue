@@ -68,7 +68,7 @@ export default {
   components: {},
   data() {
     return {
-      userId: 0
+      userId: 0,
     };
   },
   methods: {
@@ -81,7 +81,7 @@ export default {
 
         router.push({name: "connexion"});
       });
-    }
+    },
   },
   computed: {
     isLoggedIn() {
@@ -89,11 +89,11 @@ export default {
     },
     name() {
       return this.$store.getters.name;
-    }
+    },
   },
   mounted() {
     this.userId = this.$store.getters.userId;
-  }
+  },
 };
 </script>
 

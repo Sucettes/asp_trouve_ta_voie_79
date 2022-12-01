@@ -10,5 +10,8 @@ export default {
     },
     name(state) {
         return state.name;
+    },
+    tokenExp(state) {
+        return state.tokenExp;
     }
 };

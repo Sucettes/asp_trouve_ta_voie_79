@@ -21,7 +21,6 @@ exports.getDropdownData = async (req, res, next) => {
 };
 
 exports.createLieu = async (req, res, next) => {
-
     try {
         const locationTitleIsValid = validatorFct.locationTitleIsValid(req.body.titre);
         const locationDescriptionIsValid = validatorFct.locationDescriptionIsValid(req.body.description);
@@ -62,7 +61,11 @@ exports.getLieuById = async (req, res, next) => {
     try {
         await Lieu.findByPk(+req.params.id)
             .then(location => {
-                res.status(200).json(location);
+                if (location) {
+                    res.status(200).json(location);
+                } else {
+                    res.status(404).end();
+                }
             })
             .catch(() => {
                 res.status(400).end();

@@ -72,6 +72,7 @@
 
 <script>
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
+import {errorManager} from "@/fctUtils/errorManager";
 import lieuValidator from "@/fctUtils/lieuValidator";
 
 
@@ -194,10 +195,12 @@ export default {
             }
             this.$toast.error("Échec de la création du lieu !");
             this.$store.dispatch("stopLoading");
+            errorManager(err, this.$store, this.$router);
           });
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
           this.$store.dispatch("stopLoading");
+          errorManager(err, this.$store, this.$router);
         }
       }
     },

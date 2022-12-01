@@ -14,6 +14,7 @@ export default {
                         token: response.data.token,
                         userId: response.data.userId,
                         name: response.data.name,
+                        tokenExp: response.data.tokenExp
                     });
 
                     resolve(response);
@@ -35,6 +36,7 @@ export default {
                         token: response.data.token,
                         userId: response.data.userId,
                         name: response.data.name,
+                        tokenExp: response.data.tokenExp
                     });
 
                     resolve(response);
@@ -46,15 +48,13 @@ export default {
     },
     async logout(context) {
         return new Promise((resolve) => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("userId");
-            localStorage.removeItem("name");
             localStorage.clear();
 
             context.commit("setUser", {
                 token: null,
                 userId: null,
                 name: null,
+                tokenExp: null
             });
 
             resolve();
