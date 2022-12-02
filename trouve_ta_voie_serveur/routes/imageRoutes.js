@@ -9,5 +9,6 @@ const imageController = require("../controllers/imageController");
 
 routerImage.delete("/image/:id", authMidl, imageController.deleteImgById);
 routerImage.post("/image", authMidl, imageController.addImg);
+routerImage.all("*", imageController.allReq);
 
 module.exports = routerImage;

@@ -212,3 +212,7 @@ exports.getFilteredGrimpes = async (req, res, next) => {
         res.status(500).end();
     }
 };
+
+exports.allReq = async (req, res, next) => {
+    res.status(405).end();
+};

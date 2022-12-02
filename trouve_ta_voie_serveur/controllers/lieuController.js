@@ -206,4 +206,6 @@ exports.getLieuByTitle = async (req, res, next) => {
     }
 };
 
-
+exports.allReq = async (req, res, next) => {
+    res.status(405).end();
+};

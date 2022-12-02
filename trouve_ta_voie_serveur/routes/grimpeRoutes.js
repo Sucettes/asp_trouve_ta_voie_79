@@ -15,7 +15,7 @@ routerGrimpe.get("/grimpe/:userId/:id", authMidl, grimpeController.getGrimpeById
 routerGrimpe.get("/grimpes/top10", grimpeController.getGrimpesTop10);
 routerGrimpe.get("/grimpes/:userId", authMidl, grimpeController.getGrimpesForUserId);
 routerGrimpe.post("/grimpes/filtre", grimpeController.getFilteredGrimpes);
+routerGrimpe.all("*", grimpeController.allReq);
 
 module.exports = routerGrimpe;
 
-routerGrimpe.route("/grimpe/:id");

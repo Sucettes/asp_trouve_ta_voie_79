@@ -132,7 +132,7 @@ export default {
 
 #btnWrapper {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 
   #detailsBtn {
     cursor: pointer;

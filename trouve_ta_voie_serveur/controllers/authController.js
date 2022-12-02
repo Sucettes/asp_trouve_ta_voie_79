@@ -95,3 +95,7 @@ exports.register = async (req, res, next) => {
 exports.valideToken = async (req, res, next) => {
     res.status(200).end();
 };
+
+exports.allReq = async (req, res, next) => {
+    res.status(405).end();
+};

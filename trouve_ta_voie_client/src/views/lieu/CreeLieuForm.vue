@@ -175,8 +175,8 @@ export default {
               titre: this.title,
               description: this.description,
               directives: this.instruction,
-              latitude: this.latitude,
-              longitude: this.longitude,
+              latitude: +this.latitude,
+              longitude: +this.longitude,
             },
             token: this.$store.getters.token,
           };

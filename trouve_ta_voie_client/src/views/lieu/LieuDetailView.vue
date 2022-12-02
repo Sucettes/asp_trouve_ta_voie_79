@@ -87,7 +87,7 @@
 
       <div class="row">
         <div class="col-md-6">
-          <p>coordonnées : Latitude : <strong>{{ latitude }}</strong> | longitude : <strong>{{ longitude }}</strong></p>
+          <p>coordonnées : Latitude : <strong>{{ +latitude }}</strong> | longitude : <strong>{{ +longitude }}</strong></p>
 
           <l-map :center="mapPosition" :zoom="15" v-if="mapPosition">
             <l-tile-layer :url="url"/>
@@ -174,7 +174,7 @@ export default {
                 this.grimpeDiffRows = response.data.grimpeDiff.rows;
                 this.grimpes = response.data.grimpes;
 
-                this.userCanEdit = response.data.lieu.utilisateurId === this.$store.getters.userId;
+                this.userCanEdit = +response.data.lieu.utilisateurId === +this.$store.getters.userId;
               }
             })
             .catch(() => {
@@ -209,6 +209,7 @@ export default {
   right: 32px;
   bottom: 32px;
   cursor: pointer;
+  z-index: 1000;
 
   #svgIconEdit {
     fill: $secondary;

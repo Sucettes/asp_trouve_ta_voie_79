@@ -86,8 +86,8 @@ export default {
       title: "",
       description: "",
       instruction: "",
-      latitude: "",
-      longitude: "",
+      latitude: 0,
+      longitude: 0,
       titleIsVaild: undefined,
       descIsValid: undefined,
       instrucIsValid: undefined,
@@ -164,8 +164,8 @@ export default {
               titre: this.title,
               description: this.description,
               directives: this.instruction,
-              latitude: this.latitude,
-              longitude: this.longitude,
+              latitude: +this.latitude,
+              longitude: +this.longitude,
             },
             token: this.$store.getters.token,
           };
@@ -174,6 +174,7 @@ export default {
             if (res.status) {
               this.$toast.success("Modification du lieu réussie !");
               this.$store.dispatch("stopLoading");
+              this.$router.push({name: "lieuDetails", params: {id: +this.$route.params.id}})
             }
           }).catch(err => {
             if (err.data.err && err.data.err === "Titre déjà utilisé !") {
@@ -211,8 +212,8 @@ export default {
         this.title = res.data.titre;
         this.description = res.data.description;
         this.instruction = res.data.directives;
-        this.latitude = res.data.latitude;
-        this.longitude = res.data.longitude;
+        this.latitude = +res.data.latitude;
+        this.longitude = +res.data.longitude;
 
         this.titleIsVaild = true;
         this.descIsValid = true;

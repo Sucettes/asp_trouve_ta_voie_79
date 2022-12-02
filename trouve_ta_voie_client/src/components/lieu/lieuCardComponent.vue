@@ -15,10 +15,8 @@
         <p v-if="directives.length > 170">{{ directives.substring(0, 170) + "..." }}</p>
         <p v-else>{{ directives }}</p>
 
-        <div id="geoDiv">
-          <p><strong>Latitude : </strong>{{ latitude }}</p>
-          <p><strong>Latitude : </strong>{{ longitude }}</p>
-        </div>
+          <p><strong>Latitude : </strong>{{ +latitude }}</p>
+          <p><strong>Latitude : </strong>{{ +longitude }}</p>
 
         <span></span>
         <span></span>
@@ -90,14 +88,9 @@ export default {
   }
 }
 
-#geoDiv {
-  display: flex;
-  justify-content: space-between;
-}
-
 #btnWrapper {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 
   #detailsBtn {
     cursor: pointer;

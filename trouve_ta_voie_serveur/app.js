@@ -33,6 +33,10 @@ app.use("/api", routerGrimpe);
 app.use("/api", routerLieu);
 app.use("/api", routerImage);
 
+app.all("*", (req, res) => {
+    res.status(404).end();
+});
+
 app.listen(8090, function () {
     console.log("Serveur sur le port " + this.address().port);
 });

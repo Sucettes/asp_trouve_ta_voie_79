@@ -15,5 +15,6 @@ routerLieu.put("/lieu/:id", authMidl, lieuController.editLieu);
 routerLieu.get("/lieux/:userId", authMidl, lieuController.getLieuxForUserId);
 routerLieu.get("/lieu/:userId/:id", authMidl, lieuController.getLieuByIdToEdit);
 routerLieu.get("/lieu/titre/:titre", lieuController.getLieuByTitle);
+routerLieu.all("*", lieuController.allReq);
 
 module.exports = routerLieu;

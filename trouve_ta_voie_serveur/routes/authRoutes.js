@@ -10,5 +10,6 @@ const authController = require("../controllers/authController");
 routerAuth.post("/inscription", authController.register);
 routerAuth.post("/connexion", authController.login);
 routerAuth.post("/valideToken", authMidl, authController.valideToken);
+routerAuth.all("*", authController.allReq);
 
 module.exports = routerAuth;
