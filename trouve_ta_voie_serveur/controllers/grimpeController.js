@@ -178,7 +178,7 @@ exports.getFilteredGrimpes = async (req, res, next) => {
     try {
         // Création du filtre : where
         let whereStr = {};
-        if (req.body.style) whereStr.style = req.body.style;
+        if (req.body.style && req.body.style !== "all") whereStr.style = req.body.style;
         if (req.body.stars) {
             whereStr.nbEtoiles = {
                 [Op.gte]: req.body.stars
