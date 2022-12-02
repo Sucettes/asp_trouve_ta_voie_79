@@ -121,7 +121,8 @@ export default {
     };
   },
   created() {
-    this.stars = +this.nbStars;
+    // Arrondis pour ne pas avoir des étoiles trop précises à l'affichage.
+    this.stars = Math.round(+this.nbStars * 10) / 10;
   },
 };
 </script>

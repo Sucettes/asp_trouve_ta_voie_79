@@ -8,14 +8,27 @@ const authMidl = require("../fctUtils/auth");
 const grimpeController = require("../controllers/grimpeController");
 
 
-routerGrimpe.post("/grimpe/create", authMidl, grimpeController.createGrimpe);
-routerGrimpe.put("/grimpe/:id", authMidl, grimpeController.editGrimpe);
-routerGrimpe.get("/grimpe/:id", grimpeController.getGrimpeById);
-routerGrimpe.get("/grimpe/:userId/:id", authMidl, grimpeController.getGrimpeByIdToEdit);
-routerGrimpe.get("/grimpes/top10", grimpeController.getGrimpesTop10);
-routerGrimpe.get("/grimpes/:userId", authMidl, grimpeController.getGrimpesForUserId);
-routerGrimpe.post("/grimpes/filtre", grimpeController.getFilteredGrimpes);
-routerGrimpe.all("*", grimpeController.allReq);
+routerGrimpe.route("/grimpe/create")
+    .post(authMidl, grimpeController.createGrimpe)
+    .all(grimpeController.allReq);
+routerGrimpe.route("/grimpe/:id")
+    .put(authMidl, grimpeController.editGrimpe)
+    .all(grimpeController.allReq);
+routerGrimpe.route("/grimpe/:id")
+    .get(grimpeController.getGrimpeById)
+    .all(grimpeController.allReq);
+routerGrimpe.route("/grimpe/:userId/:id")
+    .get(authMidl, grimpeController.getGrimpeByIdToEdit)
+    .all(grimpeController.allReq);
+routerGrimpe.route("/grimpes/top10")
+    .get(grimpeController.getGrimpesTop10)
+    .all(grimpeController.allReq);
+routerGrimpe.route("/grimpes/:userId")
+    .get(authMidl, grimpeController.getGrimpesForUserId)
+    .all(grimpeController.allReq);
+routerGrimpe.route("/grimpes/filtre")
+    .post(grimpeController.getFilteredGrimpes)
+    .all(grimpeController.allReq);
 
 module.exports = routerGrimpe;
 

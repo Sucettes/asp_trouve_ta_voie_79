@@ -7,9 +7,14 @@ const authMidl = require("../fctUtils/auth");
 
 const authController = require("../controllers/authController");
 
-routerAuth.post("/inscription", authController.register);
-routerAuth.post("/connexion", authController.login);
-routerAuth.post("/valideToken", authMidl, authController.valideToken);
-routerAuth.all("*", authController.allReq);
+routerAuth.route("/inscription")
+    .post(authController.register)
+    .all(authController.allReq);
+routerAuth.route("/connexion")
+    .post(authController.login)
+    .all(authController.allReq);
+routerAuth.route("/valideToken")
+    .post(authMidl, authController.valideToken)
+    .all(authController.allReq);
 
 module.exports = routerAuth;

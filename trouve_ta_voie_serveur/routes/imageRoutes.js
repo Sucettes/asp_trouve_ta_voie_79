@@ -7,8 +7,11 @@ const authMidl = require("../fctUtils/auth");
 
 const imageController = require("../controllers/imageController");
 
-routerImage.delete("/image/:id", authMidl, imageController.deleteImgById);
-routerImage.post("/image", authMidl, imageController.addImg);
-routerImage.all("*", imageController.allReq);
+routerImage.route("/image/:id")
+    .delete(authMidl, imageController.deleteImgById)
+    .all(imageController.allReq);
+routerImage.route("/image")
+    .post(authMidl, imageController.addImg)
+    .all(imageController.allReq);
 
 module.exports = routerImage;

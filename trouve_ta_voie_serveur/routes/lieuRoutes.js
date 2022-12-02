@@ -7,14 +7,29 @@ const authMidl = require("../fctUtils/auth");
 
 const lieuController = require("../controllers/lieuController");
 
-routerLieu.get("/lieux/dropFormat", lieuController.getDropdownData);
-routerLieu.post("/lieu/create", authMidl, lieuController.createLieu);
-routerLieu.get("/lieu/:id", lieuController.getLieuById);
-routerLieu.get("/lieu/details/:id", lieuController.getLieuDetailsById);
-routerLieu.put("/lieu/:id", authMidl, lieuController.editLieu);
-routerLieu.get("/lieux/:userId", authMidl, lieuController.getLieuxForUserId);
-routerLieu.get("/lieu/:userId/:id", authMidl, lieuController.getLieuByIdToEdit);
-routerLieu.get("/lieu/titre/:titre", lieuController.getLieuByTitle);
-routerLieu.all("*", lieuController.allReq);
+routerLieu.route("/lieux/dropFormat")
+    .get(lieuController.getDropdownData)
+    .all(lieuController.allReq);
+routerLieu.route("/lieu/create")
+    .post(authMidl, lieuController.createLieu)
+    .all(lieuController.allReq);
+routerLieu.route("/lieu/:id")
+    .get(lieuController.getLieuById)
+    .all(lieuController.allReq);
+routerLieu.route("/lieu/details/:id")
+    .get(lieuController.getLieuDetailsById)
+    .all(lieuController.allReq);
+routerLieu.route("/lieu/:id")
+    .put(authMidl, lieuController.editLieu)
+    .all(lieuController.allReq);
+routerLieu.route("/lieux/:userId")
+    .get(authMidl, lieuController.getLieuxForUserId)
+    .all(lieuController.allReq);
+routerLieu.route("/lieu/:userId/:id")
+    .get(authMidl, lieuController.getLieuByIdToEdit)
+    .all(lieuController.allReq);
+routerLieu.route("/lieu/titre/:titre")
+    .get(lieuController.getLieuByTitle)
+    .all(lieuController.allReq);
 
 module.exports = routerLieu;
