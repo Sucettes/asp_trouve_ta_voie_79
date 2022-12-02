@@ -1,3 +1,4 @@
+// Bibliothèque de fonction pour la validation des lieux.
 const lieuValidator = {
     checkTitleIsValid(title) {
         let titleMsgErr = [];
@@ -8,11 +9,11 @@ const lieuValidator = {
             titleIsVaild = false;
         }
         if (title.length < 3 && title.length > 0) {
-            titleMsgErr.push("Trop court ! Min : 3");
+            titleMsgErr.push("Min. 3 caractères !");
             titleIsVaild = false;
         }
         if (title.length > 50) {
-            titleMsgErr.push("Trop long ! Max : 50");
+            titleMsgErr.push("Max. 50 caractères !");
             titleIsVaild = false;
         }
 
@@ -27,11 +28,11 @@ const lieuValidator = {
             descIsValid = false;
         }
         if (desc.length < 3 && desc.length > 0) {
-            descriptionMsgErr.push("Trop court ! Min : 3");
+            descriptionMsgErr.push("Min. 3 caractères !");
             descIsValid = false;
         }
         if (desc.length > 500) {
-            descriptionMsgErr.push("Trop long ! Max : 500");
+            descriptionMsgErr.push("Max. 500 caractères !");
             descIsValid = false;
         }
 
@@ -46,11 +47,11 @@ const lieuValidator = {
             instrucIsValid = false;
         }
         if (inst.length < 3 && inst.length > 0) {
-            instructionMsgErr.push("Trop court ! Min : 3");
+            instructionMsgErr.push("Min. 3 caractères !");
             instrucIsValid = false;
         }
         if (inst.length > 500) {
-            instructionMsgErr.push("Trop long ! Max : 500");
+            instructionMsgErr.push("Max. 500 caractères !");
             instrucIsValid = false;
         }
 

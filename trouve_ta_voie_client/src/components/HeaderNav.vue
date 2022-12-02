@@ -34,21 +34,18 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li>
-                <router-link class="dropdown-item" :to="{name: 'mesGrimpes'}"
-                             v-if="isLoggedIn">Mes grimpes
+                <router-link class="dropdown-item" :to="{name: 'mesLieux'}" v-if="isLoggedIn">Mes lieux</router-link>
+              </li>
+              <li>
+                <router-link class="dropdown-item" :to="{name: 'mesGrimpes'}" v-if="isLoggedIn">Mes grimpes
                 </router-link>
               </li>
               <li>
-                <router-link class="dropdown-item" :to="{name: 'mesLieux'}"
-                             v-if="isLoggedIn">Mes lieux
-                </router-link>
+                <router-link class="dropdown-item" :to="{name: 'mesVotes'}" v-if="isLoggedIn">Mes votes</router-link>
               </li>
-              <!--              TODO : A faire..... -->
-              <!--              <li><a class="dropdown-item" href="#">Mes votes</a></li>-->
               <hr>
               <li>
-                <!--              TODO : A faire..... -->
-                <!--                <router-link class="dropdown-item" to="/profil">Profil</router-link>-->
+                <router-link class="dropdown-item" :to="{name: 'profil'}" v-if="isLoggedIn">Profil</router-link>
               </li>
               <li><a class="dropdown-item" @click="logout">Déconnexion</a></li>
             </ul>

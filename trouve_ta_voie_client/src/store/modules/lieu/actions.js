@@ -44,7 +44,7 @@ export default {
         });
     },
     async loadUserLieux(context, payload) {
-        return  new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             axios.get(`http://localhost:8090/api/lieux/${payload.userId}`, {
                 headers: {"Authorization": `Bearer ${payload.token}`},
             }).then(response => {

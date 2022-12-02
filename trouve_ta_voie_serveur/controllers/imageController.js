@@ -6,7 +6,7 @@ const Image = db.images;
 const uuid = require("uuid");
 const fs = require("fs");
 
-exports.deleteImgById = async (req, res, next) => {
+exports.deleteImgById = async (req, res) => {
     // todo : Verifie que le user connecter peut supprimer cette image
     try {
         let resultImg = await Image.findByPk(req.params.id);
@@ -24,7 +24,7 @@ exports.deleteImgById = async (req, res, next) => {
     }
 };
 
-exports.addImg = async (req, res, next) => {
+exports.addImg = async (req, res) => {
     // todo : Check si le user peut ajoute l<image a la grimpe
     try {
         await db.sequelize.transaction(async (transaction) => {
@@ -57,6 +57,6 @@ exports.addImg = async (req, res, next) => {
     }
 };
 
-exports.allReq = async (req, res, next) => {
+exports.allReq = async (req, res) => {
     res.status(405).end();
 };

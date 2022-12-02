@@ -8,8 +8,7 @@
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model="title"
-               :class="{ 'is-invalid': titleIsVaild===false }" @blur="checkIfTitleIsValid"
-               @input="checkIfTitleIsValid">
+               :class="{ 'is-invalid': titleIsVaild===false }" @blur="checkIfTitleIsValid" @input="checkIfTitleIsValid">
         <ul class="ulError" v-if="!titleIsVaild">
           <li class="error" v-for="err in titleMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -82,7 +81,7 @@
           <div class="input-group" :class="{'mb-3': !imgIsVaild === false}">
             <input id="picInput" type="file" class="form-control" placeholder="Photos" aria-label="Photo"
                    aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput">
-            <button class="btn btn-outline-secondary" type="button" id="PhotoAddBtn" @click="addPhoto">
+            <button class="btn btn-primary" type="button" id="PhotoAddBtn" @click="addPhoto">
               Ajouter
             </button>
           </div>
@@ -97,7 +96,6 @@
         </div>
       </div>
 
-
       <hr v-if="picturesUrl.length > 0">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <div v-for="(picUrl, index) in picturesUrl" :key="picturesUrl + index" class="picItem">
@@ -108,10 +106,10 @@
 
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-secondary">Annuler</button>
+          <button @click="cancel" type="button" class="btn btn-outline-secondary">Retour</button>
         </div>
         <div>
-          <button @click="add" type="button" class="btn btn-outline-primary">Ajouter
+          <button @click="add" type="button" class="btn btn-primary">Ajouter
           </button>
         </div>
       </div>

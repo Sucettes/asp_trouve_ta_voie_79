@@ -10,6 +10,6 @@ export default createStore({
         auth: authModule,
         lieu: lieuModule,
         grimpe: grimpeModule,
-        gestion: gestionModule
-    }
+        gestion: gestionModule,
+    },
 });

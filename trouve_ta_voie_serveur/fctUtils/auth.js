@@ -20,6 +20,7 @@ function checkIfIsAuthenticated(req, callback) {
     }
 }
 
+// Middleware pour vérifier si l'utilisateur est authentifié.
 const authMidl = (req, res, next) => {
     checkIfIsAuthenticated(req, (isAuthenticated, tokenDecode) => {
         if (!isAuthenticated) res.status(401).end();

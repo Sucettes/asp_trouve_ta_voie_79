@@ -1,12 +1,12 @@
 <template>
   <div>
-    user grimpe liste vote
+    TODO : À faire pour le sprint 3...    Votes
   </div>
 </template>
 
 <script>
 export default {
-  name: "UserGrimpeLstVoteComponent"
+  name: "UserGrimpeLstVoteComponent",
 };
 </script>
 

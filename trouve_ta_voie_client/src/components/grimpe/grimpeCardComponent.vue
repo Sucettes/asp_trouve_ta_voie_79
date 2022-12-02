@@ -33,7 +33,9 @@
       <div>
         <div id="btnWrapper">
           <p @click="seeDetails" id="detailsBtn">Détails</p>
-          <button @click="editGrimpe" type="button" class="btn btn-outline-secondary" v-if="+this.userId === +this.$store.getters.userId">Modifier</button>
+          <button @click="editGrimpe" type="button" class="btn btn-outline-secondary"
+                  v-if="+this.userId === +this.$store.getters.userId">Modifier
+          </button>
         </div>
       </div>
     </div>
@@ -62,7 +64,7 @@ export default {
         },
       });
     },
-  }
+  },
 };
 </script>
 
@@ -85,7 +87,7 @@ export default {
 }
 
 .cardBodyShort {
-  min-height: 470px !important;
+  min-height: 530px !important;
 }
 
 #cardBody {

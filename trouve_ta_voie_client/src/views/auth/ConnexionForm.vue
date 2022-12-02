@@ -17,7 +17,7 @@
       <div class="mb-3">
         <label for="inputMdp" class="form-label">Mot de passe</label>
         <input type="password" class="form-control" id="inputMdp" v-model.trim="mdp" @blur="valideMdp"
-               @input="valideMdp" :class="{ 'is-invalid': mdpVal===false }">
+               :class="{ 'is-invalid': mdpVal===false }" @input="valideMdp">
         <ul class="ulError" v-if="!mdpVal">
           <li class="error" v-for="err in mdpErreurs" :key="err">{{ err }}</li>
         </ul>
@@ -111,9 +111,6 @@ export default {
       return this.$store.getters.isLoading;
     },
   },
-  created() {
-
-  },
 };
 </script>
 
@@ -121,7 +118,7 @@ export default {
 @import '@/assets/styles/custom.scss';
 
 .nav-link {
-  color: $blueAccent;
+  color: $light;
 }
 
 #container {
@@ -164,4 +161,3 @@ export default {
 }
 
 </style>
-

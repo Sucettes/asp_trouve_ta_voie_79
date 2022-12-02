@@ -7,8 +7,7 @@
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="title"
-               :class="{ 'is-invalid': titleIsVaild===false }" @blur="checkIfTitleIsValid"
-               @input="checkIfTitleIsValid">
+               :class="{ 'is-invalid': titleIsVaild===false }" @blur="checkIfTitleIsValid" @input="checkIfTitleIsValid">
         <ul class="ulError" v-if="!titleIsVaild">
           <li class="error" v-for="err in titleMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -79,13 +78,12 @@
         </div>
       </div>
 
-
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-secondary">Annuler</button>
+          <button @click="cancel" type="button" class="btn btn-outline-secondary">Retour</button>
         </div>
         <div>
-          <button @click="edit" type="button" class="btn btn-outline-primary">Modifier
+          <button @click="edit" type="button" class="btn btn-primary">Sauvegarder
           </button>
         </div>
       </div>
@@ -114,7 +112,7 @@
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <div v-for="pic in pictures" :key="pic.id" class="picItem">
-          <img :src="'http://localhost:8090'+pic.path" alt="{{pic.name}}" class="lstPic"/>
+          <img :src="'http://localhost:8090'+pic.path" alt="" class="lstPic"/>
           <a @click="deletePic(pic.id)" class="removePics" v-if="pictures.length > 1">Supprimer</a>
         </div>
       </div>
@@ -305,7 +303,7 @@ export default {
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
           this.$store.dispatch("stopLoading");
-          errorManager(err, this.$store, this.$router);
+          await errorManager(err, this.$store, this.$router);
         }
       }
     },

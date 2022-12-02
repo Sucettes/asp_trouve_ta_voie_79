@@ -3,9 +3,8 @@
 const db = require("../models/dbSetup");
 const Utilisateur = db.utilisateurs;
 
-exports.getUserByEmail = async (req, res, next) => {
+exports.getUserByEmail = async (req, res) => {
     try {
-        console.log("test")
         let utilisateur = await Utilisateur.findOne({
             where: {courriel: req.params.courriel},
         });
@@ -20,6 +19,6 @@ exports.getUserByEmail = async (req, res, next) => {
     }
 };
 
-exports.allReq = async (req, res, next) => {
+exports.allReq = async (req, res) => {
     res.status(405).end();
 };

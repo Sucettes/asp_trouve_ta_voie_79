@@ -1,15 +1,16 @@
-import mutations from './mutations.js';
-import actions from './actions.js';
-import getters from './getters.js';
+import mutations from "./mutations.js";
+import actions from "./actions.js";
+import getters from "./getters.js";
+
 
 export default {
     state() {
         return {
             userGrimpes: [],
-            grimpe: {}
+            grimpe: {},
         };
     },
     mutations,
     actions,
-    getters
+    getters,
 };

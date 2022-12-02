@@ -11,7 +11,7 @@ const uuid = require("uuid");
 
 const fs = require("fs");
 
-exports.createGrimpe = async (req, res, next) => {
+exports.createGrimpe = async (req, res) => {
     try {
         // todo : Faire les validations
         let grimpe = await Grimpe.findOne({
@@ -65,7 +65,7 @@ exports.createGrimpe = async (req, res, next) => {
     }
 };
 
-exports.getGrimpeById = async (req, res, next) => {
+exports.getGrimpeById = async (req, res) => {
     try {
         const grimpe = await Grimpe.findByPk(+req.params.id, {include: Image});
 
@@ -79,7 +79,7 @@ exports.getGrimpeById = async (req, res, next) => {
     }
 };
 
-exports.getGrimpeByIdToEdit = async (req, res, next) => {
+exports.getGrimpeByIdToEdit = async (req, res) => {
     try {
         const grimpe = await Grimpe.findByPk(+req.params.id, {include: Image});
 
@@ -97,7 +97,7 @@ exports.getGrimpeByIdToEdit = async (req, res, next) => {
     }
 };
 
-exports.editGrimpe = async (req, res, next) => {
+exports.editGrimpe = async (req, res) => {
     try {
         // todo : Faire les validation
         let grimpe = await Grimpe.findOne({
@@ -138,7 +138,7 @@ exports.editGrimpe = async (req, res, next) => {
     }
 };
 
-exports.getGrimpesForUserId = async (req, res, next) => {
+exports.getGrimpesForUserId = async (req, res) => {
     try {
         if (+req.params.userId !== +req.token.userId)
             return res.status(403).end();
@@ -161,7 +161,7 @@ exports.getGrimpesForUserId = async (req, res, next) => {
     }
 };
 
-exports.getGrimpesTop10 = async (req, res, next) => {
+exports.getGrimpesTop10 = async (req, res) => {
     try {
         const grimpes = await Grimpe.findAll({
             order: [["nbEtoiles", "DESC"], ["nbVotes", "DESC"], ["titre", "ASC"]],
@@ -174,7 +174,7 @@ exports.getGrimpesTop10 = async (req, res, next) => {
     }
 };
 
-exports.getFilteredGrimpes = async (req, res, next) => {
+exports.getFilteredGrimpes = async (req, res) => {
     try {
         // Création du filtre : where
         let whereStr = {};
@@ -213,6 +213,6 @@ exports.getFilteredGrimpes = async (req, res, next) => {
     }
 };
 
-exports.allReq = async (req, res, next) => {
+exports.allReq = async (req, res) => {
     res.status(405).end();
 };

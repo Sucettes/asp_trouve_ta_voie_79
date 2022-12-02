@@ -19,7 +19,7 @@
   </div>
 
   <br>
-    <h2 id="top10Titre">Top 10</h2>
+  <h2 id="top10Titre">Top 10</h2>
 
   <!-- Fixme : Faire en sorte d'avoir toujours 1 lignes jamais 2. Trouver une solution quand on redimentionne. -->
   <div id="top10Carousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
@@ -86,7 +86,7 @@
 
         <label for="styleDrop" class="form-label">Style</label>
         <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style">
-          <option value="all">Tout les styles</option>
+          <option selected :value="undefined">Tout les styles</option>
           <option value="Traditionnelle">Traditionnelle</option>
           <option value="Sportive">Sportive</option>
           <option value="Moulinette">Moulinette</option>
@@ -94,14 +94,15 @@
 
         <br>
 
-        <label for="starsRange" class="form-label" v-if="stars === '5'">Étoiles : <strong>{{stars}}</strong></label>
-        <label for="starsRange" class="form-label" v-else>Étoiles : <strong>{{stars}}</strong>+</label>
+        <label for="starsRange" class="form-label" v-if="stars === '5'">Étoiles : <strong>{{ stars }}</strong></label>
+        <label for="starsRange" class="form-label" v-else>Étoiles : <strong>{{ stars }}</strong>+</label>
         <input type="range" class="form-range" min="1" max="5" step="0.5" id="starsRange" v-model.trim="stars">
 
         <br>
 
         <label for="lieuDrop" class="form-label">Lieu</label>
         <select id="lieuDrop" class="form-select" aria-label="Choisir le style" v-model.trim="lieu">
+          <option @click="this.lieu = undefined" selected :value="undefined">Tout les lieux</option>
           <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
         </select>
 
@@ -142,6 +143,10 @@
       </div>
     </div>
     <div class="col-lg-10">
+      <div v-if="filteredGrimpes.length === 0 && atLeastOneSearch" class="alert alert-info shadow-sm" role="alert"
+           id="alertInfo">
+        Aucun résultat !
+      </div>
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <grimpe-card-component class="d-flex"
                                v-for="x in filteredGrimpes.slice((currPage * 8), (currPage * 8) + 8)"
@@ -169,7 +174,8 @@
               </a>
             </li>
 
-            <li class="page-item" v-for="p in nbPages" :key="'page-' + p"><a class="page-link" @click="setPage(p)">{{p}}</a></li>
+            <li class="page-item" v-for="p in nbPages" :key="'page-' + p"><a class="page-link"
+                                                                             @click="setPage(p)">{{ p }}</a></li>
 
             <li class="page-item">
               <a class="page-link" aria-label="Next" @click="nextPage()">
@@ -190,6 +196,7 @@ import grimpeCardComponent from "@/components/grimpe/grimpeCardComponent";
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import axios from "axios";
 
+
 export default {
   name: "HomeView",
   components: {LoadingSpinnerComponent, grimpeCardComponent},
@@ -203,10 +210,11 @@ export default {
       diff2: undefined,
       top10Grimpes: [],
       filteredGrimpes: [],
+      atLeastOneSearch: false,
 
       filteredGrimpesSplice: [],
       nbPages: 0,
-      currPage: 0
+      currPage: 0,
     };
   },
   computed: {
@@ -216,7 +224,7 @@ export default {
   },
   methods: {
     nextPage() {
-      if (this.currPage < this.nbPages -1) {
+      if (this.currPage < this.nbPages - 1) {
         this.currPage += 1;
       }
     },
@@ -266,6 +274,7 @@ export default {
       }).then(response => {
         this.filteredGrimpes = response.data;
         this.nbPages = Math.ceil(response.data.length / 8);
+        this.atLeastOneSearch = true;
         this.$store.dispatch("stopLoading");
       }).catch(() => {
         this.$toast.error("Une erreur est survenue !");
@@ -283,12 +292,18 @@ export default {
 <style lang="scss">
 @import '@/assets/styles/custom.scss';
 
+#alertInfo {
+  margin: 40px auto 0;
+  width: 80%;
+  text-align: center;
+}
+
 .pagination {
   justify-content: center;
 }
 
-#top10Carousel>button {
-    max-width: 40px;
+#top10Carousel > button {
+  max-width: 40px;
 }
 
 .margLG-10 {

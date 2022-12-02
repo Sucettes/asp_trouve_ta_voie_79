@@ -1,6 +1,6 @@
 {
   "name": "trouve_ta_voie_serveur",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Projet ASP Garneau",
   "main": "app.js",
   "scripts": {

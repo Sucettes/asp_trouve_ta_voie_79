@@ -8,7 +8,7 @@ const validatorFct = require("../fctUtils/validations.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
     try {
         let emailIsValid = validatorFct.userEmailIsValid(req.body.courriel);
         let pwdIsValid = validatorFct.userPwdIsValid(req.body.mdp);
@@ -43,7 +43,7 @@ exports.login = async (req, res, next) => {
     }
 };
 
-exports.register = async (req, res, next) => {
+exports.register = async (req, res) => {
     try {
         const emailIsValid = validatorFct.userEmailIsValid(req.body.courriel);
         const nameIsValid = validatorFct.userNameIsValid(req.body.nom);
@@ -92,10 +92,10 @@ exports.register = async (req, res, next) => {
     }
 };
 
-exports.valideToken = async (req, res, next) => {
+exports.valideToken = async (req, res) => {
     res.status(200).end();
 };
 
-exports.allReq = async (req, res, next) => {
+exports.allReq = async (req, res) => {
     res.status(405).end();
 };

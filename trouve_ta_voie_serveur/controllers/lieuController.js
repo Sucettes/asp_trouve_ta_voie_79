@@ -6,7 +6,8 @@ const Lieu = db.lieux;
 const Utilisateur = db.utilisateurs;
 const Grimpe = db.grimpes;
 
-exports.getDropdownData = async (req, res, next) => {
+// Obtenir les lieux pour être affiché dans les listes déroulantes.
+exports.getDropdownData = async (req, res) => {
     try {
         await Lieu.findAll({attributes: ["id", "titre"]})
             .then(lieux => {
@@ -20,7 +21,7 @@ exports.getDropdownData = async (req, res, next) => {
     }
 };
 
-exports.createLieu = async (req, res, next) => {
+exports.createLieu = async (req, res) => {
     try {
         const locationTitleIsValid = validatorFct.locationTitleIsValid(req.body.titre);
         const locationDescriptionIsValid = validatorFct.locationDescriptionIsValid(req.body.description);
@@ -57,7 +58,7 @@ exports.createLieu = async (req, res, next) => {
     }
 };
 
-exports.getLieuById = async (req, res, next) => {
+exports.getLieuById = async (req, res) => {
     try {
         await Lieu.findByPk(+req.params.id)
             .then(location => {
@@ -75,10 +76,11 @@ exports.getLieuById = async (req, res, next) => {
     }
 };
 
-exports.getLieuDetailsById = async (req, res, next) => {
+exports.getLieuDetailsById = async (req, res) => {
     try {
         let location = await Lieu.findByPk(+req.params.id);
         let nbGrimpe = await Grimpe.count({where: {lieuxId: req.params.id}});
+        // todo : retourné les 3 styles même si il en as pas pour pouvoir affiché 0
         let grimpeStyle = await Grimpe.findAndCountAll({
             attributes: ["style"],
             group: "style",
@@ -104,7 +106,7 @@ exports.getLieuDetailsById = async (req, res, next) => {
     }
 };
 
-exports.getLieuByIdToEdit = async (req, res, next) => {
+exports.getLieuByIdToEdit = async (req, res) => {
     try {
         await Lieu.findByPk(+req.params.id)
             .then(location => {
@@ -124,7 +126,7 @@ exports.getLieuByIdToEdit = async (req, res, next) => {
     }
 };
 
-exports.editLieu = async (req, res, next) => {
+exports.editLieu = async (req, res) => {
     try {
         const locationTitleIsValid = validatorFct.locationTitleIsValid(req.body.titre);
         const locationDescriptionIsValid = validatorFct.locationDescriptionIsValid(req.body.description);
@@ -169,7 +171,7 @@ exports.editLieu = async (req, res, next) => {
     }
 };
 
-exports.getLieuxForUserId = async (req, res, next) => {
+exports.getLieuxForUserId = async (req, res) => {
     try {
         if (+req.params.userId !== +req.token.userId)
             return res.status(403).end();
@@ -192,7 +194,7 @@ exports.getLieuxForUserId = async (req, res, next) => {
     }
 };
 
-exports.getLieuByTitle = async (req, res, next) => {
+exports.getLieuByTitle = async (req, res) => {
     try {
         let lieu = await Lieu.findOne({where: {titre: req.params.titre}});
 
@@ -206,6 +208,6 @@ exports.getLieuByTitle = async (req, res, next) => {
     }
 };
 
-exports.allReq = async (req, res, next) => {
+exports.allReq = async (req, res) => {
     res.status(405).end();
 };

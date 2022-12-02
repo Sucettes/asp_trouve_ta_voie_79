@@ -1,3 +1,4 @@
+// Bibliothèque de fonction pour la validation des utilisateurs.
 const userValidator = {
     checkIfEmailIsValid(email) {
         const emailRegex = new RegExp("^(\\w|\\.|\\_|\\-)+[@](\\w|\\_|\\-|\\.)+[.]\\w{2,3}$");
@@ -9,12 +10,11 @@ const userValidator = {
             courrielErreurs.push("Est requis !");
         }
         if (email.length > 50) {
-            courrielErreurs.push("Trop long ! Max : 50");
+            courrielErreurs.push("Max. 50 caractères !");
             courrielVal = false;
         }
         if (emailRegex.test(email) === false && email.length > 0) {
-            // fixme : changé message pour dire c'est quoi les caractère obligatoire
-            courrielErreurs.push("Format ou caractère invalide !");
+            courrielErreurs.push("Format invalide !");
             courrielVal = false;
         }
 
@@ -30,12 +30,11 @@ const userValidator = {
             mdpVal = false;
         }
         if (pwd.length < 6 && pwd.length > 0) {
-            mdpErreurs.push("Trop court ! Min : 6");
+            mdpErreurs.push("Min. 6 caractères !");
             mdpVal = false;
         }
         if (mdpRegex.test(pwd) === false && pwd.length > 0) {
-            // fixme : changé message pour dire c'est quoi les caractère obligatoire
-            mdpErreurs.push("Format ou caractère invalide !");
+            mdpErreurs.push("Invalide ! 1 chiffre, 1 minuscule / majuscule et 1 caractère spéciaux");
             mdpVal = false;
         }
 
@@ -51,15 +50,15 @@ const userValidator = {
             nomVal = false;
         }
         if (name && name.length < 3 && name.length > 0) {
-            nomErreurs.push("Trop court ! Min : 3");
+            nomErreurs.push("Min. 3 caractères !");
             nomVal = false;
         }
         if (name && name.length > 50) {
-            nomErreurs.push("Trop long ! Max : 50");
+            nomErreurs.push("Max. 50 caractères !");
             nomVal = false;
         }
         if (nomRegex.test(name) === false && name.length > 0) {
-            nomErreurs.push("Format ou caractère invalide ! Autorisé : (A à z, espace et -)");
+            nomErreurs.push("Invalide ! Autorisé : (A à z, espace et -)");
             nomVal = false;
         }
 

@@ -1,13 +1,13 @@
 import EditGrimpeForm from "@/views/grimpe/EditGrimpeForm";
 import LieuDetailView from "@/views/lieu/LieuDetailView";
 import UserGrimpeLstComponent from "@/views/utilisateur/UserGrimpeLstComponent";
-// import erreur403View from "@/views/erreur/Erreur403View";
 import ErreurView from "@/views/erreur/ErreurView";
+import UserGrimpeLstVoteComponent from "@/views/utilisateur/UserGrimpeLstVoteComponent";
 import {createRouter, createWebHistory} from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import ConnexionForm from "@/views/auth/ConnexionForm";
 import InscriptionForm from "@/views/auth/InscriptionForm";
-// import ProfilView from "@/views/ProfilView";
+import ProfilView from "@/views/utilisateur/ProfilView";
 import store from "@/store/index.js";
 import CreeLieuForm from "@/views/lieu/CreeLieuForm";
 import CreeGrimpeForm from "@/views/grimpe/CreeGrimpeForm";
@@ -25,7 +25,7 @@ const routes = [
         meta: {requiresUnauth: true},
     },
     {path: "/auth/connexion", name: "connexion", component: ConnexionForm, meta: {requiresUnauth: true}},
-    // {path: "/profil", name: "profil", component: ProfilView},
+    {path: "/profil", name: "profil", component: ProfilView, meta: {requiresAuth: true}},
     {path: "/lieu/ajouter", name: "lieuAjouter", component: CreeLieuForm, meta: {requiresAuth: true}},
     {
         path: "/lieu/mesLieux",
@@ -52,6 +52,8 @@ const routes = [
         component: UserGrimpeLstComponent,
         meta: {requiresAuth: true},
     },
+    {path: "/mesVotes", name: "mesVotes", component: UserGrimpeLstVoteComponent, meta: {requiresAuth: true}},
+
     {
         path: "/grimpe/modifier/:id",
         name: "modifierGrimpe",
@@ -79,10 +81,8 @@ const router = createRouter({
 router.beforeEach(function (to, from, next) {
     if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
         next({name: "401"});
-        // next(false);
     } else if (to.meta.requiresUnauth && store.getters.isAuthenticated) {
         next({name: "accueil"});
-        // next(false);
     } else {
         next();
     }

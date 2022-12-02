@@ -7,7 +7,4 @@ export default {
             state.nbLoading -= 1;
         }
     },
-    removeAllLoading(state) {
-        state.nbLoading = 0;
-    }
 };

@@ -9,7 +9,7 @@
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="title"
                @blur="checkTitleIsValid" @input="checkTitleIsValid"
-               :class="{ 'is-invalid': titleIsVaild===false }" ref="test">
+               :class="{ 'is-invalid': titleIsVaild===false }">
         <ul class="ulError" v-if="!titleIsVaild">
           <li class="error" v-for="err in titleMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -17,8 +17,7 @@
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <textarea class="form-control" id="description" rows="4" v-model.trim="description"
-                  @blur="checkDescriptionIsValid"
-                  @input="checkDescriptionIsValid"
+                  @blur="checkDescriptionIsValid" @input="checkDescriptionIsValid"
                   :class="{ 'is-invalid': descIsValid===false }"></textarea>
         <ul class="ulError" v-if="!descIsValid">
           <li class="error" v-for="err in descriptionMsgErr" :key="err">{{ err }}</li>
@@ -27,8 +26,7 @@
       <div class="mb-3">
         <label for="directives" class="form-label">Directives pour s'y rendre</label>
         <textarea class="form-control" id="directives" rows="4" v-model.trim="instruction"
-                  @blur="checkInstructionIsValid"
-                  @input="checkInstructionIsValid"
+                  @blur="checkInstructionIsValid" @input="checkInstructionIsValid"
                   :class="{ 'is-invalid': instrucIsValid===false }"></textarea>
         <ul class="ulError" v-if="!instrucIsValid">
           <li class="error" v-for="err in instructionMsgErr" :key="err">{{ err }}</li>
@@ -39,9 +37,8 @@
         <div class="col-6 mb-3">
           <label for="latitude" class="form-label">Latitude</label>
           <input type="text" class="form-control" id="latitude" placeholder="0"
-                 v-model.trim="latitude" @blur="checkLatitudeIsValid"
-                 :class="{ 'is-invalid': latitudeIsValid===false }"
-                 @input="checkLatitudeIsValid">
+                 v-model.trim="latitude" @blur="checkLatitudeIsValid" @input="checkLatitudeIsValid"
+                 :class="{ 'is-invalid': latitudeIsValid===false }">
           <ul class="ulError" v-if="!latitudeIsValid">
             <li class="error" v-for="err in latitudeMsgErr" :key="err">{{ err }}</li>
           </ul>
@@ -49,9 +46,8 @@
         <div class="col-6 mb-3">
           <label for="longitude" class="form-label">Longitude</label>
           <input type="text" class="form-control" id="longitude" placeholder="0"
-                 v-model.trim="longitude" @blur="checkLongitudeIsValid"
-                 :class="{ 'is-invalid': longitudeIsValid===false }"
-                 @input="checkLongitudeIsValid">
+                 v-model.trim="longitude" @blur="checkLongitudeIsValid" @input="checkLongitudeIsValid"
+                 :class="{ 'is-invalid': longitudeIsValid===false }">
           <ul class="ulError" v-if="!longitudeIsValid">
             <li class="error" v-for="err in longitudeMsgErr" :key="err">{{ err }}</li>
           </ul>
@@ -59,10 +55,10 @@
       </div>
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-secondary">Annuler</button>
+          <button @click="cancel" type="button" class="btn btn-outline-secondary">Retour</button>
         </div>
         <div>
-          <button @click="edit" type="button" class="btn btn-outline-primary">Modifier
+          <button @click="edit" type="button" class="btn btn-primary">Sauvegarder
           </button>
         </div>
       </div>
@@ -108,20 +104,17 @@ export default {
   methods: {
     checkTitleIsValid(event) {
       const result = lieuValidator.checkTitleIsValid(event.target.value);
-
       this.titleMsgErr = result[0];
       this.titleIsVaild = result[1];
       this.titleNeedUpdated = false;
     },
     checkDescriptionIsValid(event) {
       const result = lieuValidator.checkDescriptionIsValid(event.target.value);
-
       this.descriptionMsgErr = result[0];
       this.descIsValid = result[1];
     },
     checkInstructionIsValid(event) {
       const result = lieuValidator.checkInstructionIsValid(event.target.value);
-
       this.instructionMsgErr = result[0];
       this.instrucIsValid = result[1];
     },
@@ -174,7 +167,7 @@ export default {
             if (res.status) {
               this.$toast.success("Modification du lieu réussie !");
               this.$store.dispatch("stopLoading");
-              this.$router.push({name: "lieuDetails", params: {id: +this.$route.params.id}})
+              this.$router.push({name: "lieuDetails", params: {id: +this.$route.params.id}});
             }
           }).catch(err => {
             if (err.data.err && err.data.err === "Titre déjà utilisé !") {
@@ -223,9 +216,6 @@ export default {
 
         this.$store.dispatch("stopLoading");
       }).catch(err => {
-        // this.errorCode = err.response.status;
-        // this.statusText = err.response.statusText;
-        // this.errorOccurred = true;
         this.$store.dispatch("stopLoading");
         errorManager(err.response, this.$store, this.$router);
       });

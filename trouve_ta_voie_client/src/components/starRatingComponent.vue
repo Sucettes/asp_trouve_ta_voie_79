@@ -137,10 +137,10 @@ export default {
   width: auto !important;
 
   svg {
-    fill: $green;
+    fill: $orange;
 
     :hover {
-      fill: $darkGreen;
+      fill: $DarkOrange;
     }
   }
 

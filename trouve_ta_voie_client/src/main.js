@@ -5,6 +5,7 @@ import store from "./store";
 import "bootstrap/dist/js/bootstrap.min.js";
 import Toaster from "@meforma/vue-toaster";
 
+
 const app = createApp(App);
 
 app.use(Toaster, {

@@ -14,7 +14,7 @@ const sequelize = new Sequelize(
             timestamps: false,
             freezeTableName: true,
         },
-        logging: false
+        logging: false,
     },
 );
 
@@ -29,6 +29,7 @@ db.lieux = require("./lieuModel.js")(sequelize, Sequelize);
 db.images = require("./imageModel")(sequelize, Sequelize);
 db.votes = require("./voteModel")(sequelize, Sequelize);
 
+// Création des relations
 db.utilisateurs.hasMany(db.lieux);
 db.lieux.belongsTo(db.utilisateurs);
 

@@ -15,8 +15,8 @@
         <p v-if="directives.length > 170">{{ directives.substring(0, 170) + "..." }}</p>
         <p v-else>{{ directives }}</p>
 
-          <p><strong>Latitude : </strong>{{ +latitude }}</p>
-          <p><strong>Latitude : </strong>{{ +longitude }}</p>
+        <p><strong>Latitude : </strong>{{ +latitude }}</p>
+        <p><strong>Latitude : </strong>{{ +longitude }}</p>
 
         <span></span>
         <span></span>

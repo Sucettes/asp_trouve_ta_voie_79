@@ -1,13 +1,15 @@
 "use strict";
-const dotenv = require("dotenv");
-dotenv.config();
+
 
 const path = require("path");
 const cors = require("cors");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
+
+dotenv.config();
 
 app.use(bodyParser.json({limit: "500mb"}));
 app.use(bodyParser.urlencoded({limit: "500mb", extended: true}));
@@ -33,9 +35,9 @@ app.use("/api", routerGrimpe);
 app.use("/api", routerLieu);
 app.use("/api", routerImage);
 
-// app.all("*", (req, res) => {
-//     res.status(404).end();
-// });
+app.all("*", (req, res) => {
+    res.status(404).end();
+});
 
 app.listen(8090, function () {
     console.log("Serveur sur le port " + this.address().port);

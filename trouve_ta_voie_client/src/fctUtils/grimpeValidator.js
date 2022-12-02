@@ -1,3 +1,4 @@
+// Bibliothèque de fonction pour la validation des grimpes
 const grimpeValidator = {
     checkIfTitleIsValid(title) {
         let titleMsgErr = [];
@@ -8,11 +9,11 @@ const grimpeValidator = {
             titleIsVaild = false;
         }
         if (title.length < 3 && title.length > 0) {
-            titleMsgErr.push("Trop court ! Min : 3");
+            titleMsgErr.push("Min. 3 caractères !");
             titleIsVaild = false;
         }
         if (title.length > 50) {
-            titleMsgErr.push("Trop long ! Max : 50");
+            titleMsgErr.push("Max. 50 caractères !");
             titleIsVaild = false;
         }
         return [titleMsgErr, titleIsVaild];
@@ -40,11 +41,11 @@ const grimpeValidator = {
             descIsValid = false;
         }
         if (desc.length < 3 && desc.length > 0) {
-            descriptionMsgErr.push("Trop court ! Min : 3");
+            descriptionMsgErr.push("Min. 3 caractères !");
             descIsValid = false;
         }
         if (desc.length > 500) {
-            descriptionMsgErr.push("Trop long ! Max : 500");
+            descriptionMsgErr.push("Max. 500 caractères !");
             descIsValid = false;
         }
 
@@ -57,7 +58,6 @@ const grimpeValidator = {
             diffMsgErr.push("Est requis !");
             diffIsVaild = false;
         }
-        // const regex = new RegExp("^5\\.+((1[0-5])|([6-9]+0?))$");
         const regex = new RegExp("^[0-9]{1,2}$");
         if (regex.test(diff) === false && diff.length > 0 && diff !== "Choisir la difficulté") {
             diffMsgErr.push("Valeur invalide ! 5.6 à 5.15");

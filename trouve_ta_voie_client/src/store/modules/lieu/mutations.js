@@ -7,5 +7,5 @@ export default {
     },
     setLieuDetails(state, payload) {
         state.lieuDetails = payload;
-    }
+    },
 };

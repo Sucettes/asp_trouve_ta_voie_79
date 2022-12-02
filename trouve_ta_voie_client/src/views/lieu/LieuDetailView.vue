@@ -87,7 +87,8 @@
 
       <div class="row">
         <div class="col-md-6">
-          <p>coordonnées : Latitude : <strong>{{ +latitude }}</strong> | longitude : <strong>{{ +longitude }}</strong></p>
+          <p>coordonnées : Latitude : <strong>{{ +latitude }}</strong> | longitude : <strong>{{ +longitude }}</strong>
+          </p>
 
           <l-map :center="mapPosition" :zoom="15" v-if="mapPosition">
             <l-tile-layer :url="url"/>
@@ -222,10 +223,6 @@ export default {
     fill: $primary;
   }
 }
-
-//td, th {
-//  text-align: center;
-//}
 
 #map {
   height: 300px !important;

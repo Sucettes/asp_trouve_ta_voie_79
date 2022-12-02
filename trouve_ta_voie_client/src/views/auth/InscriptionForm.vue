@@ -25,7 +25,8 @@
       <div class="mb-3">
         <label for="inputMdp" class="form-label">Mot de passe</label>
         <input type="password" class="form-control" id="inputMdp" v-model.trim="mdp" @blur="valideMdp"
-               @input="valideMdp" :class="{ 'is-invalid': mdpVal===false }">
+               @input="valideMdp"
+               :class="{ 'is-invalid': mdpVal===false }">
         <ul class="ulError" v-if="!mdpVal">
           <li class="error" v-for="err in mdpErreurs" :key="err">{{ err }}</li>
 
@@ -40,7 +41,7 @@
 
       </div>
       <div class="mb-3">
-        <label for="inputMdpConf" class="form-label">Mot de passe confirmer</label>
+        <label for="inputMdpConf" class="form-label">Confirmation du mot de passe</label>
         <input type="password" class="form-control" id="inputMdpConf" v-model.trim="mdpConf"
                @blur="valideMdpConf" @input="valideMdpConf"
                :class="{ 'is-invalid': mdpConfVal===false }">
@@ -56,7 +57,6 @@
           <li class="error">Est différent !</li>
         </ul>
 
-
       </div>
 
       <div class="btnWrapper">
@@ -69,7 +69,6 @@
 </template>
 
 <script>
-
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import userValidator from "@/fctUtils/userValidator";
 
@@ -174,7 +173,7 @@ export default {
 @import '@/assets/styles/custom.scss';
 
 .nav-link {
-  color: $blueAccent;
+  color: $light;
 }
 
 #container {
