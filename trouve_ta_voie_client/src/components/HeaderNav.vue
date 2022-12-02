@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-md navbar-light">
+  <nav class="navbar navbar-expand-md navbar-dark">
     <div class="container-fluid">
       <router-link class="navbar-brand" to="/">Trouve ta voie</router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -98,14 +98,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$light: #b7cce0;
-$dark: #53717f;
-$medium: #7394a1;
-$accent: #d28864;
+@import '@/assets/styles/custom.scss';
 
 nav {
   background-color: $dark;
-  box-shadow: 0 2px 2px -2px rgba(0, 0, 0, .2);
 }
 
 .nav-link {
@@ -114,6 +110,10 @@ nav {
 
 .nav-link:hover {
   color: $light;
+}
+
+.active {
+  color: $light !important
 }
 
 .navbar-brand {

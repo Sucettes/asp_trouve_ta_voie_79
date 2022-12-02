@@ -10,9 +10,11 @@ const authController = require("../controllers/authController");
 routerAuth.route("/inscription")
     .post(authController.register)
     .all(authController.allReq);
+
 routerAuth.route("/connexion")
     .post(authController.login)
     .all(authController.allReq);
+
 routerAuth.route("/valideToken")
     .post(authMidl, authController.valideToken)
     .all(authController.allReq);

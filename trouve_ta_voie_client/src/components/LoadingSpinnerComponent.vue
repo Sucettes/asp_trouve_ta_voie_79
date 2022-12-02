@@ -53,7 +53,7 @@ export default {
   position: absolute;
   width: 7px;
   height: 7px;
-  background: $green;
+  background: $accent;
   border-radius: 50%;
   animation: lds-default 1.2s linear infinite;
 }

@@ -274,7 +274,7 @@ h1 {
 }
 
 .error {
-  color: #ff0000;
+  color: $red;
   font-size: 0.9rem;
 }
 

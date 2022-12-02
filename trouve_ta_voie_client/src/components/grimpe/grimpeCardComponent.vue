@@ -4,7 +4,7 @@
 
       <div>
         <div v-if="images[0]">
-          <img class="lstPic" :src="'http://localhost:8090' + images[0].path"/>
+          <img class="lstPic" :src="'http://localhost:8090' + images[0].path" alt=""/>
         </div>
         <h3 @click="seeDetails">{{ titre }}</h3>
         <hr>
@@ -53,7 +53,6 @@ export default {
       this.$router.push({name: "lieuDetails", params: {id: this.lieu.id}});
     },
     seeDetails() {
-      console.log("Sprint 3...");
     },
     editGrimpe() {
       this.$router.push({

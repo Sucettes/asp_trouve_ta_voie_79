@@ -186,8 +186,9 @@ export default {
         this.$store.dispatch("stopLoading");
       }
     },
+    // eslint-disable-next-line no-unused-vars
     goToGrimpeDetails(id) {
-      console.log("sprint 3 " + id);
+
     },
     goToEditLieu() {
       this.$router.push({name: "modifierLieu", params: {id: this.id}});

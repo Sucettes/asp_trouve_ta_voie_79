@@ -235,8 +235,8 @@ export default {
       }).then(res => {
         this.lieux = res.data;
         this.$store.dispatch("stopLoading");
-      }).catch(err => {
-        console.log(err);
+      }).catch(() => {
+        this.$toast.error("Une erreur est survenue !");
         this.$store.dispatch("stopLoading");
       });
     },
@@ -314,10 +314,10 @@ export default {
 }
 
 #banner {
-  background-color: #396839;
+  background-color: $dark;
   height: calc(40vh);
   background-image: url("@/assets/MontagneBack.jpg") !important;
-  background-position: center;
+  background-position: top;
   background-size: cover;
   background-repeat: no-repeat;
 }

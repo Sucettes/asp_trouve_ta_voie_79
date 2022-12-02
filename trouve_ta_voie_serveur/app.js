@@ -9,8 +9,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 
-app.use(bodyParser.json({limit: "1024mb"}));
-app.use(bodyParser.urlencoded({limit: "1024mb", extended: true}));
+app.use(bodyParser.json({limit: "500mb"}));
+app.use(bodyParser.urlencoded({limit: "500mb", extended: true}));
 
 app.use(cors({origin: [process.env.ORIGIN]}));
 app.set("jwt-secret", process.env.SECRET);
@@ -33,9 +33,9 @@ app.use("/api", routerGrimpe);
 app.use("/api", routerLieu);
 app.use("/api", routerImage);
 
-app.all("*", (req, res) => {
-    res.status(404).end();
-});
+// app.all("*", (req, res) => {
+//     res.status(404).end();
+// });
 
 app.listen(8090, function () {
     console.log("Serveur sur le port " + this.address().port);

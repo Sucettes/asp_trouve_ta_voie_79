@@ -26,7 +26,7 @@
       <div class="btnWrapper">
         <router-link class="nav-link" to="/auth/inscription">Inscription</router-link>
 
-        <button type="button" class="btn btn-outline-primary" @click="login">Confirmer</button>
+        <button type="button" class="btn btn-primary" @click="login">Confirmer</button>
       </div>
     </form>
   </div>
@@ -118,6 +118,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/custom.scss';
+
+.nav-link {
+  color: $blueAccent;
+}
+
 #container {
   display: flex;
   justify-content: center;
@@ -148,7 +154,7 @@ export default {
 }
 
 .error {
-  color: #ff6767;
+  color: $redDark;
   font-size: 0.9rem;
 }
 

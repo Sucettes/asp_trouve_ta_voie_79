@@ -1,6 +1,6 @@
 {
   "name": "trouve_ta_voie_client",
-  "version": "0.1.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -14,7 +14,6 @@
     "bootstrap": "^5.2.3",
     "core-js": "^3.8.3",
     "leaflet": "^1.9.3",
-    "register-service-worker": "^1.7.2",
     "stylus": "^0.59.0",
     "stylus-loader": "^3.0.2",
     "vue": "^3.2.13",

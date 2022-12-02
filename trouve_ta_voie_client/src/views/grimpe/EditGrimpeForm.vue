@@ -114,7 +114,7 @@
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <div v-for="pic in pictures" :key="pic.id" class="picItem">
-          <img :src="'http://localhost:8090'+pic.path" alt="" class="lstPic"/>
+          <img :src="'http://localhost:8090'+pic.path" alt="{{pic.name}}" class="lstPic"/>
           <a @click="deletePic(pic.id)" class="removePics" v-if="pictures.length > 1">Supprimer</a>
         </div>
       </div>
