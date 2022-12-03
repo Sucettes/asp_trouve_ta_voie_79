@@ -59,18 +59,19 @@
         <thead>
         <tr>
           <th>Grimpe</th>
-          <th>Style</th>
-          <th>Difficulté</th>
-          <th>Étoiles</th>
-          <th>Vote</th>
+<!--     edit: Car le tableau bugs en mobiles     -->
+<!--          <th>Style</th>-->
+<!--          <th>Difficulté</th>-->
+          <th>Évaluations</th>
+          <th>Votes</th>
           <th></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="grimpe in grimpes" :key="grimpe.id">
           <td>{{ grimpe.titre }}</td>
-          <td>{{ grimpe.style }}</td>
-          <td>5.{{ grimpe.difficulte }}</td>
+<!--          <td>{{ grimpe.style }}</td>-->
+<!--          <td>5.{{ grimpe.difficulte }}</td>-->
           <td>
             <star-rating-component :nbStars="grimpe.nbEtoiles"></star-rating-component>
           </td>
@@ -232,14 +233,18 @@ export default {
 }
 
 #container {
-  margin: 30px;
+  margin: 27px;
+
+  td, th {
+    padding: 4px;
+  }
 
   h1 {
     margin-bottom: 30px;
   }
 
   .body {
-    padding: 20px;
+    padding: 14px;
 
     p {
       overflow: auto;

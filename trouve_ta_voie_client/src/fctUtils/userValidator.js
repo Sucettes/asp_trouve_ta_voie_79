@@ -21,7 +21,7 @@ const userValidator = {
         return [courrielErreurs, courrielVal];
     },
     checkIfPwdIsValid(pwd) {
-        const mdpRegex = new RegExp("^(?=.*\\d)(?=.*[aA-zZ])(?=.*[#?!@$%^&*-]).+$");
+        const mdpRegex = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#?!@$%^&*-])([a-zA-Z0-9#?!@$%^&*-]){4,}$");
         let mdpErreurs = [];
         let mdpVal = true;
 
@@ -34,7 +34,7 @@ const userValidator = {
             mdpVal = false;
         }
         if (mdpRegex.test(pwd) === false && pwd.length > 0) {
-            mdpErreurs.push("Invalide ! 1 chiffre, 1 minuscule / majuscule et 1 caractère spéciaux");
+            mdpErreurs.push("Invalide ! 1 chiffre, 1 minuscule / majuscule et 1 caractère spécial");
             mdpVal = false;
         }
 
@@ -58,7 +58,7 @@ const userValidator = {
             nomVal = false;
         }
         if (nomRegex.test(name) === false && name.length > 0) {
-            nomErreurs.push("Invalide ! Autorisé : (A à z, espace et -)");
+            nomErreurs.push("Invalide ! Autorisés : (A à z, espace et -)");
             nomVal = false;
         }
 

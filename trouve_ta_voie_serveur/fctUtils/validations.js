@@ -4,7 +4,7 @@
 const validatorFct = {
     // Vérifie si le mot de passe est valide.
     userPwdIsValid(pwd) {
-        const pwdRegex = new RegExp("^(?=.*\\d)(?=.*[aA-zZ])(?=.*[#?!@$%^&*-]).+$");
+        const pwdRegex = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#?!@$%^&*-])([a-zA-Z0-9#?!@$%^&*-]){4,}$");
 
         if (pwd === "") return false;
         else if (pwd.length < 6) return false;

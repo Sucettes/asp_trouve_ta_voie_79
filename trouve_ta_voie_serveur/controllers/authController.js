@@ -30,7 +30,6 @@ exports.login = async (req, res) => {
                         token: jwtToken,
                         userId: user.id,
                         name: user.nom,
-                        tokenExp: "12h",
                     });
                 }
             }
@@ -78,7 +77,6 @@ exports.register = async (req, res) => {
                         token: jwtToken,
                         userId: newUser.id,
                         name: newUser.nom,
-                        tokenExp: "12h",
                     });
                 } else {
                     res.status(400).end();

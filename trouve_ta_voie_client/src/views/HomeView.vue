@@ -11,10 +11,10 @@
 
     <!--  fixme : corrige le francais ici  -->
     <p class="blockquote">Notre objectif est simple, vous offrir un guide de qualité supérieure avec un inventaire de
-      lieux tous plus impressionnant les uns des autres à travers le monde entier. Nous voulons aider et accompagner les
-      passionnés de sensation forte dans leur quête à la recherche d'une nouvelle aventure. Nous voulons vous aidez à
-      trouver votre voie et vivre une expérience digne d'un film d'action. Vous êtes passionné d'escalade comme nous?
-      Vous êtes au bon endroit. Venez consulter notre catalogue afin de trouvé votre lieu et a partir a l'aventure.</p>
+      lieux tous plus impressionnants les uns des autres à travers le monde entier. Nous voulons aider et accompagner les
+      passionnés de sensation forte dans leur quête à la recherche d'une nouvelle aventure. Nous voulons vous aider à
+      trouver votre voie et vivre une expérience digne d'un film d'action. Vous êtes passionnés d'escalade comme nous?
+      Vous êtes au bon endroit. Venez consulter notre catalogue afin de trouver votre lieu et à partir à l'aventure.</p>
 
   </div>
 
@@ -81,12 +81,12 @@
   <div id="filterContainer" class="row">
     <div class="col-lg-2" id="filterMenu">
       <div class="shadow-sm p-3 mb-5 bg-body rounded margLG-10">
-        <h3>Filtre</h3>
+        <h3>Filtres</h3>
         <hr>
 
         <label for="styleDrop" class="form-label">Style</label>
-        <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style">
-          <option selected :value="undefined">Tout les styles</option>
+        <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style" tabindex="1">
+          <option selected :value="undefined">Tous les styles</option>
           <option value="Traditionnelle">Traditionnelle</option>
           <option value="Sportive">Sportive</option>
           <option value="Moulinette">Moulinette</option>
@@ -96,20 +96,20 @@
 
         <label for="starsRange" class="form-label" v-if="stars === '5'">Étoiles : <strong>{{ stars }}</strong></label>
         <label for="starsRange" class="form-label" v-else>Étoiles : <strong>{{ stars }}</strong>+</label>
-        <input type="range" class="form-range" min="1" max="5" step="0.5" id="starsRange" v-model.trim="stars">
+        <input type="range" class="form-range" min="1" max="5" step="0.5" id="starsRange" v-model.trim="stars" tabindex="2">
 
         <br>
 
         <label for="lieuDrop" class="form-label">Lieu</label>
-        <select id="lieuDrop" class="form-select" aria-label="Choisir le style" v-model.trim="lieu">
-          <option @click="this.lieu = undefined" selected :value="undefined">Tout les lieux</option>
+        <select id="lieuDrop" class="form-select" aria-label="Choisir le style" v-model.trim="lieu" tabindex="3">
+          <option @click="this.lieu = undefined" selected :value="undefined">Tous les lieux</option>
           <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
         </select>
 
         <br>
 
         <label for="diffDrop1" class="form-label">Difficulté <br> entre</label>
-        <select id="diffDrop1" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff1">
+        <select id="diffDrop1" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff1" tabindex="4">
           <option value="6">5.6</option>
           <option value="7">5.7</option>
           <option value="8">5.8</option>
@@ -123,7 +123,7 @@
         </select>
 
         <label for="diffDrop2" class="form-label">et</label>
-        <select id="diffDrop2" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff2">
+        <select id="diffDrop2" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff2" tabindex="5">
           <option value="6">5.6</option>
           <option value="7">5.7</option>
           <option value="8">5.8</option>
@@ -138,7 +138,7 @@
         <br>
         <br>
         <div id="btnWrapper">
-          <button type="button" class="btn btn-outline-primary" @click="search()">Rechercher</button>
+          <button type="button" class="btn btn-outline-primary" @click="search()" tabindex="6">Rechercher</button>
         </div>
       </div>
     </div>
@@ -169,7 +169,7 @@
         <nav aria-label="Page navigation grimpes recherche" v-if="nbPages > 0">
           <ul class="pagination">
             <li class="page-item">
-              <a class="page-link" aria-label="Previous" @click="beforePage">
+              <a class="page-link" aria-label="Previous" @click="beforePage" tabindex="8">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
@@ -178,7 +178,7 @@
                                                                              @click="setPage(p)">{{ p }}</a></li>
 
             <li class="page-item">
-              <a class="page-link" aria-label="Next" @click="nextPage()">
+              <a class="page-link" aria-label="Next" @click="nextPage()" tabindex="7">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>

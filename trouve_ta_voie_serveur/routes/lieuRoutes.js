@@ -15,6 +15,7 @@ routerLieu.route("/lieu/create")
     .post(authMidl, lieuController.createLieu)
     .all(lieuController.allReq);
 
+// edit: Faire en sorte de ne pas avoir le id en parametre car il sert a rien...
 routerLieu.route("/lieu/:id")
     .get(lieuController.getLieuById)
     .put(authMidl, lieuController.editLieu)

@@ -63,6 +63,7 @@ const routes = [
     {path: "/:ErreurView(.*)", component: ErreurView, meta: {code: 404, errorText: "Not Found"}},
     {path: "/401", name: "401", component: ErreurView, meta: {code: 401, errorText: "Unauthorized"}},
     {path: "/403", name: "403", component: ErreurView, meta: {code: 403, errorText: "Forbidden"}},
+    {path: "/404", name: "404", component: ErreurView, meta: {code: 404, errorText: "Not Found"}},
     {path: "/500", name: "500", component: ErreurView, meta: {code: 500, errorText: "Internal server error"}},
 ];
 

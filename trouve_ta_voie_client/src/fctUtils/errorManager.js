@@ -11,4 +11,7 @@ exports.errorManager = async (err, store, router) => {
     if (err.status === 500) {
         router.push({name: "500"});
     }
+    if (err.status === 404) {
+        router.push({name: "404"});
+    }
 };

@@ -124,7 +124,7 @@ exports.editGrimpe = async (req, res) => {
                         },
                         {where: {id: req.body.id}},
                     ).then(grimpe => {
-                        res.status(204).json(grimpe);
+                        res.status(204).end();
                     });
                 }
             } else {

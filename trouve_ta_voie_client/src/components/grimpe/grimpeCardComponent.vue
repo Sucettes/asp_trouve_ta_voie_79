@@ -15,7 +15,7 @@
 
         <br>
 
-        <p>Votes : <strong class="accColorTxt">{{ nbVotes }}</strong></p>
+        <p>Vote(s) : <strong class="accColorTxt">{{ nbVotes }}</strong></p>
         <star-rating-component :nbStars="nbEtoiles"></star-rating-component>
 
         <section v-if="hideDescription !== 'true'">
@@ -73,7 +73,8 @@ export default {
 
 .lstPic {
   width: 100%;
-  height: 123px;
+  //height: 123px;
+  height: 167px;
   object-fit: contain;
 }
 

@@ -79,28 +79,33 @@ exports.getLieuById = async (req, res) => {
 exports.getLieuDetailsById = async (req, res) => {
     try {
         let location = await Lieu.findByPk(+req.params.id);
-        let nbGrimpe = await Grimpe.count({where: {lieuxId: req.params.id}});
-        // todo : retourné les 3 styles même si il en as pas pour pouvoir affiché 0
-        let grimpeStyle = await Grimpe.findAndCountAll({
-            attributes: ["style"],
-            group: "style",
-            where: {lieuxId: req.params.id},
-        });
-        let grimpeDiff = await Grimpe.findAndCountAll({
-            attributes: ["difficulte"],
-            group: "difficulte",
-            where: {lieuxId: req.params.id},
-            order: [],
-        });
-        let grimpes = await Grimpe.findAll({where: {lieuxId: req.params.id}});
 
-        res.status(200).json({
-            lieu: location,
-            totalGrimpe: nbGrimpe,
-            grimpeStyle: grimpeStyle,
-            grimpeDiff: grimpeDiff,
-            grimpes: grimpes,
-        });
+        if (location) {
+            let nbGrimpe = await Grimpe.count({where: {lieuxId: req.params.id}});
+            // todo : retourné les 3 styles même si il en as pas pour pouvoir affiché 0
+            let grimpeStyle = await Grimpe.findAndCountAll({
+                attributes: ["style"],
+                group: "style",
+                where: {lieuxId: req.params.id},
+            });
+            let grimpeDiff = await Grimpe.findAndCountAll({
+                attributes: ["difficulte"],
+                group: "difficulte",
+                where: {lieuxId: req.params.id},
+                order: [],
+            });
+            let grimpes = await Grimpe.findAll({where: {lieuxId: req.params.id}});
+
+            res.status(200).json({
+                lieu: location,
+                totalGrimpe: nbGrimpe,
+                grimpeStyle: grimpeStyle,
+                grimpeDiff: grimpeDiff,
+                grimpes: grimpes,
+            });
+        } else {
+            res.status(404).end();
+        }
     } catch (e) {
         res.status(500).end();
     }
@@ -141,6 +146,8 @@ exports.editLieu = async (req, res) => {
 
                 if (location) {
                     if (+location.utilisateurId === +req.token.userId) {
+                        console.log(location.utilisateurId)
+                        console.log(req.token.userId)
                         const location2 = await Lieu.findOne({where: {titre: req.body.titre}});
                         if (location2 && location2.id !== req.body.id) {
                             res.status(400).json({err: "Titre déjà utilisé !"});

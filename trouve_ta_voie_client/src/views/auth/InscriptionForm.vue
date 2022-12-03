@@ -7,7 +7,7 @@
       <div class="mb-3">
         <label for="inputNom" class="form-label">Nom</label>
         <input type="text" class="form-control" id="inputNom" v-model.trim="nom" @input="valideNom"
-               @blur="valideNom" :class="{ 'is-invalid': nomVal===false }">
+               @blur="valideNom" :class="{ 'is-invalid': nomVal===false }" tabindex="1">
         <ul class="ulError" v-if="!nomVal">
           <li class="error" v-for="err in nomErreurs" :key="err">{{ err }}</li>
         </ul>
@@ -16,7 +16,7 @@
         <label for="inputCourriel" class="form-label">Courriel</label>
         <input type="email" class="form-control" id="inputCourriel" v-model.trim="courriel"
                @blur="valideCourriel" @input="valideCourriel"
-               :class="{ 'is-invalid': courrielVal===false }">
+               :class="{ 'is-invalid': courrielVal===false }" tabindex="2">
         <ul class="ulError" v-if="!courrielVal">
           <li class="error" v-for="err in courrielErreurs" :key="err">{{ err }}</li>
         </ul>
@@ -26,7 +26,7 @@
         <label for="inputMdp" class="form-label">Mot de passe</label>
         <input type="password" class="form-control" id="inputMdp" v-model.trim="mdp" @blur="valideMdp"
                @input="valideMdp"
-               :class="{ 'is-invalid': mdpVal===false }">
+               :class="{ 'is-invalid': mdpVal===false }" tabindex="3">
         <ul class="ulError" v-if="!mdpVal">
           <li class="error" v-for="err in mdpErreurs" :key="err">{{ err }}</li>
 
@@ -44,7 +44,7 @@
         <label for="inputMdpConf" class="form-label">Confirmation du mot de passe</label>
         <input type="password" class="form-control" id="inputMdpConf" v-model.trim="mdpConf"
                @blur="valideMdpConf" @input="valideMdpConf"
-               :class="{ 'is-invalid': mdpConfVal===false }">
+               :class="{ 'is-invalid': mdpConfVal===false }" tabindex="4">
         <ul class="ulError" v-if="!mdpConfVal">
           <li class="error" v-for="err in mdpConfErreurs" :key="err">{{ err }}</li>
 
@@ -60,9 +60,9 @@
       </div>
 
       <div class="btnWrapper">
-        <router-link class="nav-link" to="/auth/connexion">Connexion</router-link>
+        <router-link class="nav-link" to="/auth/connexion" tabindex="6">Connexion</router-link>
 
-        <button type="button" class="btn btn-primary" @click="register">Confirmer</button>
+        <button type="button" class="btn btn-primary" @click="register" tabindex="5">Confirmer</button>
       </div>
     </form>
   </div>

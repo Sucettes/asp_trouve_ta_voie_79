@@ -71,7 +71,7 @@ const lieuValidator = {
         }
         const regex = new RegExp("^[-0-9.]+$");
         if (regex.test(lat) === false && lat.length > 0) {
-            valMsgErr.push("Valeur invalide ! Valeur autorisé : (0 à 9 et .)");
+            valMsgErr.push("Valeur invalide ! Valeur autorisés : (0 à 9 et .)");
             valIsValid = false;
         }
 
@@ -86,12 +86,12 @@ const lieuValidator = {
             valIsValid = false;
         }
         if (lon > 180 || lon < -180) {
-            valMsgErr.push("Dois être entre -90 et 90");
+            valMsgErr.push("Dois être entre -180 et 180");
             valIsValid = false;
         }
         const regex = new RegExp("^[-0-9.]+$");
         if (regex.test(lon) === false && lon.length > 0) {
-            valMsgErr.push("Valeur invalide ! Valeur autorisé : (0 à 9 et .)");
+            valMsgErr.push("Valeur invalide ! Valeur autorisés : (0 à 9 et .)");
             valIsValid = false;
         }
 

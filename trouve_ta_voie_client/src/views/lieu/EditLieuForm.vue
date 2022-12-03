@@ -4,12 +4,12 @@
   <div v-if="!errorOccurred" id="lieuContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
     <h1>Modifier un lieu</h1>
     <hr>
-    <form id="addLieuForm">
+    <form id="editLieuForm">
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="title"
                @blur="checkTitleIsValid" @input="checkTitleIsValid"
-               :class="{ 'is-invalid': titleIsVaild===false }">
+               :class="{ 'is-invalid': titleIsVaild===false }" tabindex="1">
         <ul class="ulError" v-if="!titleIsVaild">
           <li class="error" v-for="err in titleMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -18,7 +18,7 @@
         <label for="description" class="form-label">Description</label>
         <textarea class="form-control" id="description" rows="4" v-model.trim="description"
                   @blur="checkDescriptionIsValid" @input="checkDescriptionIsValid"
-                  :class="{ 'is-invalid': descIsValid===false }"></textarea>
+                  :class="{ 'is-invalid': descIsValid===false }" tabindex="2"></textarea>
         <ul class="ulError" v-if="!descIsValid">
           <li class="error" v-for="err in descriptionMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -27,7 +27,7 @@
         <label for="directives" class="form-label">Directives pour s'y rendre</label>
         <textarea class="form-control" id="directives" rows="4" v-model.trim="instruction"
                   @blur="checkInstructionIsValid" @input="checkInstructionIsValid"
-                  :class="{ 'is-invalid': instrucIsValid===false }"></textarea>
+                  :class="{ 'is-invalid': instrucIsValid===false }" tabindex="3"></textarea>
         <ul class="ulError" v-if="!instrucIsValid">
           <li class="error" v-for="err in instructionMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -38,7 +38,7 @@
           <label for="latitude" class="form-label">Latitude</label>
           <input type="text" class="form-control" id="latitude" placeholder="0"
                  v-model.trim="latitude" @blur="checkLatitudeIsValid" @input="checkLatitudeIsValid"
-                 :class="{ 'is-invalid': latitudeIsValid===false }">
+                 :class="{ 'is-invalid': latitudeIsValid===false }" tabindex="4">
           <ul class="ulError" v-if="!latitudeIsValid">
             <li class="error" v-for="err in latitudeMsgErr" :key="err">{{ err }}</li>
           </ul>
@@ -47,7 +47,7 @@
           <label for="longitude" class="form-label">Longitude</label>
           <input type="text" class="form-control" id="longitude" placeholder="0"
                  v-model.trim="longitude" @blur="checkLongitudeIsValid" @input="checkLongitudeIsValid"
-                 :class="{ 'is-invalid': longitudeIsValid===false }">
+                 :class="{ 'is-invalid': longitudeIsValid===false }" tabindex="5">
           <ul class="ulError" v-if="!longitudeIsValid">
             <li class="error" v-for="err in longitudeMsgErr" :key="err">{{ err }}</li>
           </ul>
@@ -55,10 +55,10 @@
       </div>
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-secondary">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-secondary" tabindex="7">Retour</button>
         </div>
         <div>
-          <button @click="edit" type="button" class="btn btn-primary">Sauvegarder
+          <button @click="edit" type="button" class="btn btn-primary" tabindex="6">Sauvegarder
           </button>
         </div>
       </div>
@@ -254,9 +254,11 @@ h1 {
   margin-top: 40px;
 }
 
-#addLieuForm {
+#editLieuForm {
   padding: 30px;
   height: auto;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 .btnWrapper > div {
