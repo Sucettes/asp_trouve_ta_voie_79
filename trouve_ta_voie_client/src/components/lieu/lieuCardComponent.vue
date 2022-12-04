@@ -65,6 +65,7 @@ export default {
 }
 
 #cardBody {
+  width: 100%;
   min-height: 520px;
 
   display: flex;

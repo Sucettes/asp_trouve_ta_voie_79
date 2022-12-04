@@ -90,11 +90,13 @@ export default {
 }
 
 .cardBodyShort {
-  min-height: 530px !important;
+  min-height: 553px !important;
+  width: 100%;
 }
 
 #cardBody {
-  min-height: 520px;
+  width: 100%;
+  min-height: 553px;
 
   display: flex;
   flex-direction: column;

@@ -127,4 +127,8 @@ export default {
     cursor: pointer;
   }
 }
+
+.d-flex {
+  justify-content: center;
+}
 </style>

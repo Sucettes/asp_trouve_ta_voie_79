@@ -354,4 +354,8 @@ h1 {
   color: $accent;
   text-align: center;
 }
+
+.d-flex {
+  justify-content: center;
+}
 </style>
