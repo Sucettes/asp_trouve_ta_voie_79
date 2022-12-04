@@ -20,7 +20,11 @@ exports.login = async (req, res) => {
 
             if (user) {
                 if (bcrypt.compareSync(req.body.mdp, user.mdp)) {
-                    const payload = {userId: user.id, isAdmin: user.estAdmin};
+                    const payload = {
+                        userId: user.id,
+                        isAdmin: user.estAdmin,
+                        name: user.nom,
+                    };
 
                     const jwtToken = jwt.sign(payload, req.app.get("jwt-secret"), {
                         expiresIn: "12h",
@@ -30,7 +34,7 @@ exports.login = async (req, res) => {
                         token: jwtToken,
                         userId: user.id,
                         name: user.nom,
-                        isAdmin: user.estAdmin
+                        isAdmin: user.estAdmin,
                     });
                 }
             }
@@ -70,7 +74,11 @@ exports.register = async (req, res) => {
                 const newUser = await Utilisateur.create(user);
 
                 if (newUser) {
-                    const jwtToken = jwt.sign({userId: newUser.id, isAdmin: false}, req.app.get("jwt-secret"), {
+                    const jwtToken = jwt.sign({
+                        userId: newUser.id,
+                        isAdmin: false,
+                        name: newUser.nom,
+                    }, req.app.get("jwt-secret"), {
                         expiresIn: "12h",
                     });
 
@@ -78,7 +86,7 @@ exports.register = async (req, res) => {
                         token: jwtToken,
                         userId: newUser.id,
                         name: newUser.nom,
-                        isAdmin: false
+                        isAdmin: false,
                     });
                 } else {
                     res.status(400).end();
@@ -92,9 +100,9 @@ exports.register = async (req, res) => {
     }
 };
 
-// Si ce n’est pas valide, 401 est retourné grâce aux middleware.
+// Si ce n’est pas valide, 401 est retourné grâce au middleware.
 exports.valideToken = async (req, res) => {
-    res.status(200).end();
+    res.status(200).json(req.token);
 };
 
 exports.allReq = async (req, res) => {

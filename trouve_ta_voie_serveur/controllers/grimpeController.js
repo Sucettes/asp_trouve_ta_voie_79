@@ -198,6 +198,8 @@ exports.getGrimpesTop10 = async (req, res) => {
 
 exports.getFilteredGrimpes = async (req, res) => {
     try {
+        // todo : Ajouter des filtres ici...
+
         // Création du filtre : where
         let whereStr = {};
         if (req.body.style && req.body.style !== "all") whereStr.style = req.body.style;

@@ -5,18 +5,17 @@
 
   <div id="homeContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
     <h1>Trouve ta voie</h1>
-
+    <p>Is admin test : {{isAdmin}}</p>
     <br>
     <br>
 
-    <!--  fixme : corrige le francais ici  -->
-    <p class="blockquote">Notre objectif est simple, vous offrir un guide de qualité supérieure avec un inventaire de
-      lieux tous plus impressionnants les uns des autres à travers le monde entier. Nous voulons aider et accompagner
-      les
+    <p class="blockquote">
+      Notre objectif est simple, vous offrir un guide de qualité supérieure avec un inventaire de lieux tous plus
+      impressionnants les uns des autres à travers le monde entier. Nous voulons aider et accompagner les
       passionnés de sensation forte dans leur quête à la recherche d'une nouvelle aventure. Nous voulons vous aider à
       trouver votre voie et vivre une expérience digne d'un film d'action. Vous êtes passionnés d'escalade comme nous?
-      Vous êtes au bon endroit. Venez consulter notre catalogue afin de trouver votre lieu et à partir à l'aventure.</p>
-
+      Vous êtes au bon endroit. Venez consulter notre catalogue afin de trouver votre lieu et à partir à l'aventure.
+    </p>
   </div>
 
   <br>
@@ -222,6 +221,9 @@ export default {
     isLoading() {
       return this.$store.getters.isLoading;
     },
+    isAdmin() {
+      return this.$store.getters.isAdmin;
+    }
   },
   methods: {
     nextPage() {

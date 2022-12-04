@@ -15,6 +15,7 @@ export default {
                         userId: response.data.userId,
                         name: response.data.name,
                     });
+                    context.commit("setIsAdmin", response.data.isAdmin);
 
                     resolve(response);
                 })
@@ -36,6 +37,7 @@ export default {
                         userId: response.data.userId,
                         name: response.data.name,
                     });
+                    context.commit("setIsAdmin", response.data.isAdmin);
 
                     resolve(response);
                 })
@@ -53,6 +55,7 @@ export default {
                 userId: null,
                 name: null,
             });
+            context.commit("setIsAdmin", null);
 
             resolve();
         });
@@ -70,6 +73,9 @@ export default {
                         userId: null,
                         name: null,
                     });
+                    context.commit("setIsAdmin", null);
+                } else {
+                    context.commit("setIsAdmin", response.data.isAdmin);
                 }
                 resolve();
             }).catch(() => {
@@ -79,6 +85,7 @@ export default {
                     userId: null,
                     name: null,
                 });
+                context.commit("setIsAdmin", null);
                 reject();
             });
         });
