@@ -3,12 +3,12 @@
 // Bibliothèque de fonction pour la validation de certaines valeurs.
 const validatorFct = {
     // Vérifie si le mot de passe est valide.
-    userPwdIsValid(pwd) {
-        const pwdRegex = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#?!@$%^&*-])([a-zA-Z0-9#?!@$%^&*-]){4,}$");
+    userPwdIsValid(mdp) {
+        const mdpRegex = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#?!@$%^&*-])([a-zA-Z0-9#?!@$%^&*-]){4,}$");
 
-        if (pwd === "") return false;
-        else if (pwd.length < 6) return false;
-        else if (!pwdRegex.test(pwd)) return false;
+        if (mdp === "") return false;
+        else if (mdp.length < 6) return false;
+        else if (!mdpRegex.test(mdp)) return false;
         return true;
     },
     // Vérifie si le courriel est valide.

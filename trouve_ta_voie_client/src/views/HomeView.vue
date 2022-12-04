@@ -11,7 +11,8 @@
 
     <!--  fixme : corrige le francais ici  -->
     <p class="blockquote">Notre objectif est simple, vous offrir un guide de qualité supérieure avec un inventaire de
-      lieux tous plus impressionnants les uns des autres à travers le monde entier. Nous voulons aider et accompagner les
+      lieux tous plus impressionnants les uns des autres à travers le monde entier. Nous voulons aider et accompagner
+      les
       passionnés de sensation forte dans leur quête à la recherche d'une nouvelle aventure. Nous voulons vous aider à
       trouver votre voie et vivre une expérience digne d'un film d'action. Vous êtes passionnés d'escalade comme nous?
       Vous êtes au bon endroit. Venez consulter notre catalogue afin de trouver votre lieu et à partir à l'aventure.</p>
@@ -21,7 +22,6 @@
   <br>
   <h2 id="top10Titre">Top 10</h2>
 
-  <!-- Fixme : Faire en sorte d'avoir toujours 1 lignes jamais 2. Trouver une solution quand on redimentionne. -->
   <div id="top10Carousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active" data-bs-interval="4000">
@@ -96,7 +96,8 @@
 
         <label for="starsRange" class="form-label" v-if="stars === '5'">Étoiles : <strong>{{ stars }}</strong></label>
         <label for="starsRange" class="form-label" v-else>Étoiles : <strong>{{ stars }}</strong>+</label>
-        <input type="range" class="form-range" min="1" max="5" step="0.5" id="starsRange" v-model.trim="stars" tabindex="2">
+        <input type="range" class="form-range" min="1" max="5" step="0.5" id="starsRange" v-model.trim="stars"
+               tabindex="2">
 
         <br>
 
@@ -275,6 +276,7 @@ export default {
         this.filteredGrimpes = response.data;
         this.nbPages = Math.ceil(response.data.length / 8);
         this.atLeastOneSearch = true;
+        this.currPage = 0;
         this.$store.dispatch("stopLoading");
       }).catch(() => {
         this.$toast.error("Une erreur est survenue !");

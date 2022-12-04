@@ -90,6 +90,7 @@ exports.register = async (req, res) => {
     }
 };
 
+// Si ce n’est pas valide, 401 est retourné grâce aux middleware.
 exports.valideToken = async (req, res) => {
     res.status(200).end();
 };

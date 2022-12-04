@@ -146,8 +146,6 @@ exports.editLieu = async (req, res) => {
 
                 if (location) {
                     if (+location.utilisateurId === +req.token.userId) {
-                        console.log(location.utilisateurId)
-                        console.log(req.token.userId)
                         const location2 = await Lieu.findOne({where: {titre: req.body.titre}});
                         if (location2 && location2.id !== req.body.id) {
                             res.status(400).json({err: "Titre déjà utilisé !"});

@@ -73,9 +73,11 @@ export default {
 
 .lstPic {
   width: 100%;
-  //height: 123px;
-  height: 167px;
-  object-fit: contain;
+  //height: 167px;
+  //object-fit: contain;
+  height: 12vw;
+  min-height: 167px;
+  object-fit: cover;
 }
 
 #card {

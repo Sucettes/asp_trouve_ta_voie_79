@@ -1,3 +1,5 @@
+"use strict";
+
 const jwt = require("jsonwebtoken");
 
 function checkIfIsAuthenticated(req, callback) {

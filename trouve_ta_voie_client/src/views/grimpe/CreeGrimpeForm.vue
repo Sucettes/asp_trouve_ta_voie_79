@@ -7,7 +7,7 @@
     <form id="addGrimpeForm">
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
-        <input type="text" class="form-control" id="titre" placeholder="Titre" v-model="title"
+        <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="title"
                :class="{ 'is-invalid': titleIsVaild===false }" @blur="checkIfTitleIsValid" @input="checkIfTitleIsValid" tabindex="1">
         <ul class="ulError" v-if="!titleIsVaild">
           <li class="error" v-for="err in titleMsgErr" :key="err">{{ err }}</li>
@@ -17,7 +17,7 @@
       <div class="row">
         <div class="col-6">
           <label for="lieuDrop" class="form-label">Lieu</label>
-          <select id="lieuDrop" class="form-select" aria-label="Choisir le lieu" v-model="lieu"
+          <select id="lieuDrop" class="form-select" aria-label="Choisir le lieu" v-model.trim="lieu"
                   :class="{ 'is-invalid': lieuIsValid===false }" @blur="checkIfLieuIsValid"
                   @input="checkIfLieuIsValid" @focusout="checkIfLieuIsValid" tabindex="2">
             <option selected disabled>Choisir le lieu</option>
@@ -30,7 +30,7 @@
 
         <div class="col-6">
           <label for="diffDrop" class="form-label">Difficulté</label>
-          <select id="diffDrop" class="form-select" aria-label="Choisir la difficulté" v-model="diff"
+          <select id="diffDrop" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff"
                   :class="{ 'is-invalid': diffIsValid===false }" @blur="checkIfDiffIsValid"
                   @input="checkIfDiffIsValid" @focusout="checkIfDiffIsValid" tabindex="3">
             <option selected disabled>Choisir la difficulté</option>
@@ -53,7 +53,7 @@
 
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" rows="3" v-model="description"
+        <textarea class="form-control" id="description" rows="3" v-model.trim="description"
                   :class="{ 'is-invalid': descriptionIsValid===false }" @blur="checkIfDescriptionIsValid"
                   @input="checkIfDescriptionIsValid" tabindex="4"></textarea>
         <ul class="ulError" v-if="!descriptionIsValid">
@@ -64,7 +64,7 @@
       <div class="row">
         <div class="col-md-6">
           <label for="styleDrop" class="form-label">Style</label>
-          <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model="style"
+          <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style"
                   :class="{ 'is-invalid': styleIsValid===false }" @blur="checkIfStyleIsValid"
                   @input="checkIfStyleIsValid" tabindex="5">
             <option selected disabled>Choisir le style</option>

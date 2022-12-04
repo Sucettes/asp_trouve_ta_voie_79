@@ -123,7 +123,7 @@ exports.editGrimpe = async (req, res) => {
                             lieuxId: req.body.lieuxId,
                         },
                         {where: {id: req.body.id}},
-                    ).then(grimpe => {
+                    ).then(() => {
                         res.status(204).end();
                     });
                 }
