@@ -1,3 +1,4 @@
+// Bibliothèque de fonction pour la validation des grimpes
 const grimpeValidator = {
     checkIfTitleIsValid(title) {
         let titleMsgErr = [];
@@ -8,11 +9,11 @@ const grimpeValidator = {
             titleIsVaild = false;
         }
         if (title.length < 3 && title.length > 0) {
-            titleMsgErr.push("Trop court !");
+            titleMsgErr.push("Min. 3 caractères !");
             titleIsVaild = false;
         }
         if (title.length > 50) {
-            titleMsgErr.push("Trop long !");
+            titleMsgErr.push("Max. 50 caractères !");
             titleIsVaild = false;
         }
         return [titleMsgErr, titleIsVaild];
@@ -26,7 +27,7 @@ const grimpeValidator = {
             styleIsValid = false;
         }
         if (style !== "Traditionnelle" && style !== "Sportive" && style !== "Moulinette" && style !== "" && style !== "Choisir le style") {
-            styleMsgErr.push("Valeur invalide !");
+            styleMsgErr.push("Valeur invalide ! Traditionnelle, Sportive, Moulinette");
             styleIsValid = false;
         }
         return [styleMsgErr, styleIsValid];
@@ -40,18 +41,13 @@ const grimpeValidator = {
             descIsValid = false;
         }
         if (desc.length < 3 && desc.length > 0) {
-            descriptionMsgErr.push("Trop court !");
+            descriptionMsgErr.push("Min. 3 caractères !");
             descIsValid = false;
         }
         if (desc.length > 500) {
-            descriptionMsgErr.push("Trop long !");
+            descriptionMsgErr.push("Max. 500 caractères !");
             descIsValid = false;
         }
-        // const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
-        // if (regex.test(desc) === false && desc.length > 0) {
-        //     descriptionMsgErr.push("Valeur invalide !");
-        //     descIsValid = false;
-        // }
 
         return [descriptionMsgErr, descIsValid];
     },
@@ -62,9 +58,9 @@ const grimpeValidator = {
             diffMsgErr.push("Est requis !");
             diffIsVaild = false;
         }
-        const regex = new RegExp("^5\\.+((1[0-5])|([6-9]+0?))$");
+        const regex = new RegExp("^[0-9]{1,2}$");
         if (regex.test(diff) === false && diff.length > 0 && diff !== "Choisir la difficulté") {
-            diffMsgErr.push("Valeur invalide !");
+            diffMsgErr.push("Valeur invalide ! 5.6 à 5.15");
             diffIsVaild = false;
         }
         return [diffMsgErr, diffIsVaild];
@@ -79,7 +75,7 @@ const grimpeValidator = {
         }
 
         return [lieuMsgErr, lieuIsVaild];
-    }
+    },
 };
 
 module.exports = grimpeValidator;

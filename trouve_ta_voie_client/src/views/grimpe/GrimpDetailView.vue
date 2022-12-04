@@ -1,10 +1,10 @@
 <template>
-  <div>lieu details</div>
+  <div>grimpe details</div>
 </template>
 
 <script>
 export default {
-  name: "LieuDetailView"
+  name: "GrimpDetailView",
 };
 </script>
 

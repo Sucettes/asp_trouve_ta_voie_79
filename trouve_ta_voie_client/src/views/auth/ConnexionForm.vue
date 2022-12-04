@@ -1,4 +1,6 @@
 <template>
+  <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
+
   <div id="container">
     <form id="authForm" class="backgroundGlass">
       <h2>Connexion</h2>
@@ -6,7 +8,7 @@
         <label for="inputCourriel" class="form-label">Courriel</label>
         <input type="email" class="form-control" id="inputCourriel" v-model.trim="courriel"
                @blur="valideCourriel" @input="valideCourriel"
-               :class="{ 'is-invalid': courrielVal===false }">
+               :class="{ 'is-invalid': courrielVal===false }" tabindex="1">
         <ul class="ulError" v-if="!courrielVal">
           <li class="error" v-for="err in courrielErreurs" :key="err">{{ err }}</li>
         </ul>
@@ -15,16 +17,16 @@
       <div class="mb-3">
         <label for="inputMdp" class="form-label">Mot de passe</label>
         <input type="password" class="form-control" id="inputMdp" v-model.trim="mdp" @blur="valideMdp"
-               @input="valideMdp" :class="{ 'is-invalid': mdpVal===false }">
+               :class="{ 'is-invalid': mdpVal===false }" @input="valideMdp" tabindex="2">
         <ul class="ulError" v-if="!mdpVal">
           <li class="error" v-for="err in mdpErreurs" :key="err">{{ err }}</li>
         </ul>
       </div>
 
       <div class="btnWrapper">
-        <router-link class="nav-link" to="/auth/inscription">Inscription</router-link>
+        <router-link class="nav-link" to="/auth/inscription" tabindex="4">Inscription</router-link>
 
-        <button type="button" class="btn btn-outline-primary" @click="login">Confirmer</button>
+        <button type="button" class="btn btn-primary" @click="login" tabindex="3">Confirmer</button>
       </div>
     </form>
   </div>
@@ -32,11 +34,13 @@
 
 <script>
 
+import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import userValidator from "@/fctUtils/userValidator";
 
 
 export default {
   name: "ConnexionForm",
+  components: {LoadingSpinnerComponent},
   data() {
     return {
       courriel: "",
@@ -44,9 +48,8 @@ export default {
       courrielVal: undefined,
       mdpVal: undefined,
       mdp: "",
-      isLoading: false,
       courrielErreurs: [],
-      mdpErreurs: []
+      mdpErreurs: [],
     };
   },
   methods: {
@@ -59,18 +62,35 @@ export default {
       this.mdpVal = result[1];
 
       if (this.mdpVal && this.courrielVal) {
-        const actionPayload = {
+        const payload = {
           "courriel": this.courriel,
-          "mdp": this.mdp
+          "mdp": this.mdp,
         };
 
         try {
-          await this.$store.dispatch("login", actionPayload);
+          this.$store.dispatch("startLoading");
+
+          await this.$store.dispatch("login", payload)
+              .then((res) => {
+                if (res.status) {
+                  this.$toast.success("Connexion réussie !");
+                  this.$router.push({name: "accueil"});
+                  this.$store.dispatch("stopLoading");
+                }
+              })
+              .catch(() => {
+                this.courrielErreurs = ["Mauvais courriel ?"];
+                this.courrielVal = false;
+                this.mdpErreurs = ["Mauvais mot de passe ?"];
+                this.mdpVal = false;
+                this.$toast.error("Connexion refusée !");
+                this.$store.dispatch("stopLoading");
+              });
         } catch (err) {
-          console.log(err);
+          this.$toast.error("Une erreur est survenue !");
+          this.$store.dispatch("stopLoading");
         }
       }
-
     },
     valideCourriel(event) {
       const result = userValidator.checkIfEmailIsValid(event.target.value);
@@ -81,17 +101,26 @@ export default {
       const result = userValidator.checkIfPwdIsValid(event.target.value);
       this.mdpErreurs = result[0];
       this.mdpVal = result[1];
-    }
+    },
   },
   computed: {
     isLoggedIn() {
       return this.$store.getters.isAuthenticated;
-    }
-  }
+    },
+    isLoading() {
+      return this.$store.getters.isLoading;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/custom.scss';
+
+.nav-link {
+  color: $light;
+}
+
 #container {
   display: flex;
   justify-content: center;
@@ -122,7 +151,7 @@ export default {
 }
 
 .error {
-  color: #ff0000;
+  color: $redDark;
   font-size: 0.9rem;
 }
 
@@ -132,4 +161,3 @@ export default {
 }
 
 </style>
-

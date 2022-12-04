@@ -1,21 +1,23 @@
 "use strict";
 
+
 const path = require("path");
-const config = require("./config/config");
 const cors = require("cors");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 
-app.use(bodyParser.json({limit: "1024mb"}));
-app.use(bodyParser.urlencoded({limit: "1024mb", extended: true})); // todo : vraiment necessaire??? je crois pas
+dotenv.config();
 
-app.use(cors({origin: config.origins}));
-app.set("jwt-secret", config.secret);
+app.use(bodyParser.json({limit: "500mb"}));
+app.use(bodyParser.urlencoded({limit: "500mb", extended: true}));
+
+app.use(cors({origin: [process.env.ORIGIN]}));
+app.set("jwt-secret", process.env.SECRET);
 app.use(express.static(path.join(__dirname, "public")));
 
-// todo : Regardé comment faut mettre ça pour pas causé de problèmes.
 const db = require("./models/dbSetup");
 // db.sequelize.sync({force: true}).then(() => {
 db.sequelize.sync().then(() => {
@@ -32,6 +34,10 @@ app.use("/api", routerUtilisateur);
 app.use("/api", routerGrimpe);
 app.use("/api", routerLieu);
 app.use("/api", routerImage);
+
+app.all("*", (req, res) => {
+    res.status(404).end();
+});
 
 app.listen(8090, function () {
     console.log("Serveur sur le port " + this.address().port);

@@ -1,3 +1,4 @@
+// Bibliothèque de fonction pour la validation des lieux.
 const lieuValidator = {
     checkTitleIsValid(title) {
         let titleMsgErr = [];
@@ -8,18 +9,13 @@ const lieuValidator = {
             titleIsVaild = false;
         }
         if (title.length < 3 && title.length > 0) {
-            titleMsgErr.push("Trop court !");
+            titleMsgErr.push("Min. 3 caractères !");
             titleIsVaild = false;
         }
         if (title.length > 50) {
-            titleMsgErr.push("Trop long !");
+            titleMsgErr.push("Max. 50 caractères !");
             titleIsVaild = false;
         }
-        // const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
-        // if (regex.test(title) === false && title.length > 0) {
-        //     titleMsgErr.push("Valeur invalide !");
-        //     titleIsVaild = false;
-        // }
 
         return [titleMsgErr, titleIsVaild];
     },
@@ -32,18 +28,13 @@ const lieuValidator = {
             descIsValid = false;
         }
         if (desc.length < 3 && desc.length > 0) {
-            descriptionMsgErr.push("Trop court !");
+            descriptionMsgErr.push("Min. 3 caractères !");
             descIsValid = false;
         }
         if (desc.length > 500) {
-            descriptionMsgErr.push("Trop long !");
+            descriptionMsgErr.push("Max. 500 caractères !");
             descIsValid = false;
         }
-        // const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
-        // if (regex.test(desc) === false && desc.length > 0) {
-        //     descriptionMsgErr.push("Valeur invalide !");
-        //     descIsValid = false;
-        // }
 
         return [descriptionMsgErr, descIsValid];
     },
@@ -56,45 +47,56 @@ const lieuValidator = {
             instrucIsValid = false;
         }
         if (inst.length < 3 && inst.length > 0) {
-            instructionMsgErr.push("Trop court !");
+            instructionMsgErr.push("Min. 3 caractères !");
             instrucIsValid = false;
         }
         if (inst.length > 500) {
-            instructionMsgErr.push("Trop long !");
+            instructionMsgErr.push("Max. 500 caractères !");
             instrucIsValid = false;
         }
-        // const regex = new RegExp('^[0-9A-Za-z\\s-]+$');
-        // if (regex.test(inst) === false && inst.length > 0) {
-        //     instructionMsgErr.push("Valeur invalide !");
-        //     instrucIsValid = false;
-        // }
 
         return [instructionMsgErr, instrucIsValid];
     },
-    checkLatitudeLongitudeIsValid(val) {
+    checkLatitudeIsValid(lat) {
         let valMsgErr = [];
         let valIsValid = true;
 
-        if (val === "") {
+        if (lat === "") {
             valMsgErr.push("Est requis !");
             valIsValid = false;
         }
-        if (val > 180 || val < -180) {
-            valMsgErr.push("Dois être entre -180 et 180");
+        if (lat > 90 || lat < -90) {
+            valMsgErr.push("Dois être entre -90 et 90");
             valIsValid = false;
         }
-        // if (!/^[-+]?([1-8]?\d(.\d+)?|90(.0+)?)$/.test(val) && val.length > 0) {
-        //     valMsgErr.push("Valeur invalide !");
-        //     valIsValid = false;
-        // }
-        const regex = new RegExp("^[-0-9,.]+$");
-        if (regex.test(val) === false && val.length > 0) {
-            valMsgErr.push("Valeur invalide !");
+        const regex = new RegExp("^[-0-9.]+$");
+        if (regex.test(lat) === false && lat.length > 0) {
+            valMsgErr.push("Valeur invalide ! Valeur autorisés : (0 à 9 et .)");
             valIsValid = false;
         }
 
         return [valMsgErr, valIsValid];
-    }
+    },
+    checkLongitudeIsValid(lon) {
+        let valMsgErr = [];
+        let valIsValid = true;
+
+        if (lon === "") {
+            valMsgErr.push("Est requis !");
+            valIsValid = false;
+        }
+        if (lon > 180 || lon < -180) {
+            valMsgErr.push("Dois être entre -180 et 180");
+            valIsValid = false;
+        }
+        const regex = new RegExp("^[-0-9.]+$");
+        if (regex.test(lon) === false && lon.length > 0) {
+            valMsgErr.push("Valeur invalide ! Valeur autorisés : (0 à 9 et .)");
+            valIsValid = false;
+        }
+
+        return [valMsgErr, valIsValid];
+    },
 };
 
 module.exports = lieuValidator;

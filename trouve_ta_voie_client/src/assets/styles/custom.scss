@@ -1,17 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
 
-$light: #b7cce0;
-$dark: #53717f;
-$medium: #7394a1;
-$accent: #df591a;
-$green: #54ae2b;
 
-$primary: #df591a;
-//$secondary: $medium;
+$light: #93bcff;
+$dark: #23426c;
+$accent: #137ad7;
+$lightAccent: #00a6ff;
+$blueAccent: #b4d4ff;
+$Darkaccent: #235c96;
+$green: #43a016;
+$darkGreen: #2a660f;
+$red: #c70000;
+$redDark: #860000;
+$orange: #ff9e00;
+$DarkOrange: #b87100;
+
+$primary: $Darkaccent;
+$secondary: $accent;
 
 .btn-outline-primary:hover {
   color: white
+}
+
+.btn-outline-secondary:hover {
+  color: white;
 }
 
 .btn {
@@ -22,14 +34,19 @@ $primary: #df591a;
   border-radius: 0;
 }
 
-.form-select{
+.form-select {
   border-radius: 0;
 }
 
 * {
   font-family: 'Abel', sans-serif;
+
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Oswald', sans-serif;
+}
+
+.navbar-light {
+  background-color: $dark;
 }

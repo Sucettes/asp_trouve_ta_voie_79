@@ -4,5 +4,5 @@ export default {
     },
     grimpe(state) {
         return state.grimpe;
-    }
+    },
 };

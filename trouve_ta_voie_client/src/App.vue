@@ -9,9 +9,10 @@ import HeaderNav from "@/components/HeaderNav";
 
 export default {
   components: {HeaderNav},
-  mounted() {
-    this.$store.dispatch("reloadGetDataFromLocalStorage");
-  }
+  async mounted() {
+    await this.$store.dispatch("checkIfLocalStorageTokenIsValid", this.$store.getters.token).catch(() => {
+    });
+  },
 };
 </script>
 
@@ -25,14 +26,24 @@ export default {
 
 html {
   background-color: #f3f4f6;
+
+  ::-moz-selection {
+    color: $primary;
+    background: $blueAccent;
+  }
+
+  ::selection {
+    color: $primary;
+    background: $blueAccent;
+  }
 }
 
 .backgroundGlass {
-  backdrop-filter: blur(15px) saturate(72%);
-  -webkit-backdrop-filter: blur(15px) saturate(72%);
-  background-color: rgba(221, 160, 122, 0);
+  backdrop-filter: blur(15px) saturate(100%);
+  -webkit-backdrop-filter: blur(15px) saturate(100%);
+  background-color: rgba(34, 34, 34, 0.12);
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.125);
+  border: 1px solid rgba(255, 255, 255, 0.125)
 }
 
 #authForm {
@@ -43,7 +54,7 @@ html {
 }
 
 .error {
-  color: #ff0000;
+  color: $red;
   font-size: 0.9rem;
 }
 

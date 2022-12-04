@@ -1,64 +1,96 @@
-// let timer;
-
 import axios from "axios";
-import router from "@/router";
 
 
 export default {
     async login(context, payload) {
-        axios.post("http://localhost:8090/api/connexion", payload)
-             .then(response => {
-                 localStorage.setItem("token", response.data.token);
-                 localStorage.setItem("userId", response.data.userId);
-                 localStorage.setItem("name", response.data.name);
+        return new Promise((resolve, reject) => {
+            axios.post("http://localhost:8090/api/connexion", payload)
+                .then(response => {
+                    localStorage.setItem("token", response.data.token);
+                    localStorage.setItem("userId", response.data.userId);
+                    localStorage.setItem("name", response.data.name);
+                    // localStorage.setItem("setIsAdmin", response.data.isAdmin);
 
-                 context.commit("setUser", {
-                     token: response.data.token,
-                     userId: response.data.userId,
-                     name: response.data.name
-                 });
-                 router.push({name: "accueil"});
-             })
-             .catch((err) => {
-                 throw new Error(err.message)
-             });
+                    context.commit("setUser", {
+                        token: response.data.token,
+                        userId: response.data.userId,
+                        name: response.data.name,
+                    });
+                    context.commit("setIsAdmin", response.data.isAdmin);
+
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error.response);
+                });
+        });
     },
     async signup(context, payload) {
-        axios.post("http://localhost:8090/api/inscription", payload)
-             .then(response => {
-                 localStorage.setItem("token", response.data.token);
-                 localStorage.setItem("userId", response.data.userId);
-                 localStorage.setItem("name", response.data.name);
+        return new Promise((resolve, reject) => {
+            axios.post("http://localhost:8090/api/inscription", payload)
+                .then(response => {
+                    localStorage.setItem("token", response.data.token);
+                    localStorage.setItem("userId", response.data.userId);
+                    localStorage.setItem("name", response.data.name);
+                    // localStorage.setItem("setIsAdmin", response.data.isAdmin);
 
-                 context.commit("setUser", {
-                     token: response.data.token,
-                     userId: response.data.userId,
-                     name: response.data.name
-                 });
+                    context.commit("setUser", {
+                        token: response.data.token,
+                        userId: response.data.userId,
+                        name: response.data.name,
+                    });
+                    context.commit("setIsAdmin", response.data.isAdmin);
 
-                 router.push({name: "accueil"});
-             }).catch(error => {
-            console.log(error);
+                    resolve(response);
+                })
+                .catch((error) => {
+                    reject(error.response);
+                });
         });
     },
-    logout(context) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userId");
-        localStorage.removeItem("name");
+    async logout(context) {
+        return new Promise((resolve) => {
+            localStorage.clear();
 
-        context.commit("setUser", {
-            token: null,
-            userId: null,
-            name: null
+            context.commit("setUser", {
+                token: null,
+                userId: null,
+                name: null,
+            });
+            context.commit("setIsAdmin", null);
+
+            resolve();
         });
-
-        router.push({name: "connexion"});
     },
-    reloadGetDataFromLocalStorage(context) {
-        context.commit("setUser", {
-            token: localStorage.getItem("token"),
-            userId: localStorage.getItem("userId"),
-            name: localStorage.getItem("name")
+    // Vérifie le token qui est dans le local storage.
+    async checkIfLocalStorageTokenIsValid(context, token) {
+        return new Promise((resolve, reject) => {
+            axios.post("http://localhost:8090/api/valideToken", {}, {
+                headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
+            }).then(response => {
+                if (response.status !== 200) {
+                    localStorage.clear();
+                    context.commit("setUser", {
+                        token: null,
+                        userId: null,
+                        name: null,
+                    });
+                    context.commit("setIsAdmin", null);
+                } else {
+                    context.commit("setIsAdmin", response.data.isAdmin);
+                }
+                resolve();
+            }).catch(() => {
+                localStorage.clear();
+                context.commit("setUser", {
+                    token: null,
+                    userId: null,
+                    name: null,
+                });
+                context.commit("setIsAdmin", null);
+                reject();
+            });
         });
-    }
+
+    },
 };

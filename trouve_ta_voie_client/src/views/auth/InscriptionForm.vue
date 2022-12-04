@@ -1,11 +1,13 @@
 <template>
+  <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
+
   <div id="container">
     <form id="authForm" class="backgroundGlass">
       <h2>Inscription</h2>
       <div class="mb-3">
         <label for="inputNom" class="form-label">Nom</label>
         <input type="text" class="form-control" id="inputNom" v-model.trim="nom" @input="valideNom"
-               @blur="valideNom" :class="{ 'is-invalid': nomVal===false }">
+               @blur="valideNom" :class="{ 'is-invalid': nomVal===false }" tabindex="1">
         <ul class="ulError" v-if="!nomVal">
           <li class="error" v-for="err in nomErreurs" :key="err">{{ err }}</li>
         </ul>
@@ -14,7 +16,7 @@
         <label for="inputCourriel" class="form-label">Courriel</label>
         <input type="email" class="form-control" id="inputCourriel" v-model.trim="courriel"
                @blur="valideCourriel" @input="valideCourriel"
-               :class="{ 'is-invalid': courrielVal===false }">
+               :class="{ 'is-invalid': courrielVal===false }" tabindex="2">
         <ul class="ulError" v-if="!courrielVal">
           <li class="error" v-for="err in courrielErreurs" :key="err">{{ err }}</li>
         </ul>
@@ -23,7 +25,8 @@
       <div class="mb-3">
         <label for="inputMdp" class="form-label">Mot de passe</label>
         <input type="password" class="form-control" id="inputMdp" v-model.trim="mdp" @blur="valideMdp"
-               @input="valideMdp" :class="{ 'is-invalid': mdpVal===false }">
+               @input="valideMdp"
+               :class="{ 'is-invalid': mdpVal===false }" tabindex="3">
         <ul class="ulError" v-if="!mdpVal">
           <li class="error" v-for="err in mdpErreurs" :key="err">{{ err }}</li>
 
@@ -38,10 +41,10 @@
 
       </div>
       <div class="mb-3">
-        <label for="inputMdpConf" class="form-label">Mot de passe confirmer</label>
+        <label for="inputMdpConf" class="form-label">Confirmation du mot de passe</label>
         <input type="password" class="form-control" id="inputMdpConf" v-model.trim="mdpConf"
                @blur="valideMdpConf" @input="valideMdpConf"
-               :class="{ 'is-invalid': mdpConfVal===false }">
+               :class="{ 'is-invalid': mdpConfVal===false }" tabindex="4">
         <ul class="ulError" v-if="!mdpConfVal">
           <li class="error" v-for="err in mdpConfErreurs" :key="err">{{ err }}</li>
 
@@ -54,26 +57,25 @@
           <li class="error">Est différent !</li>
         </ul>
 
-
       </div>
 
       <div class="btnWrapper">
-        <router-link class="nav-link" to="/auth/connexion">Connexion</router-link>
+        <router-link class="nav-link" to="/auth/connexion" tabindex="6">Connexion</router-link>
 
-        <button type="button" class="btn btn-outline-primary" @click="register">Confirmer</button>
+        <button type="button" class="btn btn-primary" @click="register" tabindex="5">Confirmer</button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
-
+import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import userValidator from "@/fctUtils/userValidator";
-import axios from "axios";
 
 
 export default {
   name: "InscriptionForm",
+  components: {LoadingSpinnerComponent},
   data() {
     return {
       nom: "",
@@ -84,11 +86,10 @@ export default {
       courrielVal: undefined,
       mdpVal: undefined,
       mdpConfVal: undefined,
-      isLoading: false,
       courrielErreurs: [],
       mdpErreurs: [],
       mdpConfErreurs: [],
-      nomErreurs: []
+      nomErreurs: [],
     };
   },
   methods: {
@@ -106,35 +107,38 @@ export default {
       this.mdpConfErreurs = result[0];
       this.mdpConfVal = result[1];
 
+      if (this.nomVal && this.courrielVal && this.mdpVal && this.mdpConfVal && this.mdp === this.mdpConf) {
+        const payload = {
+          nom: this.nom,
+          courriel: this.courriel,
+          mdp: this.mdp,
+          mdpConf: this.mdpConf,
+        };
 
-      const prom = new Promise((resolve) => {
-        axios.get(`http://localhost:8090/api/utilisateur/courriel/${this.courriel}`).then(res => {
-          if (res.status === 200) {
-            this.courrielVal = false;
-            this.courrielErreurs.push("Courriel déjà utilisé !");
-          }
-          resolve();
-        }).catch(() => {
-          resolve();
-        });
-      });
+        try {
+          this.$store.dispatch("startLoading");
 
-      prom.then(() => {
-        if (this.nomVal && this.courrielVal && this.mdpVal && this.mdpConfVal && this.mdp === this.mdpConf) {
-          const actionPayload = {
-            "nom": this.nom,
-            "courriel": this.courriel,
-            "mdp": this.mdp,
-            "mdpConf": this.mdpConf
-          };
-
-          try {
-            this.$store.dispatch("signup", actionPayload);
-          } catch (err) {
-            console.log(err);
-          }
+          this.$store.dispatch("signup", payload)
+              .then((res) => {
+                if (res.status) {
+                  this.$toast.success("Inscription réussie ! vous êtes connecté");
+                  this.$router.push({name: "accueil"});
+                  this.$store.dispatch("stopLoading");
+                }
+              })
+              .catch((err) => {
+                if (err.data.err && err.data.err === "Courriel déjà utilisé !") {
+                  this.courrielErreurs = ["Courriel déjà utilisé !"];
+                  this.courrielVal = false;
+                }
+                this.$toast.error("Échec de l'inscription !");
+                this.$store.dispatch("stopLoading");
+              });
+        } catch (err) {
+          this.$toast.error("Une erreur est survenue !");
+          this.$store.dispatch("stopLoading");
         }
-      });
+      }
     },
     valideNom(event) {
       const result = userValidator.checkIfNameIsValid(event.target.value);
@@ -155,12 +159,22 @@ export default {
       const result = userValidator.checkIfPwdIsValid(event.target.value);
       this.mdpConfErreurs = result[0];
       this.mdpConfVal = result[1];
-    }
-  }
+    },
+  },
+  computed: {
+    isLoading() {
+      return this.$store.getters.isLoading;
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/custom.scss';
+
+.nav-link {
+  color: $light;
+}
 
 #container {
   display: flex;
@@ -185,7 +199,7 @@ export default {
 }
 
 .error {
-  color: #ff0000;
+  color: $redDark;
   font-size: 0.9rem;
 }
 

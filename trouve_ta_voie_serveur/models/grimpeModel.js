@@ -1,32 +1,32 @@
-'use strict';
+"use strict";
 
 const {DataTypes} = require("sequelize");
+
 module.exports = (sequelize, Sequelize) => {
-    return sequelize.define('grimpes', {
+    return sequelize.define("grimpes", {
         titre: {
             type: DataTypes.STRING(50),
-            allowNull: false
+            allowNull: false,
         },
         style: {
-            type: DataTypes.ENUM('Traditionnelle', 'Sportive', 'Moulinette'),
-            allowNull: false
+            type: DataTypes.ENUM("Traditionnelle", "Sportive", "Moulinette"),
+            allowNull: false,
         },
         description: {
             type: DataTypes.STRING(500),
-            allowNull: false
+            allowNull: false,
         },
-        // todo : regarde pour bien les mettre dans la bd car les valeurs ne sont pas exact... 5.6 = 5.60 dans bd.
         difficulte: {
-            type: DataTypes.DECIMAL(10,2),
-            allowNull: false
+            type: DataTypes.INTEGER,
+            allowNull: false,
         },
         nbEtoiles: {
-            type: DataTypes.DECIMAL(10,2),
-            defaultValue: 0
+            type: DataTypes.DECIMAL(10, 2),
+            defaultValue: 1,
         },
         nbVotes: {
-            type: DataTypes.DECIMAL(10,2),
-            defaultValue: 0
-        }
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+        },
     });
 };
