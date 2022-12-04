@@ -10,55 +10,65 @@ const Lieu = db.lieux;
 const uuid = require("uuid");
 
 const fs = require("fs");
+const grimpeValidator = require("../fctUtils/grimpeValidator");
 
 exports.createGrimpe = async (req, res) => {
     try {
-        // todo : Faire les validations
-        let grimpe = await Grimpe.findOne({
-            where: {
-                lieuxId: req.body.lieuxId,
-                titre: req.body.titre,
-            },
-        });
+        const titleIsValid = grimpeValidator.checkIfTitleIsValid(req.body.titre);
+        const styleIsValid = grimpeValidator.checkIfStyleIsValid(req.body.style);
+        const descIsValid = grimpeValidator.checkIfDescriptionIsValid(req.body.description);
+        const diffIsValid = grimpeValidator.checkIfDifficultyLevelIsValid(req.body.difficulte);
+        const imgCountIsValid = req.body.imgsBase64.length >= 1;
 
-        // Titre déjà utilisé
-        if (grimpe) {
-            res.status(400).json({err: "Titre déjà utilisé !"});
-        } else {
-            await db.sequelize.transaction(async (transaction) => {
-                try {
-                    let imgs = [];
-
-                    const newGrimpe = await Grimpe.create({
-                        titre: req.body.titre,
-                        style: req.body.style,
-                        description: req.body.description,
-                        difficulte: +req.body.difficulte,
-                        utilisateurId: req.token.userId,
-                        lieuxId: req.body.lieuxId,
-                    }, {transaction: transaction});
-
-                    if (newGrimpe) {
-                        await req.body.imgsBase64.forEach(pic => {
-                            const matches = pic.base64.match(/^data:([A-Za-z+/]+);base64,(.+)$/);
-                            let buff = Buffer.from(matches[2], "base64");
-                            const dotIndex = pic.name.lastIndexOf(".");
-                            const fileName = uuid.v4() + pic.name.substring(dotIndex);
-
-                            fs.writeFileSync(`public/img/grimpe/${fileName}`, buff);
-                            imgs.push({
-                                nom: fileName, path: `/img/grimpe/${fileName}`, grimpeId: newGrimpe.id,
-                            });
-                        });
-
-                        imgs = await Image.bulkCreate(imgs, {transaction: transaction});
-                        res.status(201).json({grimpe: newGrimpe, img: imgs});
-                    }
-                } catch (e) {
-                    // fixme : Supprimé les images qui on été ajouté
-                    res.status(400).end();
-                }
+        if (titleIsValid && styleIsValid && descIsValid && diffIsValid && imgCountIsValid) {
+            let grimpe = await Grimpe.findOne({
+                where: {
+                    lieuxId: req.body.lieuxId,
+                    titre: req.body.titre,
+                },
             });
+
+            // Existe déjà et titre déjà utiliser.
+            if (grimpe) {
+                res.status(400).json({err: "Titre déjà utilisé !"});
+            } else {
+                await db.sequelize.transaction(async (transaction) => {
+                    try {
+                        let imgs = [];
+
+                        const newGrimpe = await Grimpe.create({
+                            titre: req.body.titre,
+                            style: req.body.style,
+                            description: req.body.description,
+                            difficulte: +req.body.difficulte,
+                            utilisateurId: req.token.userId,
+                            lieuxId: req.body.lieuxId,
+                        }, {transaction: transaction});
+
+                        if (newGrimpe) {
+                            // Sauvegarde des images dans bd et en local.
+                            await req.body.imgsBase64.forEach(pic => {
+                                const matches = pic.base64.match(/^data:([A-Za-z+/]+);base64,(.+)$/);
+                                let buff = Buffer.from(matches[2], "base64");
+                                const dotIndex = pic.name.lastIndexOf(".");
+                                const fileName = uuid.v4() + pic.name.substring(dotIndex);
+
+                                fs.writeFileSync(`public/img/grimpe/${fileName}`, buff);
+                                imgs.push({
+                                    nom: fileName, path: `/img/grimpe/${fileName}`, grimpeId: newGrimpe.id,
+                                });
+                            });
+
+                            imgs = await Image.bulkCreate(imgs, {transaction: transaction});
+                            res.status(201).json({grimpe: newGrimpe, img: imgs});
+                        }
+                    } catch (e) {
+                        res.status(400).end();
+                    }
+                });
+            }
+        } else {
+            res.status(400).end();
         }
     } catch (e) {
         res.status(500).end();
@@ -84,7 +94,8 @@ exports.getGrimpeByIdToEdit = async (req, res) => {
         const grimpe = await Grimpe.findByPk(+req.params.id, {include: Image});
 
         if (grimpe) {
-            if (+grimpe.utilisateurId === +req.params.userId) {
+            // À les autorisations.
+            if (+grimpe.utilisateurId === +req.params.userId || req.token.isAdmin) {
                 res.status(200).json(grimpe);
             } else {
                 res.status(403).end();
@@ -99,39 +110,50 @@ exports.getGrimpeByIdToEdit = async (req, res) => {
 
 exports.editGrimpe = async (req, res) => {
     try {
-        // todo : Faire les validation
-        let grimpe = await Grimpe.findOne({
-            where: {id: req.body.id},
-        });
+        const titleIsValid = grimpeValidator.checkIfTitleIsValid(req.body.titre);
+        const styleIsValid = grimpeValidator.checkIfStyleIsValid(req.body.style);
+        const descIsValid = grimpeValidator.checkIfDescriptionIsValid(req.body.description);
+        const diffIsValid = grimpeValidator.checkIfDifficultyLevelIsValid(req.body.difficulte);
 
-        if (grimpe) {
-            if (grimpe.utilisateurId === req.token.userId) {
-                let grimpe2 = await Grimpe.findOne({
-                    where: {
-                        lieuxId: req.body.lieuxId,
-                        titre: req.body.titre,
-                    },
-                });
-                if (grimpe2 && grimpe2.id !== req.body.id) {
-                    res.status(400).json({err: "Titre déjà utilisé !"});
-                } else {
-                    await Grimpe.update({
-                            titre: req.body.titre,
-                            style: req.body.style,
-                            description: req.body.description,
-                            difficulte: req.body.difficulte,
+        if (titleIsValid && styleIsValid && descIsValid && diffIsValid) {
+            let grimpe = await Grimpe.findOne({
+                where: {id: req.body.id},
+            });
+
+            if (grimpe) {
+                if (grimpe.utilisateurId === req.token.userId || req.token.isAdmin) {
+                    // Vérification si le titre est disponible.
+                    const grimpe2 = await Grimpe.findOne({
+                        where: {
                             lieuxId: req.body.lieuxId,
+                            titre: req.body.titre,
                         },
-                        {where: {id: req.body.id}},
-                    ).then(() => {
-                        res.status(204).end();
                     });
+
+                    if (grimpe2 && grimpe2.id !== req.body.id) {
+                        res.status(400).json({err: "Titre déjà utilisé !"});
+                    } else {
+                        // Modification de la grimpe.
+                        await Grimpe.update({
+                                titre: req.body.titre,
+                                style: req.body.style,
+                                description: req.body.description,
+                                difficulte: req.body.difficulte,
+                                lieuxId: req.body.lieuxId,
+                            },
+                            {where: {id: req.body.id}},
+                        ).then(() => {
+                            res.status(204).end();
+                        });
+                    }
+                } else {
+                    res.status(403).end();
                 }
             } else {
-                res.status(403).end();
+                res.status(404).end();
             }
         } else {
-            res.status(404).end();
+            res.status(400).end();
         }
     } catch (e) {
         res.status(500).end();
@@ -181,7 +203,7 @@ exports.getFilteredGrimpes = async (req, res) => {
         if (req.body.style && req.body.style !== "all") whereStr.style = req.body.style;
         if (req.body.stars) {
             whereStr.nbEtoiles = {
-                [Op.gte]: req.body.stars
+                [Op.gte]: req.body.stars,
             };
         }
         if (req.body.lieu) whereStr.lieuxId = req.body.lieu;
@@ -189,13 +211,11 @@ exports.getFilteredGrimpes = async (req, res) => {
             whereStr.difficulte = {
                 [Op.between]: [+req.body.diff1, +req.body.diff2],
             };
-        }
-        else if (req.body.diff1) {
+        } else if (req.body.diff1) {
             whereStr.difficulte = {
                 [Op.gte]: +req.body.diff1,
             };
-        }
-        else if (req.body.diff2) {
+        } else if (req.body.diff2) {
             whereStr.difficulte = {
                 [Op.lte]: +req.body.diff2,
             };

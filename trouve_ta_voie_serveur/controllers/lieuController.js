@@ -82,7 +82,7 @@ exports.getLieuDetailsById = async (req, res) => {
 
         if (location) {
             let nbGrimpe = await Grimpe.count({where: {lieuxId: req.params.id}});
-            // todo : retourné les 3 styles même si il en as pas pour pouvoir affiché 0
+
             let grimpeStyle = await Grimpe.findAndCountAll({
                 attributes: ["style"],
                 group: "style",

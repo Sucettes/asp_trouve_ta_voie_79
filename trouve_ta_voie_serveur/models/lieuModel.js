@@ -23,7 +23,6 @@ module.exports = (sequelize, Sequelize) => {
                 len: [3, 500],
             },
         },
-        // edit: Google map est encore plus precis et c'est valeur sont arrondis
         latitude: {
             type: DataTypes.DECIMAL(18, 15),
         },
