@@ -54,7 +54,7 @@
 
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" rows="3" v-model.trim="description"
+        <textarea class="form-control" id="description" rows="4" v-model.trim="description"
                   :class="{ 'is-invalid': descriptionIsValid===false }" @blur="checkIfDescriptionIsValid"
                   @input="checkIfDescriptionIsValid" tabindex="4"></textarea>
         <ul class="ulError" v-if="!descriptionIsValid">

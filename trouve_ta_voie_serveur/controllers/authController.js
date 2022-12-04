@@ -20,12 +20,13 @@ exports.login = async (req, res) => {
 
             if (user) {
                 if (bcrypt.compareSync(req.body.mdp, user.mdp)) {
-                    const payload = {userId: user.id};
+                    const payload = {userId: user.id, isAdmin: user.estAdmin};
 
                     const jwtToken = jwt.sign(payload, req.app.get("jwt-secret"), {
                         expiresIn: "12h",
                     });
 
+                    // edit : return isAdmin?
                     res.status(201).json({
                         token: jwtToken,
                         userId: user.id,
@@ -69,7 +70,7 @@ exports.register = async (req, res) => {
                 const newUser = await Utilisateur.create(user);
 
                 if (newUser) {
-                    const jwtToken = jwt.sign({userId: newUser.id}, req.app.get("jwt-secret"), {
+                    const jwtToken = jwt.sign({userId: newUser.id, isAdmin: false}, req.app.get("jwt-secret"), {
                         expiresIn: "12h",
                     });
 
