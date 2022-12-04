@@ -9,6 +9,7 @@ export default {
             userId: localStorage.getItem("userId"),
             token: localStorage.getItem("token"),
             name: localStorage.getItem("name"),
+            // isAdmin: localStorage.getItem("isAdmin"),
         };
     },
     mutations,

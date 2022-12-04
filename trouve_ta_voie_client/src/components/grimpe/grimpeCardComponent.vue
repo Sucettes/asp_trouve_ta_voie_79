@@ -34,7 +34,7 @@
         <div id="btnWrapper">
           <p @click="seeDetails" id="detailsBtn">Détails</p>
           <button @click="editGrimpe" type="button" class="btn btn-outline-secondary"
-                  v-if="+this.userId === +this.$store.getters.userId">Modifier
+                  v-if="+this.userId === +this.$store.getters.userId || this.$store.getters.isAdmin">Modifier
           </button>
         </div>
       </div>

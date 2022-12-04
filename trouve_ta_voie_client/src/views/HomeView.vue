@@ -5,7 +5,7 @@
 
   <div id="homeContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
     <h1>Trouve ta voie</h1>
-    <p>Is admin test : {{isAdmin}}</p>
+
     <br>
     <br>
 
@@ -220,9 +220,6 @@ export default {
   computed: {
     isLoading() {
       return this.$store.getters.isLoading;
-    },
-    isAdmin() {
-      return this.$store.getters.isAdmin;
     }
   },
   methods: {

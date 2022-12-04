@@ -9,6 +9,7 @@ export default {
                     localStorage.setItem("token", response.data.token);
                     localStorage.setItem("userId", response.data.userId);
                     localStorage.setItem("name", response.data.name);
+                    // localStorage.setItem("setIsAdmin", response.data.isAdmin);
 
                     context.commit("setUser", {
                         token: response.data.token,
@@ -31,6 +32,7 @@ export default {
                     localStorage.setItem("token", response.data.token);
                     localStorage.setItem("userId", response.data.userId);
                     localStorage.setItem("name", response.data.name);
+                    // localStorage.setItem("setIsAdmin", response.data.isAdmin);
 
                     context.commit("setUser", {
                         token: response.data.token,

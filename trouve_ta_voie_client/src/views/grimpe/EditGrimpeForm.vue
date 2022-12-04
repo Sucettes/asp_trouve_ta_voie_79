@@ -189,7 +189,6 @@ export default {
         this.pictures = res.data.images;
         this.$store.dispatch("stopLoading");
       }).catch(err => {
-        console.log(err.response);
         this.$store.dispatch("stopLoading");
         errorManager(err.response, this.$store, this.$router);
       });

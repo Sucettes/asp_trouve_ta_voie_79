@@ -107,7 +107,7 @@
     </div>
   </div>
 
-  <div id="svgIconEditDiv" @click="goToEditLieu" v-if="userCanEdit">
+  <div id="svgIconEditDiv" @click="goToEditLieu" v-if="userCanEdit || isAdmin">
     <svg id="svgIconEdit" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
          class="bi bi-pencil-square" viewBox="0 0 16 16">
       <path
@@ -151,6 +151,9 @@ export default {
     isLoading() {
       return this.$store.getters.isLoading;
     },
+    isAdmin() {
+      return this.$store.getters.isAdmin;
+    }
   },
   methods: {
     async loadLieuDetails() {
