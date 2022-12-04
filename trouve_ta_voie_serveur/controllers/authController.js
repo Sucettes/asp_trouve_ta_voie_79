@@ -26,11 +26,11 @@ exports.login = async (req, res) => {
                         expiresIn: "12h",
                     });
 
-                    // edit : return isAdmin?
                     res.status(201).json({
                         token: jwtToken,
                         userId: user.id,
                         name: user.nom,
+                        isAdmin: user.estAdmin
                     });
                 }
             }
@@ -78,6 +78,7 @@ exports.register = async (req, res) => {
                         token: jwtToken,
                         userId: newUser.id,
                         name: newUser.nom,
+                        isAdmin: false
                     });
                 } else {
                     res.status(400).end();
