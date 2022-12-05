@@ -169,7 +169,9 @@ exports.getGrimpesForUserId = async (req, res) => {
 
         if (user) {
             await Grimpe.findAll({
-                include: [Image, Lieu, Utilisateur], where: {utilisateurId: req.token.userId},
+                include: [Image, Lieu, Utilisateur],
+                where: {utilisateurId: req.token.userId},
+                order: [["nbEtoiles", "DESC"], ["nbVotes", "DESC"], ["titre", "ASC"]],
             }).then(grimpes => {
                 res.status(200).json(grimpes);
             }).catch(() => {
