@@ -84,7 +84,6 @@ exports.getLieuDetailsById = async (req, res) => {
                 where: {lieuxId: req.params.id},
             });
 
-            // edit : Faire en sorte de recuperer ceux qui sont a 0??
             // Les styles de grimpe (qt) que le lieu possède.
             let grimpeStyle = await Grimpe.findAndCountAll({
                 attributes: ["style"],
@@ -99,7 +98,10 @@ exports.getLieuDetailsById = async (req, res) => {
                 order: [],
             });
             // les grimpes que le lieu possède.
-            let grimpes = await Grimpe.findAll({where: {lieuxId: req.params.id}});
+            let grimpes = await Grimpe.findAll({
+                order: [["nbEtoiles", "DESC"], ["nbVotes", "DESC"], ["titre", "ASC"]],
+                where: {lieuxId: req.params.id},
+            });
 
             res.status(200).json({
                 lieu: location,
