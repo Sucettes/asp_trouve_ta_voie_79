@@ -69,7 +69,7 @@
         </thead>
         <tbody>
         <tr v-for="grimpe in grimpes" :key="grimpe.id">
-          <td>{{ grimpe.titre }}</td>
+          <td class="accColorTxt cursorPointer" @click="goToGrimpeDetails(grimpe.id)">{{ grimpe.titre }}</td>
 <!--          <td>{{ grimpe.style }}</td>-->
 <!--          <td>5.{{ grimpe.difficulte }}</td>-->
           <td>
