@@ -74,8 +74,14 @@
 
         <br>
 
-        <label for="diffDrop1" class="form-label">Difficulté <br> entre</label>
-        <select id="diffDrop1" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff1" tabindex="4">
+
+        <p class="marg0">Difficulté</p>
+        <p v-if="!diffIsValid" class="error marg0">La difficulté minimale doit être inférieure à la difficulté
+          maximale!</p>
+        <label for="diffDrop1" class="form-label">entre (min.)</label>
+        <select id="diffDrop1" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff1" tabindex="4"
+                @focusout="checkIfDiffIsValid" @change="checkIfDiffIsValid"
+                :class="{ 'is-invalid': diffIsValid===false }">
           <option value="6">5.6</option>
           <option value="7">5.7</option>
           <option value="8">5.8</option>
@@ -88,8 +94,10 @@
           <option value="15">5.15</option>
         </select>
 
-        <label for="diffDrop2" class="form-label">et</label>
-        <select id="diffDrop2" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff2" tabindex="5">
+        <label for="diffDrop2" class="form-label">et (max.)</label>
+        <select id="diffDrop2" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff2" tabindex="5"
+                @focusout="checkIfDiffIsValid" @change="checkIfDiffIsValid"
+                :class="{ 'is-invalid': diffIsValid===false }">
           <option value="6">5.6</option>
           <option value="7">5.7</option>
           <option value="8">5.8</option>
@@ -174,6 +182,7 @@ export default {
       stars: 1,
       diff1: undefined,
       diff2: undefined,
+      diffIsValid: true,
       top10Grimpes: [],
       filteredGrimpes: [],
       atLeastOneSearch: false,
@@ -226,27 +235,36 @@ export default {
         this.$store.dispatch("stopLoading");
       });
     },
+    checkIfDiffIsValid() {
+      if (this.diff1 !== undefined && this.diff2 !== undefined) {
+        this.diffIsValid = +this.diff1 <= +this.diff2;
+      }
+      return true;
+    },
     async search() {
-      this.$store.dispatch("startLoading");
-      const payload = {
-        style: this.style,
-        stars: this.stars === "0" ? undefined : this.stars,
-        lieu: this.lieu,
-        diff1: this.diff1,
-        diff2: this.diff2,
-      };
-      await axios.post("http://localhost:8090/api/grimpes/filtre", payload, {
-        headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
-      }).then(response => {
-        this.filteredGrimpes = response.data;
-        this.nbPages = Math.ceil(response.data.length / 8);
-        this.atLeastOneSearch = true;
-        this.currPage = 0;
-        this.$store.dispatch("stopLoading");
-      }).catch(() => {
-        this.$toast.error("Une erreur est survenue !");
-        this.$store.dispatch("stopLoading");
-      });
+      this.checkIfDiffIsValid();
+      if (this.diffIsValid) {
+        this.$store.dispatch("startLoading");
+        const payload = {
+          style: this.style,
+          stars: this.stars === "0" ? undefined : this.stars,
+          lieu: this.lieu,
+          diff1: this.diff1,
+          diff2: this.diff2,
+        };
+        await axios.post("http://localhost:8090/api/grimpes/filtre", payload, {
+          headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
+        }).then(response => {
+          this.filteredGrimpes = response.data;
+          this.nbPages = Math.ceil(response.data.length / 8);
+          this.atLeastOneSearch = true;
+          this.currPage = 0;
+          this.$store.dispatch("stopLoading");
+        }).catch(() => {
+          this.$toast.error("Une erreur est survenue !");
+          this.$store.dispatch("stopLoading");
+        });
+      }
     },
   },
   async created() {
@@ -276,6 +294,10 @@ export default {
 .margLG-10 {
   margin-right: -10px;
   margin-left: -10px;
+}
+
+.marg0 {
+  margin: 0;
 }
 
 #filterMenu {
@@ -323,5 +345,10 @@ h1 {
 
 .d-flex {
   justify-content: center;
+}
+
+.error {
+  color: $red;
+  font-size: 0.9rem;
 }
 </style>

@@ -7,7 +7,6 @@ import {createRouter, createWebHistory} from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import ConnexionForm from "@/views/auth/ConnexionForm";
 import InscriptionForm from "@/views/auth/InscriptionForm";
-import ProfilView from "@/views/utilisateur/ProfilView";
 import store from "@/store/index.js";
 import CreeLieuForm from "@/views/lieu/CreeLieuForm";
 import CreeGrimpeForm from "@/views/grimpe/CreeGrimpeForm";
@@ -25,7 +24,6 @@ const routes = [
         meta: {requiresUnauth: true},
     },
     {path: "/auth/connexion", name: "connexion", component: ConnexionForm, meta: {requiresUnauth: true}},
-    {path: "/profil", name: "profil", component: ProfilView, meta: {requiresAuth: true}},
     {path: "/lieu/ajouter", name: "lieuAjouter", component: CreeLieuForm, meta: {requiresAuth: true}},
     {
         path: "/lieu/mesLieux",

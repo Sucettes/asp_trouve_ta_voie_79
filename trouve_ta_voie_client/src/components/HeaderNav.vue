@@ -44,25 +44,32 @@
                 <router-link class="dropdown-item" :to="{name: 'mesVotes'}" v-if="isLoggedIn">Mes votes</router-link>
               </li>
               <hr>
-              <li>
-                <router-link class="dropdown-item" :to="{name: 'profil'}" v-if="isLoggedIn">Profil</router-link>
+              <li class="nav-item dropdown" v-if="isLoggedIn">
+                <p class="dropdown-item dropdown-toggle" type="button" data-bs-toggle="offcanvas"
+                   data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">Profil</p>
               </li>
               <li><a class="dropdown-item" @click="logout">Déconnexion</a></li>
             </ul>
           </li>
+
         </ul>
       </div>
     </div>
   </nav>
+
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <ProfileView v-if="isLoggedIn"></ProfileView>
+  </div>
 </template>
 
 <script>
 import router from "@/router";
+import ProfileView from "@/views/utilisateur/ProfilView";
 
 
 export default {
   name: "HeaderNav",
-  components: {},
+  components: {ProfileView},
   data() {
     return {
       userId: 0,
