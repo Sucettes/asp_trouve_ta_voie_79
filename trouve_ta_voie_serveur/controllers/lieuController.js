@@ -10,7 +10,10 @@ const Grimpe = db.grimpes;
 exports.getDropdownData = async (req, res) => {
     // Obtenir les lieux pour être affiché dans les listes déroulantes.
     try {
-        await Lieu.findAll({attributes: ["id", "titre"]})
+        await Lieu.findAll({
+            attributes: ["id", "titre"],
+            order: [["titre", "ASC"]],
+        })
             .then(lieux => {
                 res.status(200).json(lieux);
             })
@@ -190,7 +193,10 @@ exports.getLieuxForUserId = async (req, res) => {
         }
 
         // Récupère les lieux de l'utilisateur connecté.
-        await Lieu.findAll({where: {utilisateurId: req.token.userId}})
+        await Lieu.findAll({
+            where: {utilisateurId: req.token.userId},
+            order: [["titre", "ASC"]],
+        })
             .then(lieux => {
                 res.status(200).json(lieux);
             })
