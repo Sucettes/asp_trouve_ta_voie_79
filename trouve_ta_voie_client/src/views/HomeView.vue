@@ -21,57 +21,23 @@
   <br>
   <h2 id="top10Titre">Top 10</h2>
 
-  <div id="top10Carousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active" data-bs-interval="4000">
-        <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xl-5 g-4"
-             style="margin-left: 20px; margin-right: 20px">
-          <grimpe-card-component class="d-flex"
-                                 v-for="(x) in top10Grimpes.slice(0, 5)"
-                                 :key="x.id"
-                                 :id="x.id"
-                                 :titre="x.titre"
-                                 :style="x.style"
-                                 :description="x.description"
-                                 :difficulte="x.difficulte"
-                                 :nbEtoiles="x.nbEtoiles"
-                                 :nbVotes="x.nbVotes"
-                                 :images="x.images"
-                                 :lieu="x.lieux"
-                                 :hideDescription="'true'"
-                                 :userId="x.utilisateurId"
-          ></grimpe-card-component>
-        </div>
-      </div>
-      <div class="carousel-item" data-bs-interval="4000">
-        <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xl-5 g-4"
-             style="margin-left: 20px; margin-right: 20px">
-          <grimpe-card-component class="d-flex"
-                                 v-for="(x) in top10Grimpes.slice(5, 10)"
-                                 :key="x.id"
-                                 :id="x.id"
-                                 :titre="x.titre"
-                                 :style="x.style"
-                                 :description="x.description"
-                                 :difficulte="x.difficulte"
-                                 :nbEtoiles="x.nbEtoiles"
-                                 :nbVotes="x.nbVotes"
-                                 :images="x.images"
-                                 :lieu="x.lieux"
-                                 :hideDescription="'true'"
-                                 :userId="x.utilisateurId"
-          ></grimpe-card-component>
-        </div>
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#top10Carousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#top10Carousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 g-4"
+       style="margin-left: 20px; margin-right: 20px">
+    <grimpe-card-component class="d-flex"
+                           v-for="(x) in top10Grimpes"
+                           :key="x.id"
+                           :id="x.id"
+                           :titre="x.titre"
+                           :style="x.style"
+                           :description="x.description"
+                           :difficulte="x.difficulte"
+                           :nbEtoiles="x.nbEtoiles"
+                           :nbVotes="x.nbVotes"
+                           :images="x.images"
+                           :lieu="x.lieux"
+                           :hideDescription="'true'"
+                           :userId="x.utilisateurId"
+    ></grimpe-card-component>
   </div>
 
   <div class="shadow-sm p-3 mb-5 bg-body rounded"
@@ -220,7 +186,7 @@ export default {
   computed: {
     isLoading() {
       return this.$store.getters.isLoading;
-    }
+    },
   },
   methods: {
     nextPage() {
