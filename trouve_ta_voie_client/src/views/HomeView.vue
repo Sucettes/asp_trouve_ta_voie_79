@@ -37,6 +37,7 @@
                            :lieu="x.lieux"
                            :hideDescription="'true'"
                            :userId="x.utilisateurId"
+                           :showDeleteBtn="true"
     ></grimpe-card-component>
   </div>
 
@@ -136,6 +137,7 @@
                                :lieu="x.lieux"
                                :hideDescription="'true'"
                                :userId="x.utilisateurId"
+                               :showDeleteBtn="true"
         ></grimpe-card-component>
       </div>
 

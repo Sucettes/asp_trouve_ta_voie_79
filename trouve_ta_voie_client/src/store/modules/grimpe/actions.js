@@ -67,6 +67,17 @@ export default {
                 });
         });
     },
+    async deleteClimb(context, payload) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`http://localhost:8090/api/grimpe/${payload.id}`, {
+                headers: {"Authorization": `Bearer ${payload.token}`},
+            }).then(response => {
+                resolve(response);
+            }).catch(error => {
+                reject(error.response);
+            });
+        });
+    },
     async clearDataGrimpe(context) {
         context.commit("setGrimpe", {});
         context.commit("setUserGrimpes", []);

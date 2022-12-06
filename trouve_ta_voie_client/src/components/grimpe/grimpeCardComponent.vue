@@ -32,7 +32,10 @@
 
       <div>
         <div id="btnWrapper">
-          <p @click="seeDetails" id="detailsBtn">Détails</p>
+          <button v-if="showDeleteBtn && this.$store.getters.isAdmin" @click="deleteClimb" type="button"
+                  class="btn btn-outline-secondary">Supprimer
+          </button>
+
           <button @click="editGrimpe" type="button" class="btn btn-outline-secondary"
                   v-if="+this.userId === +this.$store.getters.userId || this.$store.getters.isAdmin">Modifier
           </button>
@@ -48,7 +51,7 @@ import starRatingComponent from "@/components/starRatingComponent";
 
 export default {
   name: "grimpeCardComponent",
-  props: ["id", "titre", "style", "description", "difficulte", "nbEtoiles", "nbVotes", "images", "lieu", "hideDescription", "userId"],
+  props: ["id", "titre", "style", "description", "difficulte", "nbEtoiles", "nbVotes", "images", "lieu", "hideDescription", "userId", "showDeleteBtn"],
   components: {starRatingComponent},
   methods: {
     seeLieuDetails() {
@@ -56,6 +59,9 @@ export default {
     },
     seeDetails() {
       this.$router.push({name: "grimpeDetails", params: {id: this.id}});
+    },
+    deleteClimb() {
+      alert("lol est supp") // edit : faire supp climb
     },
     editGrimpe() {
       this.$router.push({

@@ -25,7 +25,6 @@
 
       <div>
         <div id="btnWrapper">
-          <p @click="seeDetails" id="detailsBtn">Détails</p>
           <button @click="editLieu" type="button" class="btn btn-outline-secondary">Modifier</button>
         </div>
       </div>
