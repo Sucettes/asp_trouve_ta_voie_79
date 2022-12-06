@@ -23,19 +23,26 @@ $secondary: $accent;
 }
 
 .btn-outline-secondary:hover {
+  color: white !important;
+}
+
+.btn-secondary:hover {
+  color: white !important;
+}
+.btn-secondary {
   color: white;
 }
 
 .btn {
-  border-radius: 0;
+  border-radius: 0 !important;
 }
 
 .form-control {
-  border-radius: 0;
+  border-radius: 0 !important;
 }
 
 .form-select {
-  border-radius: 0;
+  border-radius: 0 !important;
 }
 
 * {

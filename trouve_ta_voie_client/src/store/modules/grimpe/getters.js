@@ -5,4 +5,7 @@ export default {
     grimpe(state) {
         return state.grimpe;
     },
+    grimpeDetails(state) {
+        return state.grimpeDetails;
+    }
 };

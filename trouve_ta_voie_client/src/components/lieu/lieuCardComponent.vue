@@ -15,8 +15,8 @@
         <p v-if="directives.length > 170">{{ directives.substring(0, 170) + "..." }}</p>
         <p v-else>{{ directives }}</p>
 
-        <p><strong>Latitude : </strong>{{ +latitude }}</p>
-        <p><strong>Latitude : </strong>{{ +longitude }}</p>
+        <p><strong>Latitude : </strong> <span class="accColorTxt">{{ +latitude }}</span></p>
+        <p><strong>Longitude : </strong> <span class="accColorTxt">{{ +longitude }}</span></p>
 
         <span></span>
         <span></span>
@@ -86,6 +86,10 @@ export default {
 
   span {
     height: 10px;
+  }
+
+  .accColorTxt {
+    color: $primary;
   }
 }
 

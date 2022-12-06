@@ -5,4 +5,7 @@ export default {
     setGrimpe(state, payload) {
         state.grimpe = payload;
     },
+    setGrimpeDetails(state, payload) {
+        state.grimpeDetails = payload;
+    }
 };

@@ -41,6 +41,19 @@ export default {
             });
         });
     },
+    async loadGrimpeDetails(context, payload) {
+        return new Promise((resolve, reject) => {
+            axios.get(`http://localhost:8090/api/grimpe/details/${payload.id}`)
+                .then(response => {
+                    context.commit("setGrimpeDetails", response.data);
+
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error.response);
+                });
+        });
+    },
     async clearDataGrimpe(context) {
         context.commit("setGrimpe", {});
         context.commit("setUserGrimpes", []);

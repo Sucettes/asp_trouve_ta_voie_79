@@ -8,6 +8,7 @@ export default {
         return {
             userGrimpes: [],
             grimpe: {},
+            grimpeDetails: {},
         };
     },
     mutations,

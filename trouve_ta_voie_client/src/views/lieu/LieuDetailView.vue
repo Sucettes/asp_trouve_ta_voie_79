@@ -59,9 +59,6 @@
         <thead>
         <tr>
           <th>Grimpe</th>
-<!--     edit: Car le tableau bugs en mobiles     -->
-<!--          <th>Style</th>-->
-<!--          <th>Difficulté</th>-->
           <th>Évaluations</th>
           <th>Votes</th>
           <th></th>
@@ -70,8 +67,6 @@
         <tbody>
         <tr v-for="grimpe in grimpes" :key="grimpe.id">
           <td class="accColorTxt cursorPointer" @click="goToGrimpeDetails(grimpe.id)">{{ grimpe.titre }}</td>
-<!--          <td>{{ grimpe.style }}</td>-->
-<!--          <td>5.{{ grimpe.difficulte }}</td>-->
           <td>
             <star-rating-component :nbStars="grimpe.nbEtoiles"></star-rating-component>
           </td>
@@ -88,7 +83,7 @@
 
       <div class="row">
         <div class="col-md-6">
-          <p>coordonnées : Latitude : <strong>{{ +latitude }}</strong> | longitude : <strong>{{ +longitude }}</strong>
+          <p>coordonnées : Latitude : <strong>{{ +latitude }}</strong> | Longitude : <strong>{{ +longitude }}</strong>
           </p>
 
           <l-map :center="mapPosition" :zoom="15" v-if="mapPosition">
@@ -121,6 +116,7 @@
 <script>
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import starRatingComponent from "@/components/starRatingComponent";
+import {errorManager} from "@/fctUtils/errorManager";
 import {latLng} from "leaflet";
 import {LMap, LTileLayer, LMarker} from "vue3-leaflet";
 
@@ -153,7 +149,7 @@ export default {
     },
     isAdmin() {
       return this.$store.getters.isAdmin;
-    }
+    },
   },
   methods: {
     async loadLieuDetails() {
@@ -182,18 +178,19 @@ export default {
                 this.userCanEdit = +response.data.lieu.utilisateurId === +this.$store.getters.userId;
               }
             })
-            .catch(() => {
+            .catch(err => {
               this.$toast.error("Une erreur est survenue !");
               this.$store.dispatch("stopLoading");
+              errorManager(err.response, this.$store, this.$router);
             });
-      } catch (e) {
+      } catch (err) {
         this.$toast.error("Une erreur est survenue !");
         this.$store.dispatch("stopLoading");
+        await errorManager(err.response, this.$store, this.$router);
       }
     },
-    // eslint-disable-next-line no-unused-vars
     goToGrimpeDetails(id) {
-
+      this.$router.push({name: "grimpeDetails", params: {id: id}});
     },
     goToEditLieu() {
       this.$router.push({name: "modifierLieu", params: {id: this.id}});
@@ -208,7 +205,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
-@import 'bootstrap/scss/bootstrap.scss';
+//@import 'bootstrap/scss/bootstrap.scss';
 
 #svgIconEditDiv {
   position: fixed;

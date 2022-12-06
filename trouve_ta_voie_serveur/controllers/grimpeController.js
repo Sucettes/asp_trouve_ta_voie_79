@@ -6,6 +6,7 @@ const Grimpe = db.grimpes;
 const Utilisateur = db.utilisateurs;
 const Image = db.images;
 const Lieu = db.lieux;
+const Vote = db.votes;
 
 const uuid = require("uuid");
 
@@ -200,7 +201,7 @@ exports.getGrimpesTop10 = async (req, res) => {
 
 exports.getFilteredGrimpes = async (req, res) => {
     try {
-        // todo : Ajouter des filtres ici...
+        // todo : Ajouter des validations ici...
 
         // Création du filtre : where
         let whereStr = {};
@@ -232,6 +233,24 @@ exports.getFilteredGrimpes = async (req, res) => {
         });
 
         res.status(200).json(grimpes);
+    } catch (e) {
+        res.status(500).end();
+    }
+};
+
+exports.getClimbDetailsById = async (req, res) => {
+    try {
+        // todo : Ajoute validation ici.
+
+        const climb = await Grimpe.findByPk(+req.params.id, {
+            include: [Image, Lieu, Vote],
+        });
+
+        if (!climb) {
+            res.status(404).end();
+        }
+
+        res.status(200).json(climb);
     } catch (e) {
         res.status(500).end();
     }

@@ -55,6 +55,7 @@ export default {
       this.$router.push({name: "lieuDetails", params: {id: this.lieu.id}});
     },
     seeDetails() {
+      this.$router.push({name: "grimpeDetails", params: {id: this.id}});
     },
     editGrimpe() {
       this.$router.push({

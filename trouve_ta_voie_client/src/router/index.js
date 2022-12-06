@@ -1,4 +1,5 @@
 import EditGrimpeForm from "@/views/grimpe/EditGrimpeForm";
+import GrimpDetailView from "@/views/grimpe/GrimpDetailView";
 import LieuDetailView from "@/views/lieu/LieuDetailView";
 import UserGrimpeLstComponent from "@/views/utilisateur/UserGrimpeLstComponent";
 import ErreurView from "@/views/erreur/ErreurView";
@@ -50,8 +51,8 @@ const routes = [
         component: UserGrimpeLstComponent,
         meta: {requiresAuth: true},
     },
+    {path: "/grimpe/:id", name: "grimpeDetails", component: GrimpDetailView},
     {path: "/mesVotes", name: "mesVotes", component: UserGrimpeLstVoteComponent, meta: {requiresAuth: true}},
-
     {
         path: "/grimpe/modifier/:id",
         name: "modifierGrimpe",

@@ -12,6 +12,10 @@ routerGrimpe.route("/grimpe/create")
     .post(authMidl, grimpeController.createGrimpe)
     .all(grimpeController.allReq);
 
+routerGrimpe.route("/grimpe/details/:id")
+    .get(grimpeController.getClimbDetailsById)
+    .all(grimpeController.allReq);
+
 routerGrimpe.route("/grimpe/:id")
     .get(grimpeController.getGrimpeById)
     .put(authMidl, grimpeController.editGrimpe)

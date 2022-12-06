@@ -1,10 +1,12 @@
 <template>
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Profil</h5>
+    <h4 class="offcanvas-title" id="offcanvasNavbarLabel">Profil</h4>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
+
   <div class="offcanvas-body">
 
+    <br>
     <p>Modifier nom d'utilisateur</p>
 
     <br>
