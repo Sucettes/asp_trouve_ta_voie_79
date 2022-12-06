@@ -15,11 +15,10 @@ routerLieu.route("/lieu/create")
     .post(authMidl, lieuController.createLieu)
     .all(lieuController.allReq);
 
-// edit: Faire en sorte de ne pas avoir le id en parametre car il sert a rien...
 routerLieu.route("/lieu/:id")
     .get(lieuController.getLieuById)
     .put(authMidl, lieuController.editLieu)
-    // todo : Ajouté suppression lieux et c'est grimpes et c'est images
+    .delete(authMidl, lieuController.deleteLocation)
     .all(lieuController.allReq);
 
 routerLieu.route("/lieu/details/:id")

@@ -36,13 +36,14 @@ db.lieux.belongsTo(db.utilisateurs);
 db.utilisateurs.hasMany(db.grimpes);
 db.grimpes.belongsTo(db.utilisateurs);
 
-db.lieux.hasMany(db.grimpes);
+db.lieux.hasMany(db.grimpes, {onDelete: "CASCADE"});
 db.grimpes.belongsTo(db.lieux);
 
-db.grimpes.hasMany(db.images);
+db.grimpes.hasMany(db.images, {onDelete: "CASCADE"});
 
-db.grimpes.hasMany(db.votes);
+db.grimpes.hasMany(db.votes, {onDelete: "CASCADE"});
 db.votes.belongsTo(db.grimpes);
+
 db.utilisateurs.hasMany(db.votes);
 db.votes.belongsTo(db.utilisateurs);
 

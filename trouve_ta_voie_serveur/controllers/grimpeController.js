@@ -170,12 +170,12 @@ exports.deleteClimb = async (req, res) => {
             const climb = await Grimpe.findByPk(req.params.id, {include: [Image]});
             if (climb) {
                 // Suppression des images de la grimpe.
-                await Image.destroy({where: {grimpeId: req.params.id}});
-                for (let i = 0; i < climb.images.length - 1; i++) {
+                // await Image.destroy({where: {grimpeId: req.params.id}});
+                for (let i = 0; i < climb.images.length; i++) {
                     fs.unlinkSync(`public/${climb.images[i].path}`);
                 }
 
-                // Suppression de la grimpe.
+                // Suppression de la grimpe. cascade
                 await Grimpe.destroy({where: {id: req.params.id}});
             }
 

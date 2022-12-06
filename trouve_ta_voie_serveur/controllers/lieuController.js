@@ -2,9 +2,12 @@
 
 const db = require("../models/dbSetup");
 const validatorFct = require("../fctUtils/validations");
+const fs = require("fs");
+const sequelize = require("sequelize");
 const Lieu = db.lieux;
 const Utilisateur = db.utilisateurs;
 const Grimpe = db.grimpes;
+const Image = db.images;
 
 
 exports.getDropdownData = async (req, res) => {
@@ -136,6 +139,39 @@ exports.getLieuByIdToEdit = async (req, res) => {
             .catch(() => {
                 res.status(400).end();
             });
+    } catch (e) {
+        res.status(500).end();
+    }
+};
+
+exports.deleteLocation = async (req, res) => {
+    try {
+        // Vérification utilisateur est admin.
+        const user = await Utilisateur.findByPk(req.token.userId);
+        if (user.estAdmin) {
+            // Récupération des path des images.
+            const picturesPath = (await Grimpe.findAll({
+                where: {
+                    lieuxId: +req.params.id,
+                },
+                raw: true,
+                include: [Image],
+            })).map(x => x["images.path"]);
+
+            if (picturesPath) {
+                // Suppression des images de la grimpe.
+                for (let i = 0; i < picturesPath.length; i++) {
+                    fs.unlinkSync(`public/${picturesPath[i]}`);
+                }
+            }
+
+            // Suppression du lieu. Cascade
+            await Lieu.destroy({where: {id: req.params.id}});
+
+            res.status(204).end();
+        } else {
+            res.status(403).end();
+        }
     } catch (e) {
         res.status(500).end();
     }
