@@ -205,7 +205,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
-//@import 'bootstrap/scss/bootstrap.scss';
+@import 'bootstrap/scss/bootstrap.scss';
 
 #svgIconEditDiv {
   position: fixed;

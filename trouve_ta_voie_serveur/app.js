@@ -28,12 +28,14 @@ const routerUtilisateur = require("./routes/utilisateurRoutes");
 const routerGrimpe = require("./routes/grimpeRoutes");
 const routerLieu = require("./routes/lieuRoutes");
 const routerImage = require("./routes/imageRoutes");
+const routerVote = require("./routes/voteRoutes");
 
 app.use("/api", routerAuth);
 app.use("/api", routerUtilisateur);
 app.use("/api", routerGrimpe);
 app.use("/api", routerLieu);
 app.use("/api", routerImage);
+app.use("/api", routerVote);
 
 app.all("*", (req, res) => {
     res.status(404).end();

@@ -59,6 +59,8 @@ export default {
   },
   methods: {
     async loadUserGrimpes() {
+      this.$store.dispatch("startLoading");
+
       const payload = {
         userId: this.$store.getters.userId,
         token: this.$store.getters.token,
@@ -73,6 +75,7 @@ export default {
               this.$store.dispatch("stopLoading");
               errorManager(err, this.$store, this.$router);
             });
+
         this.myGrimpes = this.$store.getters.userGrimpes;
       } catch (err) {
         this.$store.dispatch("stopLoading");
@@ -84,7 +87,6 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("startLoading");
     this.loadUserGrimpes();
   },
   mounted() {

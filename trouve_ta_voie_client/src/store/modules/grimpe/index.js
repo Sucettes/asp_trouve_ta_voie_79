@@ -7,6 +7,7 @@ export default {
     state() {
         return {
             userGrimpes: [],
+            userVotedClimbs: [],
             grimpe: {},
             grimpeDetails: {},
         };

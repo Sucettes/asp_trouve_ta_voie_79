@@ -1,10 +1,18 @@
 "use strict";
 
 const express = require("express");
-const routerUtilisateur = express.Router();
+const routerVote = express.Router();
 
 const authMidl = require("../fctUtils/auth");
+const voteController = require("../controllers/voteController");
 
-// Ajouté un vote -> Créé le vote dans la bd, récupère la grimpe et met a jours la moy. * et de vote...
 
-module.exports = routerUtilisateur;
+routerVote.route("/vote/nouveau")
+    .post(authMidl, voteController.newVote)
+    .all(voteController.allReq);
+
+routerVote.route("/votes/:userId")
+    .get(authMidl, voteController.getVotesForUserId)
+    .all(voteController.allReq);
+
+module.exports = routerVote;
