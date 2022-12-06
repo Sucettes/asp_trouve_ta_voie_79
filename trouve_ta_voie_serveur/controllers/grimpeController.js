@@ -161,6 +161,33 @@ exports.editGrimpe = async (req, res) => {
     }
 };
 
+exports.deleteClimb = async (req, res) => {
+    try {
+        // Vérification utilisateur est admin.
+        const user = await Utilisateur.findByPk(req.token.userId);
+        if (user.estAdmin) {
+            // Récupération de la grimpe.
+            const climb = await Grimpe.findByPk(req.params.id, {include: [Image]});
+            if (climb) {
+                // Suppression des images de la grimpe.
+                await Image.destroy({where: {grimpeId: req.params.id}});
+                for (let i = 0; i < climb.images.length - 1; i++) {
+                    fs.unlinkSync(`public/${climb.images[i].path}`);
+                }
+
+                // Suppression de la grimpe.
+                await Grimpe.destroy({where: {id: req.params.id}});
+            }
+
+            res.status(204).end();
+        } else {
+            res.status(403).end();
+        }
+    } catch (e) {
+        res.status(500).end();
+    }
+};
+
 exports.getGrimpesForUserId = async (req, res) => {
     try {
         if (+req.params.userId !== +req.token.userId)

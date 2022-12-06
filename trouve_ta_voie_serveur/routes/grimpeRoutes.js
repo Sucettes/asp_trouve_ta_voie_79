@@ -19,7 +19,7 @@ routerGrimpe.route("/grimpe/details/:id")
 routerGrimpe.route("/grimpe/:id")
     .get(grimpeController.getGrimpeById)
     .put(authMidl, grimpeController.editGrimpe)
-    // todo : Ajouté suppression de la grimpes et c'est images
+    .delete(authMidl, grimpeController.deleteClimb)
     .all(grimpeController.allReq);
 
 routerGrimpe.route("/grimpe/:userId/:id")
