@@ -3,12 +3,6 @@
 
   <div id="climbDetailContainer">
     <div class="body shadow-sm p-3 mb-5 bg-body rounded">
-      <div class="btnWrapper" v-if="isLoggedIn">
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ratingModal">
-          Évaluer la grimpe
-        </button>
-      </div>
-
       <h1>{{ title }}</h1>
 
       <br>
@@ -32,6 +26,16 @@
             <star-rating-component v-if="stars !== undefined" :nbStars="stars"></star-rating-component>
             <p>Votes : <strong class="accColorTxt">{{ votes }}</strong></p>
           </div>
+
+          <div class="btnWrapper" v-if="isLoggedIn">
+            <button v-if="this.$store.getters.isAdmin" @click="deleteClimb" type="button"
+                    class="btn btn-outline-danger">Supprimer
+            </button>
+
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ratingModal">
+              Évaluer la grimpe
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -42,8 +46,6 @@
         <div class="col-md-6">
           <p @click="goToLocationDetails"><strong class="accColorTxt cursorPointer">{{ location.titre }}</strong></p>
           <p>{{ location.description }}</p>
-
-          <a href="">Détails</a>
         </div>
         <div class="col-md-6">
           <l-map :center="mapPosition" :zoom="15" v-if="mapPosition">
@@ -123,6 +125,33 @@ export default {
     },
   },
   methods: {
+    async deleteClimb() {
+      try {
+        this.$store.dispatch("startLoading");
+
+        const payload = {
+          id: this.id,
+          token: this.$store.getters.token,
+        };
+
+        await this.$store.dispatch("deleteClimb", payload)
+            .then(() => {
+              this.$store.dispatch("stopLoading");
+              this.$toast.success("La grimpe est supprimée !");
+
+              this.$router.back();
+            })
+            .catch(err => {
+              this.$store.dispatch("stopLoading");
+              this.$toast.error("Une erreur est survenue !");
+              errorManager(err, this.$store, this.$router);
+            });
+      } catch (err) {
+        this.$toast.error("Une erreur est survenue !");
+        this.$store.dispatch("stopLoading");
+        await errorManager(err, this.$store, this.$router);
+      }
+    },
     async loadLocationDetails() {
       try {
         this.$store.dispatch("startLoading");

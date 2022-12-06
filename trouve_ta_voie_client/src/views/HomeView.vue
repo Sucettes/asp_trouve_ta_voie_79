@@ -38,6 +38,7 @@
                            :hideDescription="'true'"
                            :userId="x.utilisateurId"
                            :showDeleteBtn="true"
+                           @delete-climb="deleteClimb"
     ></grimpe-card-component>
   </div>
 
@@ -138,6 +139,7 @@
                                :hideDescription="'true'"
                                :userId="x.utilisateurId"
                                :showDeleteBtn="true"
+                               @delete-climb="deleteClimb"
         ></grimpe-card-component>
       </div>
 
@@ -170,6 +172,7 @@
 
 import grimpeCardComponent from "@/components/grimpe/grimpeCardComponent";
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
+import {errorManager} from "@/fctUtils/errorManager";
 import axios from "axios";
 
 
@@ -266,6 +269,41 @@ export default {
           this.$toast.error("Une erreur est survenue !");
           this.$store.dispatch("stopLoading");
         });
+      }
+    },
+    async deleteClimb(id) {
+      try {
+        this.$store.dispatch("startLoading");
+
+        const payload = {
+          id: id,
+          token: this.$store.getters.token,
+        };
+
+        await this.$store.dispatch("deleteClimb", payload)
+            .then(() => {
+              // Retire item des listes
+              if (this.top10Grimpes.length > 0) {
+                const index = this.top10Grimpes.findIndex(x => +x.id === +id);
+                this.top10Grimpes.splice(index, 1);
+              }
+              if (this.filteredGrimpes.length > 0) {
+                const index = this.filteredGrimpes.findIndex(x => +x.id === +id);
+                this.filteredGrimpes.splice(index, 1);
+              }
+
+              this.$store.dispatch("stopLoading");
+              this.$toast.success("La grimpe est supprimée !");
+            })
+            .catch(err => {
+              this.$store.dispatch("stopLoading");
+              this.$toast.error("Une erreur est survenue !");
+              errorManager(err, this.$store, this.$router);
+            });
+      } catch (err) {
+        this.$toast.error("Une erreur est survenue !");
+        this.$store.dispatch("stopLoading");
+        await errorManager(err.response, this.$store, this.$router);
       }
     },
   },

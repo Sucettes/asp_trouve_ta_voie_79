@@ -9,6 +9,10 @@
         <h6>Description</h6>
         <p>{{ description }}</p>
       </div>
+
+      <button v-if="this.$store.getters.isAdmin" @click="deleteLocation" type="button"
+              class="btn btn-outline-danger">Supprimer
+      </button>
     </div>
 
     <div class="body shadow-sm p-3 mb-5 bg-body rounded">
@@ -61,7 +65,7 @@
           <th>Grimpe</th>
           <th>Évaluations</th>
           <th>Votes</th>
-          <th></th>
+          <th v-if="this.$store.getters.isAdmin"></th>
         </tr>
         </thead>
         <tbody>
@@ -71,7 +75,7 @@
             <star-rating-component :nbStars="grimpe.nbEtoiles"></star-rating-component>
           </td>
           <td>{{ grimpe.nbVotes }}</td>
-          <td class="accColorTxt cursorPointer" @click="goToGrimpeDetails(grimpe.id)">Détails</td>
+          <td class="cursorPointer deleteLink" @click="deleteClimb(grimpe.id)" v-if="this.$store.getters.isAdmin">Supprimer</td>
         </tr>
         </tbody>
       </table>
@@ -181,7 +185,7 @@ export default {
             .catch(err => {
               this.$toast.error("Une erreur est survenue !");
               this.$store.dispatch("stopLoading");
-              errorManager(err.response, this.$store, this.$router);
+              errorManager(err, this.$store, this.$router);
             });
       } catch (err) {
         this.$toast.error("Une erreur est survenue !");
@@ -194,6 +198,57 @@ export default {
     },
     goToEditLieu() {
       this.$router.push({name: "modifierLieu", params: {id: this.id}});
+    },
+    async deleteLocation() {
+      try {
+        this.$store.dispatch("startLoading");
+
+        const payload = {
+          id: this.id,
+          token: this.$store.getters.token,
+        };
+
+        await this.$store.dispatch("deleteLocation", payload)
+            .then(() => {
+              this.$store.dispatch("stopLoading");
+              this.$toast.success("Le lieu est supprimée !");
+            })
+            .catch(async err => {
+              this.$store.dispatch("stopLoading");
+              this.$toast.error("Une erreur est survenue !");
+              await errorManager(err, this.$store, this.$router);
+            });
+      } catch (err) {
+        this.$toast.error("Une erreur est survenue !");
+        this.$store.dispatch("stopLoading");
+        await errorManager(err.response, this.$store, this.$router);
+      }
+    },
+    async deleteClimb(id) {
+      try {
+        this.$store.dispatch("startLoading");
+
+        const payload = {
+          id: id,
+          token: this.$store.getters.token,
+        };
+
+        await this.$store.dispatch("deleteClimb", payload)
+            .then(() => {
+              this.$store.dispatch("stopLoading");
+              this.$toast.success("La grimpe est supprimée !");
+              this.loadLieuDetails();
+            })
+            .catch(err => {
+              this.$store.dispatch("stopLoading");
+              this.$toast.error("Une erreur est survenue !");
+              errorManager(err, this.$store, this.$router);
+            });
+      } catch (err) {
+        this.$toast.error("Une erreur est survenue !");
+        this.$store.dispatch("stopLoading");
+        await errorManager(err, this.$store, this.$router);
+      }
     },
   },
   created() {
@@ -217,6 +272,14 @@ export default {
   #svgIconEdit {
     fill: $secondary;
   }
+}
+
+.deleteLink {
+  color: $red;
+}
+
+.deleteLink:hover {
+  color: $redDark !important;
 }
 
 #svgIconEditDiv:hover {

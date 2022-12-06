@@ -79,7 +79,7 @@ export default {
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
           this.$store.dispatch("stopLoading");
-          await errorManager(err, this.$store, this.$router);
+          await errorManager(err.response, this.$store, this.$router);
         }
       }
     },
