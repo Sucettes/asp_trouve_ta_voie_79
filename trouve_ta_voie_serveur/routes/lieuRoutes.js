@@ -19,6 +19,7 @@ routerLieu.route("/lieu/create")
 routerLieu.route("/lieu/:id")
     .get(lieuController.getLieuById)
     .put(authMidl, lieuController.editLieu)
+    // todo : Ajouté suppression lieux et c'est grimpes et c'est images
     .all(lieuController.allReq);
 
 routerLieu.route("/lieu/details/:id")

@@ -115,14 +115,10 @@
 export default {
   name: "starRatingComponent",
   props: ["nbStars"],
-  data() {
-    return {
-      stars: 0,
-    };
-  },
-  created() {
-    // Arrondis pour ne pas avoir des étoiles trop précises à l'affichage.
-    this.stars = Math.round(+this.nbStars * 10) / 10;
+  computed: {
+    stars() {
+      return +this.nbStars;
+    },
   },
 };
 </script>

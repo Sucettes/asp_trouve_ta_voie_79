@@ -87,7 +87,9 @@
           </div>
         </div>
 
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Sauvegarder évaluation</button>
+        <p v-if="!starsIsvalid" class="error">Il faut avoir 1 à 5 étoiles !</p>
+
+        <button type="button" class="btn btn-primary" @click="saveStars" :disabled="isLoading">Sauvegarder évaluation</button>
       </div>
     </div>
   </div>
@@ -97,15 +99,34 @@
 export default {
   name: "grimpeRatingModalComponent",
   props: ["title"],
+  emits: ["saveRating"],
   data() {
     return {
-      stars: 0
+      stars: 0,
+      starsIsvalid: true
     }
   },
   methods: {
     changeStars(star) {
       this.stars = star;
+      this.checkIfStarsIsValid();
+    },
+    checkIfStarsIsValid() {
+      this.starsIsvalid = +this.stars >= 1 && +this.stars <= 5;
+    },
+    saveStars() {
+      this.checkIfStarsIsValid();
+
+      if (this.starsIsvalid) {
+        this.$emit('saveRating', this.stars);
+        this.stars = 0;
+      }
     }
+  },
+  computed: {
+    isLoading() {
+      return this.$store.getters.isLoading;
+    },
   }
 };
 </script>

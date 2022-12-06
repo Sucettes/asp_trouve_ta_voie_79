@@ -3,7 +3,7 @@
 
   <div id="climbDetailContainer">
     <div class="body shadow-sm p-3 mb-5 bg-body rounded">
-      <div class="btnWrapper">
+      <div class="btnWrapper" v-if="isLoggedIn">
         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ratingModal">
           Évaluer la grimpe
         </button>
@@ -23,16 +23,16 @@
           <div style="padding-left: 10px; padding-right: 10px">
             <h6>Description</h6>
             <p>{{ desc }}</p>
+
+            <br>
+
+            <p>Style : <strong class="accColorTxt">{{ style }}</strong></p>
+            <p>Difficulté : <strong class="accColorTxt">5.{{ diff }}</strong></p>
+
+            <star-rating-component v-if="stars !== undefined" :nbStars="stars"></star-rating-component>
+            <p>Votes : <strong class="accColorTxt">{{ votes }}</strong></p>
           </div>
         </div>
-      </div>
-
-      <div>
-        <star-rating-component v-if="stars !== undefined" :nbStars="stars"></star-rating-component>
-        <p>Votes : <strong class="accColorTxt">{{ votes }}</strong></p>
-
-        <p>Style : <strong class="accColorTxt">{{ style }}</strong></p>
-        <p>Difficulté : <strong class="accColorTxt">5.{{ diff }}</strong></p>
       </div>
     </div>
 
@@ -64,10 +64,18 @@
   </div>
 
   <div class="modal fade" id="ratingModal" data-bs-keyboard="false">
-    <grimpe-rating-modal-component :title="title"></grimpe-rating-modal-component>
+    <grimpe-rating-modal-component :title="title" @save-rating="saveRating"></grimpe-rating-modal-component>
   </div>
 
-
+  <div id="svgIconEditDiv" @click="goToEditClimb" v-if="userCanEdit || isAdmin">
+    <svg id="svgIconEdit" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+         class="bi bi-pencil-square" viewBox="0 0 16 16">
+      <path
+          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+      <path fill-rule="evenodd"
+            d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+    </svg>
+  </div>
 </template>
 
 <script>
@@ -75,8 +83,10 @@ import GrimpeRatingModalComponent from "@/components/grimpe/grimpeRatingModalCom
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import starRatingComponent from "@/components/starRatingComponent";
 import {errorManager} from "@/fctUtils/errorManager";
+import axios from "axios";
 import {latLng} from "leaflet";
 import {LMap, LTileLayer, LMarker} from "vue3-leaflet";
+
 
 export default {
   name: "GrimpDetailView",
@@ -98,7 +108,7 @@ export default {
       longitude: 0,
       mapPosition: latLng(this.latitude, this.longitude),
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-
+      userCanEdit: false,
     };
   },
   computed: {
@@ -107,6 +117,9 @@ export default {
     },
     isAdmin() {
       return this.$store.getters.isAdmin;
+    },
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
     },
   },
   methods: {
@@ -133,6 +146,8 @@ export default {
               this.latitude = response.data.lieux.latitude;
               this.longitude = response.data.lieux.longitude;
               this.mapPosition = latLng(response.data.lieux.latitude, response.data.lieux.longitude);
+
+              this.userCanEdit = +response.data.utilisateurId === +this.$store.getters.userId;
             })
             .catch(err => {
               this.$store.dispatch("stopLoading");
@@ -151,6 +166,33 @@ export default {
     goToLocationDetails() {
       this.$router.push({name: "lieuDetails", params: {id: this.location.id}});
     },
+    async saveRating(stars) {
+      this.$store.dispatch("startLoading");
+
+      const payload = {
+        stars: stars,
+        grimpeId: this.id,
+      };
+
+      try {
+        await axios.post("http://localhost:8090/api/vote/nouveau", payload, {
+          headers: {"Authorization": `Bearer ${this.$store.getters.token}`},
+        }).then(res => {
+          this.stars = +res.data.stars;
+          this.votes = +res.data.votes;
+          this.$store.dispatch("stopLoading");
+          this.$toast.success("Vote enregistré avec succès !");
+        }).catch(err => {
+          this.$store.dispatch("stopLoading");
+          this.$toast.error("Une erreur est survenue !");
+          errorManager(err, this.$store, this.$router);
+        });
+      } catch (err) {
+        this.$store.dispatch("stopLoading");
+        this.$toast.error("Une erreur est survenue !");
+        await errorManager(err, this.$store, this.$router);
+      }
+    },
   },
   created() {
     this.id = this.$route.params.id;
@@ -162,6 +204,24 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
 //@import 'bootstrap/scss/bootstrap.scss';
+
+#svgIconEditDiv {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  cursor: pointer;
+  z-index: 1000;
+
+  #svgIconEdit {
+    fill: $secondary;
+  }
+}
+
+#svgIconEditDiv:hover {
+  path {
+    fill: $primary;
+  }
+}
 
 #climbDetailContainer {
   margin: 27px;

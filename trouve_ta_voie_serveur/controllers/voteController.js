@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../models/dbSetup");
-const {Op} = require("sequelize");
+const {Op, fn, col} = require("sequelize");
 const Vote = db.votes;
 const Grimpe = db.grimpes;
 const Utilisateur = db.utilisateurs;
@@ -17,13 +17,35 @@ exports.newVote = async (req, res) => {
 
         if (regex.test(req.body.stars) && climb) {
             // Creation du vote
-            const vote = await Vote.create({
+            await Vote.create({
                 nbEtoiles: req.body.stars,
                 grimpeId: req.body.grimpeId,
                 utilisateurId: req.token.userId,
-            });
+            }).then(async vote => {
+                if (vote) {
+                    const voteResult = await Vote.findAndCountAll({
+                        where: {grimpeId: vote.grimpeId},
+                        attributes: [[fn("sum", col("nbEtoiles")), "stars"]],
+                    });
 
-            res.status(201).json(vote);
+                    const stars = voteResult.rows[0].dataValues.stars;
+                    const votes = voteResult.count;
+
+                    // Arrondissement des étoiles.
+                    const starsRat = Math.round((+stars / +votes) * 10) / 10;
+
+                    // Mets à jour le nombre de votes et d'étoiles pour la grimpe.
+                    await Grimpe.update({
+                        nbVotes: +votes, nbEtoiles: +starsRat,
+                    }, {where: {id: vote.grimpeId}});
+
+                    res.status(201).json({stars: starsRat, votes: votes});
+                } else {
+                    res.status(400).end();
+                }
+            }).catch(() => {
+                res.status(400).end();
+            });
         } else {
             res.status(400).end();
         }

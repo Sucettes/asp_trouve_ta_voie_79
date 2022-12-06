@@ -26,7 +26,7 @@ export default {
 @import '@/assets/styles/custom.scss';
 
 #spinnerBack {
-  z-index: 90;
+  z-index: 2000;
   background-color: rgba(0, 0, 0, 0.09);
   width: calc(100vw);
   min-height: calc(100vh + 56px);
@@ -39,7 +39,7 @@ export default {
   position: fixed;
   top: 50%;
   left: calc(50vw - 40px);
-  z-index: 100;
+  z-index: 2001;
 }
 
 .lds-default {
