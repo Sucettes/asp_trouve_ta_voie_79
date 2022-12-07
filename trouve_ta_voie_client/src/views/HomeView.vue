@@ -38,7 +38,7 @@
                            :hideDescription="'true'"
                            :userId="x.utilisateurId"
                            :showDeleteBtn="true"
-                           @delete-climb="deleteClimb"
+                           @delete-climb="showModalConfirm"
     ></grimpe-card-component>
   </div>
 
@@ -138,7 +138,7 @@
                                :hideDescription="'true'"
                                :userId="x.utilisateurId"
                                :showDeleteBtn="true"
-                               @delete-climb="deleteClimb"
+                               @delete-climb="showModalConfirm"
         ></grimpe-card-component>
       </div>
 
@@ -165,10 +165,17 @@
 
     </div>
   </div>
+
+
+  <confirmModalComponent v-if="showConfirmModal" @confirm="confirmResult"
+  ></confirmModalComponent>
+
+
 </template>
 
 <script>
 
+import confirmModalComponent from "@/components/confirmModalComponent";
 import grimpeCardComponent from "@/components/grimpe/grimpeCardComponent";
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import {errorManager} from "@/fctUtils/errorManager";
@@ -177,7 +184,7 @@ import axios from "axios";
 
 export default {
   name: "HomeView",
-  components: {LoadingSpinnerComponent, grimpeCardComponent},
+  components: {LoadingSpinnerComponent, grimpeCardComponent, confirmModalComponent},
   data() {
     return {
       lieux: [],
@@ -194,6 +201,9 @@ export default {
       filteredGrimpesSplice: [],
       nbPages: 0,
       currPage: 0,
+
+      showConfirmModal: false,
+      confirmDeleteId: undefined,
     };
   },
   computed: {
@@ -202,6 +212,17 @@ export default {
     },
   },
   methods: {
+    showModalConfirm(id) {
+      this.confirmDeleteId = id;
+      this.showConfirmModal = true;
+    },
+    async confirmResult(result) {
+      if (result) {
+        await this.deleteClimb(this.confirmDeleteId);
+      }
+      this.confirmDeleteId = undefined;
+      this.showConfirmModal = false;
+    },
     nextPage() {
       if (this.currPage < this.nbPages - 1) {
         this.currPage += 1;

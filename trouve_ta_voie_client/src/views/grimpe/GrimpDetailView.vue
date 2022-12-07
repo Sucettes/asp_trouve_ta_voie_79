@@ -28,7 +28,7 @@
           </div>
 
           <div class="btnWrapper" v-if="isLoggedIn">
-            <button v-if="this.$store.getters.isAdmin" @click="deleteClimb" type="button"
+            <button v-if="this.$store.getters.isAdmin" @click="showModalConfirm" type="button"
                     class="btn btn-outline-danger" style="margin-right: 20px">Supprimer
             </button>
 
@@ -80,9 +80,12 @@
             d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
     </svg>
   </div>
+
+  <confirmModalComponent v-if="showConfirmModal" @confirm="confirmResult"></confirmModalComponent>
 </template>
 
 <script>
+import confirmModalComponent from "@/components/confirmModalComponent";
 import GrimpeRatingModalComponent from "@/components/grimpe/grimpeRatingModalComponent";
 import LoadingSpinnerComponent from "@/components/LoadingSpinnerComponent";
 import starRatingComponent from "@/components/starRatingComponent";
@@ -94,7 +97,15 @@ import {LMap, LTileLayer, LMarker} from "vue3-leaflet";
 
 export default {
   name: "GrimpDetailView",
-  components: {GrimpeRatingModalComponent, LoadingSpinnerComponent, starRatingComponent, LMap, LTileLayer, LMarker},
+  components: {
+    GrimpeRatingModalComponent,
+    LoadingSpinnerComponent,
+    starRatingComponent,
+    LMap,
+    LTileLayer,
+    LMarker,
+    confirmModalComponent,
+  },
   data() {
     return {
       id: "",
@@ -113,6 +124,8 @@ export default {
       mapPosition: latLng(this.latitude, this.longitude),
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       userCanEdit: false,
+
+      showConfirmModal: false,
     };
   },
   computed: {
@@ -127,6 +140,15 @@ export default {
     },
   },
   methods: {
+    showModalConfirm() {
+      this.showConfirmModal = true;
+    },
+    async confirmResult(result) {
+      if (result) {
+        await this.deleteClimb(this.confirDeleteId);
+      }
+      this.showConfirmModal = false;
+    },
     async deleteClimb() {
       try {
         this.$store.dispatch("startLoading");
@@ -141,7 +163,7 @@ export default {
               this.$store.dispatch("stopLoading");
               this.$toast.success("La grimpe est supprimée !");
 
-              this.$router.back();
+              this.$router.push({name: "accueil"});
             })
             .catch(err => {
               this.$store.dispatch("stopLoading");
@@ -151,7 +173,7 @@ export default {
       } catch (err) {
         this.$toast.error("Une erreur est survenue !");
         this.$store.dispatch("stopLoading");
-        await errorManager(err, this.$store, this.$router);
+        await errorManager(err.response, this.$store, this.$router);
       }
     },
     async loadLocationDetails() {
@@ -183,7 +205,7 @@ export default {
             .catch(err => {
               this.$store.dispatch("stopLoading");
               this.$toast.error("Une erreur est survenue !");
-              errorManager(err.response, this.$store, this.$router);
+              errorManager(err, this.$store, this.$router);
             });
       } catch (err) {
         this.$store.dispatch("stopLoading");
@@ -260,7 +282,6 @@ export default {
     height: 12vw;
     min-height: 167px;
     object-fit: cover;
-    cursor: pointer;
   }
 }
 </style>

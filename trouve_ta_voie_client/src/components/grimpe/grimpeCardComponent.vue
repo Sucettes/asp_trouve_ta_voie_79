@@ -32,8 +32,8 @@
 
       <div>
         <div id="btnWrapper" class="mt-2">
-          <button v-if="showDeleteBtn && this.$store.getters.isAdmin" @click="deleteClimb" type="button"
-                  class="btn btn-outline-danger">Supprimer
+          <button v-if="showDeleteBtn && this.$store.getters.isAdmin" type="button"
+                  class="btn btn-outline-danger" @click="deleteClimb">Supprimer
           </button>
 
           <button @click="editGrimpe" type="button" class="btn btn-outline-primary"
@@ -47,7 +47,6 @@
 
 <script>
 import starRatingComponent from "@/components/starRatingComponent";
-
 
 export default {
   name: "grimpeCardComponent",
