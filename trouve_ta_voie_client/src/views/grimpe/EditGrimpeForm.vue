@@ -391,15 +391,6 @@ export default {
   margin: 30px;
 }
 
-body {
-  background-color: #f3f4f6;
-}
-
-h1, h2 {
-  color: $accent;
-  text-align: center;
-}
-
 .btnWrapper {
   display: flex;
   justify-content: end;

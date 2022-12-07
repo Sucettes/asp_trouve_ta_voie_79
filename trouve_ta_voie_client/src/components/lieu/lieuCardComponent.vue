@@ -1,6 +1,6 @@
 <template>
   <div id="card">
-    <div id="cardBody" class="shadow-sm p-3 mb-5 bg-body rounded">
+    <div id="cardBody" class="shadow-sm p-3 bg-body rounded">
       <div>
         <h3 @click="seeDetails">{{ titre }}</h3>
         <hr>
@@ -15,8 +15,8 @@
         <p v-if="directives.length > 170">{{ directives.substring(0, 170) + "..." }}</p>
         <p v-else>{{ directives }}</p>
 
-        <p><strong>Latitude : </strong> <span class="accColorTxt">{{ +latitude }}</span></p>
-        <p><strong>Longitude : </strong> <span class="accColorTxt">{{ +longitude }}</span></p>
+        <p class="cooP"><strong>Latitude  : </strong> <span class="accColorTxt">{{ +latitude }}</span></p>
+        <p class="cooP"><strong>Longitude : </strong> <span class="accColorTxt">{{ +longitude }}</span></p>
 
         <span></span>
         <span></span>
@@ -25,7 +25,7 @@
 
       <div>
         <div id="btnWrapper">
-          <button @click="editLieu" type="button" class="btn btn-outline-secondary">Modifier</button>
+          <button @click="editLieu" type="button" class="btn btn-outline-primary">Modifier</button>
         </div>
       </div>
     </div>
@@ -86,10 +86,6 @@ export default {
   span {
     height: 10px;
   }
-
-  .accColorTxt {
-    color: $primary;
-  }
 }
 
 #btnWrapper {
@@ -106,5 +102,9 @@ export default {
   #detailsBtn:hover {
     color: $Darkaccent;
   }
+}
+
+.cooP {
+  margin: 0;
 }
 </style>

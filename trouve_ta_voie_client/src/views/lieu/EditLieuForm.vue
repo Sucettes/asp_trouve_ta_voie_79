@@ -239,15 +239,6 @@ export default {
   margin: 30px;
 }
 
-body {
-  background-color: #f3f4f6;
-}
-
-h1 {
-  color: $accent;
-  text-align: center;
-}
-
 .btnWrapper {
   display: flex;
   justify-content: end;
@@ -265,13 +256,4 @@ h1 {
   margin: 10px;
 }
 
-.error {
-  color: $red;
-  font-size: 0.9rem;
-}
-
-.ulError {
-  list-style: none;
-  padding: 0;
-}
 </style>

@@ -17,6 +17,15 @@ $DarkOrange: #b87100;
 
 $primary: $Darkaccent;
 $secondary: $accent;
+$danger: $redDark;
+
+* {
+  font-family: 'Abel', sans-serif;
+}
+
+.btn {
+  border-radius: 0 !important;
+}
 
 .btn-outline-primary:hover {
   color: white
@@ -26,16 +35,12 @@ $secondary: $accent;
   color: white !important;
 }
 
-.btn-secondary:hover {
-  color: white !important;
-}
-
 .btn-secondary {
   color: white;
 }
 
-.btn {
-  border-radius: 0 !important;
+.btn-secondary:hover {
+  color: white !important;
 }
 
 .form-control {
@@ -44,11 +49,6 @@ $secondary: $accent;
 
 .form-select {
   border-radius: 0 !important;
-}
-
-* {
-  font-family: 'Abel', sans-serif;
-
 }
 
 h1, h2, h3, h4, h5, h6 {

@@ -29,10 +29,10 @@
 
           <div class="btnWrapper" v-if="isLoggedIn">
             <button v-if="this.$store.getters.isAdmin" @click="deleteClimb" type="button"
-                    class="btn btn-outline-danger">Supprimer
+                    class="btn btn-outline-danger" style="margin-right: 20px">Supprimer
             </button>
 
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ratingModal">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ratingModal">
               Évaluer la grimpe
             </button>
           </div>
@@ -42,9 +42,10 @@
 
     <div class="body shadow-sm p-3 mb-5 bg-body rounded">
       <h3>Lieu</h3>
+      <br>
       <div class="row">
         <div class="col-md-6">
-          <p @click="goToLocationDetails"><strong class="accColorTxt cursorPointer">{{ location.titre }}</strong></p>
+          <h4 @click="goToLocationDetails"><strong class="accColorTxt cursorPointer">{{ location.titre }}</strong></h4>
           <p>{{ location.description }}</p>
         </div>
         <div class="col-md-6">
@@ -57,6 +58,7 @@
     </div>
 
     <h3>Galerie de photos</h3>
+    <br>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-2">
       <div class="d-flex" v-for="pic in pictures" :key="pic.id">
         <img class="imgGal" :src="'http://localhost:8090' + pic.path">
@@ -232,33 +234,9 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
-//@import 'bootstrap/scss/bootstrap.scss';
-
-#svgIconEditDiv {
-  position: fixed;
-  right: 32px;
-  bottom: 32px;
-  cursor: pointer;
-  z-index: 1000;
-
-  #svgIconEdit {
-    fill: $secondary;
-  }
-}
-
-#svgIconEditDiv:hover {
-  path {
-    fill: $primary;
-  }
-}
 
 #climbDetailContainer {
   margin: 27px;
-
-  h1 {
-    color: $accent;
-    text-align: center;
-  }
 
   .btnWrapper {
     display: flex;

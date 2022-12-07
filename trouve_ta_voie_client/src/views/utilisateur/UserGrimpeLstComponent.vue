@@ -96,45 +96,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/custom.scss';
-@import 'bootstrap/scss/bootstrap.scss';
-
-#svgIconAddDiv {
-  position: fixed;
-  right: 32px;
-  bottom: 32px;
-  cursor: pointer;
-
-  #svgIconAdd {
-    fill: $secondary;
-
-    :hover {
-      fill: $primary;
-    }
-  }
-}
-
-#svgIconAddDiv:hover {
-  path {
-    fill: $primary;
-  }
-}
-
 .row {
   margin: 0;
-}
-
-#alertInfo {
-  margin: 40px auto 0;
-  width: 80%;
-  text-align: center;
-
-  strong {
-    cursor: pointer;
-  }
-}
-
-.d-flex {
-  justify-content: center;
 }
 </style>

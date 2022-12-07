@@ -42,8 +42,7 @@
     ></grimpe-card-component>
   </div>
 
-  <div class="shadow-sm p-3 mb-5 bg-body rounded"
-       style="margin-left: 30px; margin-right: 30px; margin-bottom: 0 !important;"><h2 id="top10Titre">Votre
+  <div class="shadow-sm p-3 mb-5 bg-body rounded mtlr-35-12"><h2 id="top10Titre">Votre
     recherche</h2></div>
   <div id="filterContainer" class="row">
     <div class="col-lg-2" id="filterMenu">
@@ -317,18 +316,8 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
 
-#alertInfo {
-  margin: 40px auto 0;
-  width: 80%;
-  text-align: center;
-}
-
 .pagination {
   justify-content: center;
-}
-
-#top10Carousel > button {
-  max-width: 40px;
 }
 
 .margLG-10 {
@@ -340,21 +329,18 @@ export default {
   margin: 0;
 }
 
-#filterMenu {
-  h3 {
-    color: $accent;
-    text-align: center;
-  }
+.mtlr-35-12 {
+  margin-left: 35px;
+  margin-right: 35px;
+  margin-bottom: 0 !important;
+  margin-top: 12px !important;
+}
 
+#filterMenu {
   #btnWrapper {
     display: flex;
     justify-content: center;
   }
-}
-
-#top10Titre {
-  color: $accent;
-  text-align: center;
 }
 
 #banner {
@@ -374,21 +360,4 @@ export default {
   margin: 30px;
 }
 
-body {
-  background-color: #f3f4f6;
-}
-
-h1 {
-  color: $accent;
-  text-align: center;
-}
-
-.d-flex {
-  justify-content: center;
-}
-
-.error {
-  color: $red;
-  font-size: 0.9rem;
-}
 </style>

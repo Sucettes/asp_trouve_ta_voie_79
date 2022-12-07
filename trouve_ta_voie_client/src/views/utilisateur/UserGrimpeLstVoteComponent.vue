@@ -83,20 +83,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/custom.scss';
-@import 'bootstrap/scss/bootstrap.scss';
-
-
-#alertInfo {
-  margin: 40px auto 0;
-  width: 80%;
-  text-align: center;
-}
-
-.d-flex {
-  justify-content: center;
-}
-
 .row {
   margin: 0;
 }

@@ -14,7 +14,7 @@ dotenv.config();
 app.use(bodyParser.json({limit: "500mb"}));
 app.use(bodyParser.urlencoded({limit: "500mb", extended: true}));
 
-app.use(cors({origin: [process.env.ORIGIN]}));
+app.use(cors({origin: ["http://localhost:8080"]}));
 app.set("jwt-secret", process.env.SECRET);
 app.use(express.static(path.join(__dirname, "public")));
 

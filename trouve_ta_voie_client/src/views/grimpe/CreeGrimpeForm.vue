@@ -8,7 +8,8 @@
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="title"
-               :class="{ 'is-invalid': titleIsVaild===false }" @blur="checkIfTitleIsValid" @input="checkIfTitleIsValid" tabindex="1">
+               :class="{ 'is-invalid': titleIsVaild===false }" @blur="checkIfTitleIsValid" @input="checkIfTitleIsValid"
+               tabindex="1">
         <ul class="ulError" v-if="!titleIsVaild">
           <li class="error" v-for="err in titleMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -381,13 +382,11 @@ export default {
   margin: 30px;
 }
 
-body {
-  background-color: #f3f4f6;
-}
-
-h1, h2 {
-  color: $accent;
-  text-align: center;
+#addGrimpeForm {
+  padding: 30px;
+  height: auto;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 .btnWrapper {
@@ -396,14 +395,8 @@ h1, h2 {
   margin-top: 40px;
 }
 
-#addGrimpeForm {
-  padding: 30px;
-  height: auto;
-  margin-left: 5%;
-  margin-right: 5%;
-}
-
 .btnWrapper > div {
   margin: 10px;
 }
+
 </style>

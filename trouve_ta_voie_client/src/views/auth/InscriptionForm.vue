@@ -172,6 +172,13 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
 
+#authForm {
+  width: 25rem;
+  margin: 0 auto;
+  padding: 30px;
+  height: auto;
+}
+
 .nav-link {
   color: $light;
 }
@@ -186,11 +193,15 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   color: white;
-}
 
-#container input {
-  color: white;
-  background-color: transparent;
+  input {
+    color: white;
+    background-color: transparent;
+  }
+
+  h2 {
+    color: white;
+  }
 }
 
 .btnWrapper {
@@ -203,8 +214,4 @@ export default {
   font-size: 0.9rem;
 }
 
-.ulError {
-  list-style: none;
-  padding: 0;
-}
 </style>

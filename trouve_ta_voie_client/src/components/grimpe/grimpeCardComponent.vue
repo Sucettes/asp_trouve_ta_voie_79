@@ -1,10 +1,10 @@
 <template>
   <div id="card">
-    <div id="cardBody" class="shadow-sm p-3 mb-5 bg-body rounded" :class="{cardBodyShort: hideDescription === 'true'}">
+    <div id="cardBody" class="shadow-sm p-3 bg-body rounded" :class="{cardBodyShort: hideDescription === 'true'}">
 
       <div>
         <div v-if="images[0]">
-          <img class="lstPic" :src="'http://localhost:8090' + images[0].path" alt=""/>
+          <img class="lstPic mb-2" :src="'http://localhost:8090' + images[0].path" alt=""/>
         </div>
         <h3 @click="seeDetails">{{ titre }}</h3>
         <hr>
@@ -31,12 +31,12 @@
       </div>
 
       <div>
-        <div id="btnWrapper">
+        <div id="btnWrapper" class="mt-2">
           <button v-if="showDeleteBtn && this.$store.getters.isAdmin" @click="deleteClimb" type="button"
                   class="btn btn-outline-danger">Supprimer
           </button>
 
-          <button @click="editGrimpe" type="button" class="btn btn-outline-secondary"
+          <button @click="editGrimpe" type="button" class="btn btn-outline-primary"
                   v-if="+this.userId === +this.$store.getters.userId || this.$store.getters.isAdmin">Modifier
           </button>
         </div>
@@ -81,15 +81,13 @@ export default {
 
 .lstPic {
   width: 100%;
-  //height: 167px;
-  //object-fit: contain;
   height: 12vw;
   min-height: 167px;
   object-fit: cover;
 }
 
 #card {
-  padding: 15px;
+  padding: 0 15px 15px 15px;
 
   p {
     overflow: auto;
@@ -124,18 +122,6 @@ export default {
 
   span {
     height: 10px;
-  }
-
-  .accColorTxt {
-    color: $Darkaccent;
-  }
-
-  .cursorPointer {
-    cursor: pointer;
-  }
-
-  .cursorPointer:hover {
-    color: $accent;
   }
 }
 

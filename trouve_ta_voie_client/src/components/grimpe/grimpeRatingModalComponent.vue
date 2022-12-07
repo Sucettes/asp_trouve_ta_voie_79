@@ -89,7 +89,9 @@
 
         <p v-if="!starsIsvalid" class="error">Il faut avoir 1 à 5 étoiles !</p>
 
-        <button type="button" class="btn btn-primary" @click="saveStars" :disabled="isLoading">Sauvegarder évaluation</button>
+        <div class="btnWrapper">
+          <button type="button" class="btn btn-primary mt-3" @click="saveStars" :disabled="isLoading">Sauvegarder évaluation</button>
+        </div>
       </div>
     </div>
   </div>
@@ -138,9 +140,6 @@ export default {
 #starsContainer {
   display: flex;
   justify-content: center;
-  //align-items: center;
-  //margin: 0 !important;
-  //width: auto !important;
 
   svg {
     fill: $orange;
@@ -149,13 +148,10 @@ export default {
       fill: $DarkOrange;
     }
   }
-  //
-  //p {
-  //  font-size: 0.8rem;
-  //  text-align: center;
-  //  vertical-align: center;
-  //  margin-bottom: -4px;
-  //  margin-left: 4px;
-  //}
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: end;
 }
 </style>
