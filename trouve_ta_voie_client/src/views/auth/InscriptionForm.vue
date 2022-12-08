@@ -94,16 +94,16 @@ export default {
   },
   methods: {
     async register() {
-      let result = userValidator.checkIfNameIsValid(this.nom);
+      let result = userValidator.checkSiNameEstValide(this.nom);
       this.nomErreurs = result[0];
       this.nomVal = result[1];
-      result = userValidator.checkIfEmailIsValid(this.courriel);
+      result = userValidator.checkSiEmailEstValide(this.courriel);
       this.courrielErreurs = result[0];
       this.courrielVal = result[1];
-      result = userValidator.checkIfPwdIsValid(this.mdp);
+      result = userValidator.checkSiPwdEstValide(this.mdp);
       this.mdpErreurs = result[0];
       this.mdpVal = result[1];
-      result = userValidator.checkIfPwdIsValid(this.mdpConf);
+      result = userValidator.checkSiPwdEstValide(this.mdpConf);
       this.mdpConfErreurs = result[0];
       this.mdpConfVal = result[1];
 
@@ -141,22 +141,22 @@ export default {
       }
     },
     valideNom(event) {
-      const result = userValidator.checkIfNameIsValid(event.target.value);
+      const result = userValidator.checkSiNameEstValide(event.target.value);
       this.nomErreurs = result[0];
       this.nomVal = result[1];
     },
     valideCourriel(event) {
-      const result = userValidator.checkIfEmailIsValid(event.target.value);
+      const result = userValidator.checkSiEmailEstValide(event.target.value);
       this.courrielErreurs = result[0];
       this.courrielVal = result[1];
     },
     valideMdp(event) {
-      const result = userValidator.checkIfPwdIsValid(event.target.value);
+      const result = userValidator.checkSiPwdEstValide(event.target.value);
       this.mdpErreurs = result[0];
       this.mdpVal = result[1];
     },
     valideMdpConf(event) {
-      const result = userValidator.checkIfPwdIsValid(event.target.value);
+      const result = userValidator.checkSiPwdEstValide(event.target.value);
       this.mdpConfErreurs = result[0];
       this.mdpConfVal = result[1];
     },

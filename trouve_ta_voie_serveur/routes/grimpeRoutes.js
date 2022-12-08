@@ -13,13 +13,13 @@ routerGrimpe.route("/grimpe/create")
     .all(grimpeController.allReq);
 
 routerGrimpe.route("/grimpe/details/:id")
-    .get(grimpeController.getClimbDetailsById)
+    .get(grimpeController.getGrimpeDetailsById)
     .all(grimpeController.allReq);
 
 routerGrimpe.route("/grimpe/:id")
     .get(grimpeController.getGrimpeById)
     .put(authMidl, grimpeController.editGrimpe)
-    .delete(authMidl, grimpeController.deleteClimb)
+    .delete(authMidl, grimpeController.deleteGrimpe)
     .all(grimpeController.allReq);
 
 routerGrimpe.route("/grimpe/:userId/:id")

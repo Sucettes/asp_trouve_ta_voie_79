@@ -41,12 +41,12 @@ export default {
             });
         });
     },
-    async loadUserVotedClimbs(context, payload) {
+    async loadUserGrimpesVoter(context, payload) {
         return new Promise((resolve, reject) => {
             axios.get(`http://localhost:8090/api/votes/${payload.userId}`, {
                 headers: {"Authorization": `Bearer ${payload.token}`},
             }).then(response => {
-                context.commit("setUserVotedClimbs", response.data);
+                context.commit("setUserGrimpesVoter", response.data);
 
                 resolve(response);
             }).catch(error => {
@@ -67,7 +67,7 @@ export default {
                 });
         });
     },
-    async deleteClimb(context, payload) {
+    async deleteGrimpe(context, payload) {
         return new Promise((resolve, reject) => {
             axios.delete(`http://localhost:8090/api/grimpe/${payload.id}`, {
                 headers: {"Authorization": `Bearer ${payload.token}`},

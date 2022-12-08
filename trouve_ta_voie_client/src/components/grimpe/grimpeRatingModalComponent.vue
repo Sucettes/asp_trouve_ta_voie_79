@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="ratingModalLabel">{{ title }}</h1>
+        <h1 class="modal-title fs-5" id="ratingModalLabel">{{ titre }}</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
@@ -87,7 +87,7 @@
           </div>
         </div>
 
-        <p v-if="!starsIsvalid" class="error">Il faut avoir 1 à 5 étoiles !</p>
+        <p v-if="!starsEstValide" class="error">Il faut avoir 1 à 5 étoiles !</p>
 
         <div class="btnWrapper">
           <button type="button" class="btn btn-primary mt-3" @click="saveStars" :disabled="isLoading">Sauvegarder évaluation</button>
@@ -100,26 +100,26 @@
 <script>
 export default {
   name: "grimpeRatingModalComponent",
-  props: ["title"],
+  props: ["titre"],
   emits: ["saveRating"],
   data() {
     return {
       stars: 0,
-      starsIsvalid: true
+      starsEstValide: true
     }
   },
   methods: {
     changeStars(star) {
       this.stars = star;
-      this.checkIfStarsIsValid();
+      this.checkSiStarsEstValide();
     },
-    checkIfStarsIsValid() {
-      this.starsIsvalid = +this.stars >= 1 && +this.stars <= 5;
+    checkSiStarsEstValide() {
+      this.starsEstValide = +this.stars >= 1 && +this.stars <= 5;
     },
     saveStars() {
-      this.checkIfStarsIsValid();
+      this.checkSiStarsEstValide();
 
-      if (this.starsIsvalid) {
+      if (this.starsEstValide) {
         this.$emit('saveRating', this.stars);
         this.stars = 0;
       }

@@ -23,9 +23,9 @@ exports.getUserByEmail = async (req, res) => {
 exports.changeUsername = async (req, res) => {
     // Permets de changer le nom d'utilisateur de lui qui est connecté.
     try {
-        const nameIsValid = validatorFct.userNameIsValid(req.body.name);
+        const nameEstValide = validatorFct.userNameEstValide(req.body.name);
 
-        if (nameIsValid) {
+        if (nameEstValide) {
             const user = await Utilisateur.findByPk(req.token.userId);
 
             if (user) {

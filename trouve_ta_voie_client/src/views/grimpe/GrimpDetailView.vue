@@ -1,9 +1,9 @@
 <template>
   <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
 
-  <div id="climbDetailContainer">
+  <div id="grimpeDetailContainer">
     <div class="body shadow-sm p-3 mb-5 bg-body rounded">
-      <h1>{{ title }}</h1>
+      <h1>{{ titre }}</h1>
 
       <br>
 
@@ -45,8 +45,8 @@
       <br>
       <div class="row">
         <div class="col-md-6">
-          <h4 @click="goToLocationDetails"><strong class="accColorTxt cursorPointer">{{ location.titre }}</strong></h4>
-          <p>{{ location.description }}</p>
+          <h4 @click="goToLieuDetails"><strong class="accColorTxt cursorPointer">{{ lieu.titre }}</strong></h4>
+          <p>{{ lieu.description }}</p>
         </div>
         <div class="col-md-6">
           <l-map :center="mapPosition" :zoom="15" v-if="mapPosition">
@@ -68,10 +68,10 @@
   </div>
 
   <div class="modal fade" id="ratingModal" data-bs-keyboard="false">
-    <grimpe-rating-modal-component :title="title" @save-rating="saveRating"></grimpe-rating-modal-component>
+    <grimpe-rating-modal-component :titre="titre" @save-rating="saveRating"></grimpe-rating-modal-component>
   </div>
 
-  <div id="svgIconEditDiv" @click="goToEditClimb" v-if="userCanEdit || isAdmin">
+  <div id="svgIconEditDiv" @click="goToEditGrimpe" v-if="userCanEdit || isAdmin">
     <svg id="svgIconEdit" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
          class="bi bi-pencil-square" viewBox="0 0 16 16">
       <path
@@ -109,14 +109,14 @@ export default {
   data() {
     return {
       id: "",
-      title: "",
+      titre: "",
       style: "",
       desc: "",
       diff: undefined,
       stars: undefined,
       votes: undefined,
       userId: undefined,
-      location: {},
+      lieu: {},
       pictures: [],
       pictureCover: {},
       latitude: 0,
@@ -145,11 +145,11 @@ export default {
     },
     async confirmResult(result) {
       if (result) {
-        await this.deleteClimb(this.confirDeleteId);
+        await this.deleteGrimpe(this.confirDeleteId);
       }
       this.showConfirmModal = false;
     },
-    async deleteClimb() {
+    async deleteGrimpe() {
       try {
         this.$store.dispatch("startLoading");
 
@@ -158,7 +158,7 @@ export default {
           token: this.$store.getters.token,
         };
 
-        await this.$store.dispatch("deleteClimb", payload)
+        await this.$store.dispatch("deleteGrimpe", payload)
             .then(() => {
               this.$store.dispatch("stopLoading");
               this.$toast.success("La grimpe est supprimée !");
@@ -176,7 +176,7 @@ export default {
         await errorManager(err.response, this.$store, this.$router);
       }
     },
-    async loadLocationDetails() {
+    async loadLieuDetails() {
       try {
         this.$store.dispatch("startLoading");
 
@@ -184,7 +184,7 @@ export default {
             .then(response => {
               this.$store.dispatch("stopLoading");
 
-              this.title = response.data.titre;
+              this.titre = response.data.titre;
               this.style = response.data.style;
               this.diff = response.data.difficulte;
               this.desc = response.data.description;
@@ -194,7 +194,7 @@ export default {
 
               this.pictures = response.data.images;
               this.pictureCover = this.pictures[0];
-              this.location = response.data.lieux;
+              this.lieu = response.data.lieux;
 
               this.latitude = response.data.lieux.latitude;
               this.longitude = response.data.lieux.longitude;
@@ -213,11 +213,11 @@ export default {
         await errorManager(err.response, this.$store, this.$router);
       }
     },
-    goToEditClimb() {
+    goToEditGrimpe() {
       this.$router.push({name: "modifierGrimpe", params: {id: this.id}});
     },
-    goToLocationDetails() {
-      this.$router.push({name: "lieuDetails", params: {id: this.location.id}});
+    goToLieuDetails() {
+      this.$router.push({name: "lieuDetails", params: {id: this.lieu.id}});
     },
     async saveRating(stars) {
       this.$store.dispatch("startLoading");
@@ -249,7 +249,7 @@ export default {
   },
   created() {
     this.id = this.$route.params.id;
-    this.loadLocationDetails();
+    this.loadLieuDetails();
   },
 };
 </script>
@@ -257,7 +257,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/styles/custom.scss';
 
-#climbDetailContainer {
+#grimpeDetailContainer {
   margin: 27px;
 
   .btnWrapper {

@@ -10,10 +10,10 @@ const jwt = require("jsonwebtoken");
 
 exports.login = async (req, res) => {
     try {
-        let emailIsValid = validatorFct.userEmailIsValid(req.body.courriel);
-        let pwdIsValid = validatorFct.userPwdIsValid(req.body.mdp);
+        let emailEstValide = validatorFct.userEmailEstValide(req.body.courriel);
+        let pwdEstValide = validatorFct.userPwdEstValide(req.body.mdp);
 
-        if (emailIsValid && pwdIsValid) {
+        if (emailEstValide && pwdEstValide) {
             let user = await Utilisateur.findOne({
                 where: {courriel: req.body.courriel},
             });
@@ -49,12 +49,12 @@ exports.login = async (req, res) => {
 
 exports.register = async (req, res) => {
     try {
-        const emailIsValid = validatorFct.userEmailIsValid(req.body.courriel);
-        const nameIsValid = validatorFct.userNameIsValid(req.body.nom);
-        const pwdIsValid = validatorFct.userPwdIsValid(req.body.mdp);
-        const pwdConfIsValid = validatorFct.userPwdIsValid(req.body.mdpConf);
+        const emailEstValide = validatorFct.userEmailEstValide(req.body.courriel);
+        const nameEstValide = validatorFct.userNameEstValide(req.body.nom);
+        const pwdEstValide = validatorFct.userPwdEstValide(req.body.mdp);
+        const pwdConfEstValide = validatorFct.userPwdEstValide(req.body.mdpConf);
 
-        if (emailIsValid && nameIsValid && pwdIsValid && pwdConfIsValid) {
+        if (emailEstValide && nameEstValide && pwdEstValide && pwdConfEstValide) {
             // Vérifie si le courriel est déjà utilisé.
             let user = await Utilisateur.findOne({where: {courriel: req.body.courriel}});
 

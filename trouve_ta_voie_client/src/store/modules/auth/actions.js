@@ -61,7 +61,7 @@ export default {
             resolve();
         });
     },
-    async checkIfLocalStorageTokenIsValid(context, token) {
+    async checkSiLocalStorageTokenEstValide(context, token) {
         // Vérifie le token qui est dans le local storage.
         return new Promise((resolve, reject) => {
             axios.post("http://localhost:8090/api/valideToken", {}, {

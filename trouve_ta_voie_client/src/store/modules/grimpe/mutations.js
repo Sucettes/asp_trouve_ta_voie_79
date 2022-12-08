@@ -8,7 +8,7 @@ export default {
     setGrimpeDetails(state, payload) {
         state.grimpeDetails = payload;
     },
-    setUserVotedClimbs(state, payload) {
-        state.userVotedClimbs = payload;
+    setUserGrimpesVoter(state, payload) {
+        state.userGrimpesVoter = payload;
     }
 };

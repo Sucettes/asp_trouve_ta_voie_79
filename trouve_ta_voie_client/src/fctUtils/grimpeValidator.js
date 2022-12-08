@@ -1,57 +1,57 @@
 // Bibliothèque de fonction pour la validation des grimpes
 const grimpeValidator = {
-    checkIfTitleIsValid(title) {
-        let titleMsgErr = [];
-        let titleIsVaild = true;
+    checkSiTitreEstValide(titre) {
+        let titreMsgErr = [];
+        let titreIsVaild = true;
 
-        if (title === "") {
-            titleMsgErr.push("Est requis !");
-            titleIsVaild = false;
+        if (titre === "") {
+            titreMsgErr.push("Est requis !");
+            titreIsVaild = false;
         }
-        if (title.length < 3 && title.length > 0) {
-            titleMsgErr.push("Min. 3 caractères !");
-            titleIsVaild = false;
+        if (titre.length < 3 && titre.length > 0) {
+            titreMsgErr.push("Min. 3 caractères !");
+            titreIsVaild = false;
         }
-        if (title.length > 50) {
-            titleMsgErr.push("Max. 50 caractères !");
-            titleIsVaild = false;
+        if (titre.length > 50) {
+            titreMsgErr.push("Max. 50 caractères !");
+            titreIsVaild = false;
         }
-        return [titleMsgErr, titleIsVaild];
+        return [titreMsgErr, titreIsVaild];
     },
-    checkIfStyleIsValid(style) {
+    checkSiStyleEstValide(style) {
         let styleMsgErr = [];
-        let styleIsValid = true;
+        let styleEstValide = true;
 
         if (style === "" || style === "Choisir le style") {
             styleMsgErr.push("Est requis !");
-            styleIsValid = false;
+            styleEstValide = false;
         }
         if (style !== "Traditionnelle" && style !== "Sportive" && style !== "Moulinette" && style !== "" && style !== "Choisir le style") {
             styleMsgErr.push("Valeur invalide ! Traditionnelle, Sportive, Moulinette");
-            styleIsValid = false;
+            styleEstValide = false;
         }
-        return [styleMsgErr, styleIsValid];
+        return [styleMsgErr, styleEstValide];
     },
-    checkIfDescriptionIsValid(desc) {
+    checkSiDescriptionEstValide(desc) {
         let descriptionMsgErr = [];
-        let descIsValid = true;
+        let descEstValide = true;
 
         if (desc === "") {
             descriptionMsgErr.push("Est requis !");
-            descIsValid = false;
+            descEstValide = false;
         }
         if (desc.length < 3 && desc.length > 0) {
             descriptionMsgErr.push("Min. 3 caractères !");
-            descIsValid = false;
+            descEstValide = false;
         }
         if (desc.length > 500) {
             descriptionMsgErr.push("Max. 500 caractères !");
-            descIsValid = false;
+            descEstValide = false;
         }
 
-        return [descriptionMsgErr, descIsValid];
+        return [descriptionMsgErr, descEstValide];
     },
-    checkIfDifficultyLevelIsValid(diff) {
+    checkSiDifficultyLevelEstValide(diff) {
         let diffMsgErr = [];
         let diffIsVaild = true;
         if (diff === "" || diff === "Choisir la difficulté") {
@@ -65,7 +65,7 @@ const grimpeValidator = {
         }
         return [diffMsgErr, diffIsVaild];
     },
-    checkIfLieuIsValid(lieu) {
+    checkSiLieuEstValide(lieu) {
         let lieuMsgErr = [];
         let lieuIsVaild = true;
 

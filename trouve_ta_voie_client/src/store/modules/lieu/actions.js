@@ -56,7 +56,7 @@ export default {
             });
         });
     },
-    async deleteLocation(context, payload) {
+    async deleteLieu(context, payload) {
         return new Promise((resolve, reject) => {
             axios.delete(`http://localhost:8090/api/lieu/${payload.id}`, {
                 headers: {"Authorization": `Bearer ${payload.token}`},

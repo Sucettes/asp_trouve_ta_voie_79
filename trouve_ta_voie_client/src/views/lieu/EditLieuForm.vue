@@ -7,28 +7,28 @@
     <form id="editLieuForm">
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
-        <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="title"
-               @blur="checkTitleIsValid" @input="checkTitleIsValid"
-               :class="{ 'is-invalid': titleIsVaild===false }" tabindex="1">
-        <ul class="ulError" v-if="!titleIsVaild">
-          <li class="error" v-for="err in titleMsgErr" :key="err">{{ err }}</li>
+        <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="titre"
+               @blur="checkTitreEstValide" @input="checkTitreEstValide"
+               :class="{ 'is-invalid': titreIsVaild===false }" tabindex="1">
+        <ul class="ulError" v-if="!titreIsVaild">
+          <li class="error" v-for="err in titreMsgErr" :key="err">{{ err }}</li>
         </ul>
       </div>
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <textarea class="form-control" id="description" rows="4" v-model.trim="description"
-                  @blur="checkDescriptionIsValid" @input="checkDescriptionIsValid"
-                  :class="{ 'is-invalid': descIsValid===false }" tabindex="2"></textarea>
-        <ul class="ulError" v-if="!descIsValid">
+                  @blur="checkDescriptionEstValide" @input="checkDescriptionEstValide"
+                  :class="{ 'is-invalid': descEstValide===false }" tabindex="2"></textarea>
+        <ul class="ulError" v-if="!descEstValide">
           <li class="error" v-for="err in descriptionMsgErr" :key="err">{{ err }}</li>
         </ul>
       </div>
       <div class="mb-3">
         <label for="directives" class="form-label">Directives pour s'y rendre</label>
         <textarea class="form-control" id="directives" rows="4" v-model.trim="instruction"
-                  @blur="checkInstructionIsValid" @input="checkInstructionIsValid"
-                  :class="{ 'is-invalid': instrucIsValid===false }" tabindex="3"></textarea>
-        <ul class="ulError" v-if="!instrucIsValid">
+                  @blur="checkInstructionEstValide" @input="checkInstructionEstValide"
+                  :class="{ 'is-invalid': instrucEstValide===false }" tabindex="3"></textarea>
+        <ul class="ulError" v-if="!instrucEstValide">
           <li class="error" v-for="err in instructionMsgErr" :key="err">{{ err }}</li>
         </ul>
       </div>
@@ -37,18 +37,18 @@
         <div class="col-6 mb-3">
           <label for="latitude" class="form-label">Latitude</label>
           <input type="text" class="form-control" id="latitude" placeholder="0"
-                 v-model.trim="latitude" @blur="checkLatitudeIsValid" @input="checkLatitudeIsValid"
-                 :class="{ 'is-invalid': latitudeIsValid===false }" tabindex="4">
-          <ul class="ulError" v-if="!latitudeIsValid">
+                 v-model.trim="latitude" @blur="checkLatitudeEstValide" @input="checkLatitudeEstValide"
+                 :class="{ 'is-invalid': latitudeEstValide===false }" tabindex="4">
+          <ul class="ulError" v-if="!latitudeEstValide">
             <li class="error" v-for="err in latitudeMsgErr" :key="err">{{ err }}</li>
           </ul>
         </div>
         <div class="col-6 mb-3">
           <label for="longitude" class="form-label">Longitude</label>
           <input type="text" class="form-control" id="longitude" placeholder="0"
-                 v-model.trim="longitude" @blur="checkLongitudeIsValid" @input="checkLongitudeIsValid"
-                 :class="{ 'is-invalid': longitudeIsValid===false }" tabindex="5">
-          <ul class="ulError" v-if="!longitudeIsValid">
+                 v-model.trim="longitude" @blur="checkLongitudeEstValide" @input="checkLongitudeEstValide"
+                 :class="{ 'is-invalid': longitudeEstValide===false }" tabindex="5">
+          <ul class="ulError" v-if="!longitudeEstValide">
             <li class="error" v-for="err in longitudeMsgErr" :key="err">{{ err }}</li>
           </ul>
         </div>
@@ -79,22 +79,22 @@ export default {
   data() {
     return {
       id: "",
-      title: "",
+      titre: "",
       description: "",
       instruction: "",
       latitude: 0,
       longitude: 0,
-      titleIsVaild: undefined,
-      descIsValid: undefined,
-      instrucIsValid: undefined,
-      latitudeIsValid: undefined,
-      longitudeIsValid: undefined,
-      titleMsgErr: [],
+      titreIsVaild: undefined,
+      descEstValide: undefined,
+      instrucEstValide: undefined,
+      latitudeEstValide: undefined,
+      longitudeEstValide: undefined,
+      titreMsgErr: [],
       descriptionMsgErr: [],
       instructionMsgErr: [],
       latitudeMsgErr: [],
       longitudeMsgErr: [],
-      titleNeedUpdated: false,
+      titreNeedUpdated: false,
 
       errorCode: undefined,
       statusText: "",
@@ -102,59 +102,59 @@ export default {
     };
   },
   methods: {
-    checkTitleIsValid(event) {
-      const result = lieuValidator.checkTitleIsValid(event.target.value);
-      this.titleMsgErr = result[0];
-      this.titleIsVaild = result[1];
-      this.titleNeedUpdated = false;
+    checkTitreEstValide(event) {
+      const result = lieuValidator.checkTitreEstValide(event.target.value);
+      this.titreMsgErr = result[0];
+      this.titreIsVaild = result[1];
+      this.titreNeedUpdated = false;
     },
-    checkDescriptionIsValid(event) {
-      const result = lieuValidator.checkDescriptionIsValid(event.target.value);
+    checkDescriptionEstValide(event) {
+      const result = lieuValidator.checkDescriptionEstValide(event.target.value);
       this.descriptionMsgErr = result[0];
-      this.descIsValid = result[1];
+      this.descEstValide = result[1];
     },
-    checkInstructionIsValid(event) {
-      const result = lieuValidator.checkInstructionIsValid(event.target.value);
+    checkInstructionEstValide(event) {
+      const result = lieuValidator.checkInstructionEstValide(event.target.value);
       this.instructionMsgErr = result[0];
-      this.instrucIsValid = result[1];
+      this.instrucEstValide = result[1];
     },
-    checkLatitudeIsValid(event) {
-      const result = lieuValidator.checkLatitudeIsValid(event.target.value);
+    checkLatitudeEstValide(event) {
+      const result = lieuValidator.checkLatitudeEstValide(event.target.value);
       this.latitudeMsgErr = result[0];
-      this.latitudeIsValid = result[1];
+      this.latitudeEstValide = result[1];
     },
-    checkLongitudeIsValid(event) {
-      const result = lieuValidator.checkLongitudeIsValid(event.target.value);
+    checkLongitudeEstValide(event) {
+      const result = lieuValidator.checkLongitudeEstValide(event.target.value);
       this.longitudeMsgErr = result[0];
-      this.longitudeIsValid = result[1];
+      this.longitudeEstValide = result[1];
     },
     async edit() {
-      let result = lieuValidator.checkDescriptionIsValid(this.description);
+      let result = lieuValidator.checkDescriptionEstValide(this.description);
       this.descriptionMsgErr = result[0];
-      this.descIsValid = result[1];
-      result = lieuValidator.checkInstructionIsValid(this.instruction);
+      this.descEstValide = result[1];
+      result = lieuValidator.checkInstructionEstValide(this.instruction);
       this.instructionMsgErr = result[0];
-      this.instrucIsValid = result[1];
-      result = lieuValidator.checkLatitudeIsValid(this.latitude);
+      this.instrucEstValide = result[1];
+      result = lieuValidator.checkLatitudeEstValide(this.latitude);
       this.latitudeMsgErr = result[0];
-      this.latitudeIsValid = result[1];
-      result = lieuValidator.checkLongitudeIsValid(this.longitude);
+      this.latitudeEstValide = result[1];
+      result = lieuValidator.checkLongitudeEstValide(this.longitude);
       this.longitudeMsgErr = result[0];
-      this.longitudeIsValid = result[1];
-      if (!this.titleNeedUpdated) {
-        result = lieuValidator.checkTitleIsValid(this.title);
-        this.titleMsgErr = result[0];
-        this.titleIsVaild = result[1];
+      this.longitudeEstValide = result[1];
+      if (!this.titreNeedUpdated) {
+        result = lieuValidator.checkTitreEstValide(this.titre);
+        this.titreMsgErr = result[0];
+        this.titreIsVaild = result[1];
       }
 
-      if (this.titleIsVaild && this.descIsValid && this.instrucIsValid && this.latitudeIsValid && this.longitudeIsValid) {
+      if (this.titreIsVaild && this.descEstValide && this.instrucEstValide && this.latitudeEstValide && this.longitudeEstValide) {
         try {
           this.$store.dispatch("startLoading");
 
           const payload = {
             data: {
               id: +this.$route.params.id,
-              titre: this.title,
+              titre: this.titre,
               description: this.description,
               directives: this.instruction,
               latitude: +this.latitude,
@@ -171,9 +171,9 @@ export default {
             }
           }).catch(err => {
             if (err.data.err && err.data.err === "Titre déjà utilisé !") {
-              this.titleNeedUpdated = true;
-              this.titleIsVaild = false;
-              this.titleMsgErr.push("Titre déjà utilisé !");
+              this.titreNeedUpdated = true;
+              this.titreIsVaild = false;
+              this.titreMsgErr.push("Titre déjà utilisé !");
             }
             this.$toast.error("Échec de la modification du lieu !");
 
@@ -202,17 +202,17 @@ export default {
         headers: {"Authorization": `Bearer ${payload.token}`},
       }).then(res => {
         this.id = res.data.id;
-        this.title = res.data.titre;
+        this.titre = res.data.titre;
         this.description = res.data.description;
         this.instruction = res.data.directives;
         this.latitude = +res.data.latitude;
         this.longitude = +res.data.longitude;
 
-        this.titleIsVaild = true;
-        this.descIsValid = true;
-        this.instrucIsValid = true;
-        this.latitudeIsValid = true;
-        this.longitudeIsValid = true;
+        this.titreIsVaild = true;
+        this.descEstValide = true;
+        this.instrucEstValide = true;
+        this.latitudeEstValide = true;
+        this.longitudeEstValide = true;
 
         this.$store.dispatch("stopLoading");
       }).catch(err => {

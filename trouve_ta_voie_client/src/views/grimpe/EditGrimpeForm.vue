@@ -6,11 +6,11 @@
     <form id="editGrimpeForm">
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
-        <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="title"
-               :class="{ 'is-invalid': titleIsVaild===false }" @blur="checkIfTitleIsValid" @input="checkIfTitleIsValid"
+        <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="titre"
+               :class="{ 'is-invalid': titreIsVaild===false }" @blur="checkSiTitreEstValide" @input="checkSiTitreEstValide"
                tabindex="1">
-        <ul class="ulError" v-if="!titleIsVaild">
-          <li class="error" v-for="err in titleMsgErr" :key="err">{{ err }}</li>
+        <ul class="ulError" v-if="!titreIsVaild">
+          <li class="error" v-for="err in titreMsgErr" :key="err">{{ err }}</li>
         </ul>
       </div>
 
@@ -18,12 +18,12 @@
         <div class="col-6">
           <label for="lieuDrop" class="form-label">Lieu</label>
           <select id="lieuDrop" class="form-select" aria-label="Choisir le lieu" v-model.trim="lieu"
-                  :class="{ 'is-invalid': lieuIsValid===false }" @blur="checkIfLieuIsValid"
-                  @input="checkIfLieuIsValid" @focusout="checkIfLieuIsValid" tabindex="2">
+                  :class="{ 'is-invalid': lieuEstValide===false }" @blur="checkSiLieuEstValide"
+                  @input="checkSiLieuEstValide" @focusout="checkSiLieuEstValide" tabindex="2">
             <option selected disabled>Choisir le lieu</option>
             <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
           </select>
-          <ul class="ulError" v-if="!lieuIsValid">
+          <ul class="ulError" v-if="!lieuEstValide">
             <li class="error" v-for="err in lieuMsgErr" :key="err">{{ err }}</li>
           </ul>
         </div>
@@ -32,8 +32,8 @@
           <label for="diffDrop" class="form-label">Difficulté</label>
           <select id="diffDrop" class="form-select" aria-label="Choisir la difficulté"
                   v-model.trim="diff" tabindex="3"
-                  :class="{ 'is-invalid': diffIsValid===false }" @blur="checkIfDiffIsValid"
-                  @input="checkIfDiffIsValid" @focusout="checkIfDiffIsValid">
+                  :class="{ 'is-invalid': diffEstValide===false }" @blur="checkSiDiffEstValide"
+                  @input="checkSiDiffEstValide" @focusout="checkSiDiffEstValide">
             <option selected disabled>Choisir la difficulté</option>
             <option value="6">5.6</option>
             <option value="7">5.7</option>
@@ -46,7 +46,7 @@
             <option value="14">5.14</option>
             <option value="15">5.15</option>
           </select>
-          <ul class="ulError" v-if="!diffIsValid">
+          <ul class="ulError" v-if="!diffEstValide">
             <li class="error" v-for="err in diffMsgErr" :key="err">{{ err }}</li>
           </ul>
         </div>
@@ -55,9 +55,9 @@
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <textarea class="form-control" id="description" rows="4" v-model.trim="description"
-                  :class="{ 'is-invalid': descriptionIsValid===false }" @blur="checkIfDescriptionIsValid"
-                  @input="checkIfDescriptionIsValid" tabindex="4"></textarea>
-        <ul class="ulError" v-if="!descriptionIsValid">
+                  :class="{ 'is-invalid': descriptionEstValide===false }" @blur="checkSiDescriptionEstValide"
+                  @input="checkSiDescriptionEstValide" tabindex="4"></textarea>
+        <ul class="ulError" v-if="!descriptionEstValide">
           <li class="error" v-for="err in descriptionMsgErr" :key="err">{{ err }}</li>
         </ul>
       </div>
@@ -66,14 +66,14 @@
         <div class="col-md-6">
           <label for="styleDrop" class="form-label">Style</label>
           <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style"
-                  :class="{ 'is-invalid': styleIsValid===false }" @blur="checkIfStyleIsValid"
-                  @input="checkIfStyleIsValid" tabindex="5">
+                  :class="{ 'is-invalid': styleEstValide===false }" @blur="checkSiStyleEstValide"
+                  @input="checkSiStyleEstValide" tabindex="5">
             <option selected disabled>Choisir le style</option>
             <option value="Traditionnelle">Traditionnelle</option>
             <option value="Sportive">Sportive</option>
             <option value="Moulinette">Moulinette</option>
           </select>
-          <ul class="ulError" v-if="!styleIsValid">
+          <ul class="ulError" v-if="!styleEstValide">
             <li class="error" v-for="err in styleMsgErr" :key="err">{{ err }}</li>
           </ul>
         </div>
@@ -135,7 +135,7 @@ export default {
     return {
       lieux: [],
       id: "",
-      title: "",
+      titre: "",
       lieu: "",
       diff: "",
       description: "",
@@ -144,17 +144,17 @@ export default {
       picturePreviewUrl: null,
       pictures: [],
 
-      titleIsVaild: undefined,
-      titleMsgErr: [],
-      lieuIsValid: undefined,
+      titreIsVaild: undefined,
+      titreMsgErr: [],
+      lieuEstValide: undefined,
       lieuMsgErr: [],
-      diffIsValid: undefined,
+      diffEstValide: undefined,
       diffMsgErr: [],
-      descriptionIsValid: undefined,
+      descriptionEstValide: undefined,
       descriptionMsgErr: [],
-      styleIsValid: undefined,
+      styleEstValide: undefined,
       styleMsgErr: [],
-      titleNeedUpdated: false,
+      titreNeedUpdated: false,
 
       errorCode: undefined,
       statusText: "",
@@ -180,7 +180,7 @@ export default {
       await axios.get(`http://localhost:8090/api/grimpe/${this.$store.getters.userId}/${payload.id}`, {
         headers: {"Authorization": `Bearer ${payload.token}`},
       }).then(res => {
-        this.title = res.data.titre;
+        this.titre = res.data.titre;
         this.lieu = res.data.lieuxId;
         this.diff = res.data.difficulte;
         this.description = res.data.description;
@@ -251,32 +251,32 @@ export default {
       }
     },
     async edit() {
-      let result = grimpeValidator.checkIfLieuIsValid(this.lieu);
+      let result = grimpeValidator.checkSiLieuEstValide(this.lieu);
       this.lieuMsgErr = result[0];
-      this.lieuIsValid = result[1];
-      result = grimpeValidator.checkIfDifficultyLevelIsValid(this.diff);
+      this.lieuEstValide = result[1];
+      result = grimpeValidator.checkSiDifficultyLevelEstValide(this.diff);
       this.diffMsgErr = result[0];
-      this.diffIsValid = result[1];
-      result = grimpeValidator.checkIfDescriptionIsValid(this.description);
+      this.diffEstValide = result[1];
+      result = grimpeValidator.checkSiDescriptionEstValide(this.description);
       this.descriptionMsgErr = result[0];
-      this.descriptionIsValid = result[1];
-      result = grimpeValidator.checkIfStyleIsValid(this.style);
+      this.descriptionEstValide = result[1];
+      result = grimpeValidator.checkSiStyleEstValide(this.style);
       this.styleMsgErr = result[0];
-      this.styleIsValid = result[1];
-      if (!this.titleNeedUpdated) {
-        result = grimpeValidator.checkIfTitleIsValid(this.title);
-        this.titleMsgErr = result[0];
-        this.titleIsVaild = result[1];
+      this.styleEstValide = result[1];
+      if (!this.titreNeedUpdated) {
+        result = grimpeValidator.checkSiTitreEstValide(this.titre);
+        this.titreMsgErr = result[0];
+        this.titreIsVaild = result[1];
       }
 
-      if (this.titleIsVaild && this.lieuIsValid && this.diffIsValid && this.descriptionIsValid && this.styleIsValid) {
+      if (this.titreIsVaild && this.lieuEstValide && this.diffEstValide && this.descriptionEstValide && this.styleEstValide) {
         try {
           this.$store.dispatch("startLoading");
 
           const payload = {
             data: {
               id: this.id,
-              titre: this.title,
+              titre: this.titre,
               style: this.style,
               description: this.description,
               difficulte: this.diff,
@@ -292,9 +292,9 @@ export default {
             this.$store.dispatch("stopLoading");
           }).catch(err => {
             if (err.data.err && err.data.err === "Titre déjà utilisé !") {
-              this.titleNeedUpdated = true;
-              this.titleIsVaild = false;
-              this.titleMsgErr.push("Titre déjà utilisé !");
+              this.titreNeedUpdated = true;
+              this.titreIsVaild = false;
+              this.titreMsgErr.push("Titre déjà utilisé !");
             }
             this.$toast.error("Échec de la modification de la grimpe !");
             this.$store.dispatch("stopLoading");
@@ -322,31 +322,31 @@ export default {
         });
       }
     },
-    checkIfTitleIsValid(event) {
-      const result = grimpeValidator.checkIfTitleIsValid(event.target.value);
-      this.titleMsgErr = result[0];
-      this.titleIsVaild = result[1];
-      this.titleNeedUpdated = false;
+    checkSiTitreEstValide(event) {
+      const result = grimpeValidator.checkSiTitreEstValide(event.target.value);
+      this.titreMsgErr = result[0];
+      this.titreIsVaild = result[1];
+      this.titreNeedUpdated = false;
     },
-    checkIfLieuIsValid(event) {
-      const result = grimpeValidator.checkIfLieuIsValid(event.target.value);
+    checkSiLieuEstValide(event) {
+      const result = grimpeValidator.checkSiLieuEstValide(event.target.value);
       this.lieuMsgErr = result[0];
-      this.lieuIsValid = result[1];
+      this.lieuEstValide = result[1];
     },
-    checkIfDiffIsValid(event) {
-      const result = grimpeValidator.checkIfDifficultyLevelIsValid(event.target.value);
+    checkSiDiffEstValide(event) {
+      const result = grimpeValidator.checkSiDifficultyLevelEstValide(event.target.value);
       this.diffMsgErr = result[0];
-      this.diffIsValid = result[1];
+      this.diffEstValide = result[1];
     },
-    checkIfDescriptionIsValid(event) {
-      const result = grimpeValidator.checkIfDescriptionIsValid(event.target.value);
+    checkSiDescriptionEstValide(event) {
+      const result = grimpeValidator.checkSiDescriptionEstValide(event.target.value);
       this.descriptionMsgErr = result[0];
-      this.descriptionIsValid = result[1];
+      this.descriptionEstValide = result[1];
     },
-    checkIfStyleIsValid(event) {
-      const result = grimpeValidator.checkIfStyleIsValid(event.target.value);
+    checkSiStyleEstValide(event) {
+      const result = grimpeValidator.checkSiStyleEstValide(event.target.value);
       this.styleMsgErr = result[0];
-      this.styleIsValid = result[1];
+      this.styleEstValide = result[1];
     },
   },
   async created() {

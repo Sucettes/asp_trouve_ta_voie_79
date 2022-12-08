@@ -54,10 +54,10 @@ export default {
   },
   methods: {
     async login() {
-      let result = userValidator.checkIfEmailIsValid(this.courriel);
+      let result = userValidator.checkSiEmailEstValide(this.courriel);
       this.courrielErreurs = result[0];
       this.courrielVal = result[1];
-      result = userValidator.checkIfPwdIsValid(this.mdp);
+      result = userValidator.checkSiPwdEstValide(this.mdp);
       this.mdpErreurs = result[0];
       this.mdpVal = result[1];
 
@@ -93,12 +93,12 @@ export default {
       }
     },
     valideCourriel(event) {
-      const result = userValidator.checkIfEmailIsValid(event.target.value);
+      const result = userValidator.checkSiEmailEstValide(event.target.value);
       this.courrielErreurs = result[0];
       this.courrielVal = result[1];
     },
     valideMdp(event) {
-      const result = userValidator.checkIfPwdIsValid(event.target.value);
+      const result = userValidator.checkSiPwdEstValide(event.target.value);
       this.mdpErreurs = result[0];
       this.mdpVal = result[1];
     },

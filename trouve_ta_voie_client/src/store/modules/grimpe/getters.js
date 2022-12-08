@@ -2,8 +2,8 @@ export default {
     userGrimpes(state) {
         return state.userGrimpes;
     },
-    userVotedClimbs(state) {
-        return state.userVotedClimbs;
+    userGrimpesVoter(state) {
+        return state.userGrimpesVoter;
     },
     grimpe(state) {
         return state.grimpe;

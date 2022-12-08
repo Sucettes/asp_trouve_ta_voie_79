@@ -18,7 +18,7 @@ routerLieu.route("/lieu/create")
 routerLieu.route("/lieu/:id")
     .get(lieuController.getLieuById)
     .put(authMidl, lieuController.editLieu)
-    .delete(authMidl, lieuController.deleteLocation)
+    .delete(authMidl, lieuController.deleteLieu)
     .all(lieuController.allReq);
 
 routerLieu.route("/lieu/details/:id")
@@ -26,7 +26,7 @@ routerLieu.route("/lieu/details/:id")
     .all(lieuController.allReq);
 
 routerLieu.route("/lieu/titre/:titre")
-    .get(lieuController.getLieuByTitle)
+    .get(lieuController.getLieuByTitre)
     .all(lieuController.allReq);
 
 routerLieu.route("/lieux/:userId")

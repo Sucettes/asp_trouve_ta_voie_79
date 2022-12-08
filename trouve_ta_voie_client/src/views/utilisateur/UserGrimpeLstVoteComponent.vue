@@ -3,7 +3,7 @@
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
     <grimpe-card-component class="d-flex"
-                           v-for="x in refreshVotedClimbs"
+                           v-for="x in refreshGrimpesVoter"
                            :key="x.id"
                            :id="x.id"
                            :titre="x.titre"
@@ -18,7 +18,7 @@
     ></grimpe-card-component>
   </div>
 
-  <div v-if="refreshVotedClimbs.length === 0 && !isLoading && pageLoaded" class="alert alert-info shadow-sm"
+  <div v-if="refreshGrimpesVoter.length === 0 && !isLoading && pageLoaded" class="alert alert-info shadow-sm"
        role="alert" id="alertInfo">
     Aucune grimpe a affiché !
   </div>
@@ -35,7 +35,7 @@ export default {
   components: {LoadingSpinnerComponent, grimpeCardComponent},
   data() {
     return {
-      myVotedClimbs: [],
+      mesGrimpesVoter: [],
       pageLoaded: false,
     };
   },
@@ -43,12 +43,12 @@ export default {
     isLoading() {
       return this.$store.getters.isLoading;
     },
-    refreshVotedClimbs() {
-      return this.$store.getters.userVotedClimbs;
+    refreshGrimpesVoter() {
+      return this.$store.getters.userGrimpesVoter;
     },
   },
   methods: {
-    async loadUserVotedClimbs() {
+    async loadUserGrimpesVoter() {
       this.$store.dispatch("startLoading");
 
       const payload = {
@@ -57,7 +57,7 @@ export default {
       };
 
       try {
-        await this.$store.dispatch("loadUserVotedClimbs", payload)
+        await this.$store.dispatch("loadUserGrimpesVoter", payload)
             .then(() => {
               this.$store.dispatch("stopLoading");
             })
@@ -66,7 +66,7 @@ export default {
               errorManager(err, this.$store, this.$router);
             });
 
-        this.myVotedClimbs = this.$store.getters.userVotedClimbs;
+        this.mesGrimpesVoter = this.$store.getters.userGrimpesVoter;
       } catch (err) {
         this.$store.dispatch("stopLoading");
         await errorManager(err, this.$store, this.$router);
@@ -74,7 +74,7 @@ export default {
     },
   },
   created() {
-    this.loadUserVotedClimbs();
+    this.loadUserGrimpesVoter();
   },
   mounted() {
     this.pageLoaded = true;

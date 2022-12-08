@@ -30,16 +30,16 @@ exports.getDropdownData = async (req, res) => {
 
 exports.createLieu = async (req, res) => {
     try {
-        const locationTitleIsValid = validatorFct.locationTitleIsValid(req.body.titre);
-        const locationDescriptionIsValid = validatorFct.locationDescriptionIsValid(req.body.description);
-        const locationInstructionIsValid = validatorFct.locationInstructionIsValid(req.body.directives);
-        const locationGEOIsValid = validatorFct.locationGEOIsValid(req.body.latitude, req.body.longitude);
+        const lieuTitreEstValide = validatorFct.lieuTitreEstValide(req.body.titre);
+        const lieuDescriptionEstValide = validatorFct.lieuDescriptionEstValide(req.body.description);
+        const lieuInstructionEstValide = validatorFct.lieuInstructionEstValide(req.body.directives);
+        const lieuGEOEstValide = validatorFct.lieuGEOEstValide(req.body.latitude, req.body.longitude);
 
-        if (locationTitleIsValid && locationDescriptionIsValid && locationInstructionIsValid && locationGEOIsValid) {
-            const location = await Lieu.findOne({where: {titre: req.body.titre}});
+        if (lieuTitreEstValide && lieuDescriptionEstValide && lieuInstructionEstValide && lieuGEOEstValide) {
+            const lieu = await Lieu.findOne({where: {titre: req.body.titre}});
 
             // Vérification si le titre est disponible.
-            if (location) {
+            if (lieu) {
                 res.status(400).json({err: "Titre déjà utilisé !"});
             } else {
                 // Création du lieu.
@@ -50,8 +50,8 @@ exports.createLieu = async (req, res) => {
                     latitude: req.body.latitude,
                     longitude: req.body.longitude,
                     utilisateurId: req.token.userId,
-                }).then(location => {
-                    res.status(201).json(location);
+                }).then(lieu => {
+                    res.status(201).json(lieu);
                 });
             }
         } else {
@@ -65,9 +65,9 @@ exports.createLieu = async (req, res) => {
 exports.getLieuById = async (req, res) => {
     try {
         await Lieu.findByPk(+req.params.id)
-            .then(location => {
-                if (location) {
-                    res.status(200).json(location);
+            .then(lieu => {
+                if (lieu) {
+                    res.status(200).json(lieu);
                 } else {
                     res.status(404).end();
                 }
@@ -82,9 +82,9 @@ exports.getLieuById = async (req, res) => {
 
 exports.getLieuDetailsById = async (req, res) => {
     try {
-        const location = await Lieu.findByPk(+req.params.id);
+        const lieu = await Lieu.findByPk(+req.params.id);
 
-        if (location) {
+        if (lieu) {
             // Nombre de grimpes que le lieu possède.
             const nbGrimpe = await Grimpe.count({
                 where: {lieuxId: req.params.id},
@@ -110,7 +110,7 @@ exports.getLieuDetailsById = async (req, res) => {
             });
 
             res.status(200).json({
-                lieu: location,
+                lieu: lieu,
                 totalGrimpe: nbGrimpe,
                 grimpeStyle: grimpeStyle,
                 grimpeDiff: grimpeDiff,
@@ -127,11 +127,11 @@ exports.getLieuDetailsById = async (req, res) => {
 exports.getLieuByIdToEdit = async (req, res) => {
     try {
         await Lieu.findByPk(+req.params.id)
-            .then(location => {
-                if (!location) {
+            .then(lieu => {
+                if (!lieu) {
                     res.status(404).end();
-                } else if (+location.utilisateurId === +req.params.userId || req.token.isAdmin) {
-                    res.status(200).json(location);
+                } else if (+lieu.utilisateurId === +req.params.userId || req.token.isAdmin) {
+                    res.status(200).json(lieu);
                 } else {
                     res.status(403).end();
                 }
@@ -144,7 +144,7 @@ exports.getLieuByIdToEdit = async (req, res) => {
     }
 };
 
-exports.deleteLocation = async (req, res) => {
+exports.deleteLieu = async (req, res) => {
     try {
         // Vérification utilisateur est admin.
         const user = await Utilisateur.findByPk(req.token.userId);
@@ -179,23 +179,23 @@ exports.deleteLocation = async (req, res) => {
 
 exports.editLieu = async (req, res) => {
     try {
-        const locationTitleIsValid = validatorFct.locationTitleIsValid(req.body.titre);
-        const locationDescriptionIsValid = validatorFct.locationDescriptionIsValid(req.body.description);
-        const locationInstructionIsValid = validatorFct.locationInstructionIsValid(req.body.directives);
-        const locationGEOIsValid = validatorFct.locationGEOIsValid(req.body.latitude, req.body.longitude);
+        const lieuTitreEstValide = validatorFct.lieuTitreEstValide(req.body.titre);
+        const lieuDescriptionEstValide = validatorFct.lieuDescriptionEstValide(req.body.description);
+        const lieuInstructionEstValide = validatorFct.lieuInstructionEstValide(req.body.directives);
+        const lieuGEOEstValide = validatorFct.lieuGEOEstValide(req.body.latitude, req.body.longitude);
 
-        if (locationTitleIsValid && locationDescriptionIsValid && locationInstructionIsValid && locationGEOIsValid) {
-            let location = await Lieu.findByPk(req.body.id);
+        if (lieuTitreEstValide && lieuDescriptionEstValide && lieuInstructionEstValide && lieuGEOEstValide) {
+            let lieu = await Lieu.findByPk(req.body.id);
 
-            if (location) {
+            if (lieu) {
                 // Possède les autorisations.
-                if (+location.utilisateurId === +req.token.userId || req.token.isAdmin) {
-                    const location2 = await Lieu.findOne({
+                if (+lieu.utilisateurId === +req.token.userId || req.token.isAdmin) {
+                    const lieu2 = await Lieu.findOne({
                         where: {titre: req.body.titre},
                     });
 
                     // Vérification si le titre est disponible.
-                    if (location2 && location2.id !== req.body.id) {
+                    if (lieu2 && lieu2.id !== req.body.id) {
                         res.status(400).json({err: "Titre déjà utilisé !"});
                     } else {
                         await Lieu.update({
@@ -244,9 +244,9 @@ exports.getLieuxForUserId = async (req, res) => {
     }
 };
 
-exports.getLieuByTitle = async (req, res) => {
+exports.getLieuByTitre = async (req, res) => {
     try {
-        if (validatorFct.locationTitleIsValid(req.params.titre)) {
+        if (validatorFct.lieuTitreEstValide(req.params.titre)) {
             await Lieu.findOne({
                 where: {titre: req.params.titre},
             }).then(lieu => {

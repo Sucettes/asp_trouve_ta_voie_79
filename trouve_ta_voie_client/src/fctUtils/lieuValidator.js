@@ -1,101 +1,101 @@
 // Bibliothèque de fonction pour la validation des lieux.
 const lieuValidator = {
-    checkTitleIsValid(title) {
-        let titleMsgErr = [];
-        let titleIsVaild = true;
+    checkTitreEstValide(titre) {
+        let titreMsgErr = [];
+        let titreIsVaild = true;
 
-        if (title === "") {
-            titleMsgErr.push("Est requis !");
-            titleIsVaild = false;
+        if (titre === "") {
+            titreMsgErr.push("Est requis !");
+            titreIsVaild = false;
         }
-        if (title.length < 3 && title.length > 0) {
-            titleMsgErr.push("Min. 3 caractères !");
-            titleIsVaild = false;
+        if (titre.length < 3 && titre.length > 0) {
+            titreMsgErr.push("Min. 3 caractères !");
+            titreIsVaild = false;
         }
-        if (title.length > 50) {
-            titleMsgErr.push("Max. 50 caractères !");
-            titleIsVaild = false;
+        if (titre.length > 50) {
+            titreMsgErr.push("Max. 50 caractères !");
+            titreIsVaild = false;
         }
 
-        return [titleMsgErr, titleIsVaild];
+        return [titreMsgErr, titreIsVaild];
     },
-    checkDescriptionIsValid(desc) {
+    checkDescriptionEstValide(desc) {
         let descriptionMsgErr = [];
-        let descIsValid = true;
+        let descEstValide = true;
 
         if (desc === "") {
             descriptionMsgErr.push("Est requis !");
-            descIsValid = false;
+            descEstValide = false;
         }
         if (desc.length < 3 && desc.length > 0) {
             descriptionMsgErr.push("Min. 3 caractères !");
-            descIsValid = false;
+            descEstValide = false;
         }
         if (desc.length > 500) {
             descriptionMsgErr.push("Max. 500 caractères !");
-            descIsValid = false;
+            descEstValide = false;
         }
 
-        return [descriptionMsgErr, descIsValid];
+        return [descriptionMsgErr, descEstValide];
     },
-    checkInstructionIsValid(inst) {
+    checkInstructionEstValide(inst) {
         let instructionMsgErr = [];
-        let instrucIsValid = true;
+        let instrucEstValide = true;
 
         if (inst === "") {
             instructionMsgErr.push("Est requis !");
-            instrucIsValid = false;
+            instrucEstValide = false;
         }
         if (inst.length < 3 && inst.length > 0) {
             instructionMsgErr.push("Min. 3 caractères !");
-            instrucIsValid = false;
+            instrucEstValide = false;
         }
         if (inst.length > 500) {
             instructionMsgErr.push("Max. 500 caractères !");
-            instrucIsValid = false;
+            instrucEstValide = false;
         }
 
-        return [instructionMsgErr, instrucIsValid];
+        return [instructionMsgErr, instrucEstValide];
     },
-    checkLatitudeIsValid(lat) {
+    checkLatitudeEstValide(lat) {
         let valMsgErr = [];
-        let valIsValid = true;
+        let valEstValide = true;
 
         if (lat === "") {
             valMsgErr.push("Est requis !");
-            valIsValid = false;
+            valEstValide = false;
         }
         if (lat > 90 || lat < -90) {
             valMsgErr.push("Dois être entre -90 et 90");
-            valIsValid = false;
+            valEstValide = false;
         }
         const regex = new RegExp("^[-0-9.]+$");
         if (regex.test(lat) === false && lat.length > 0) {
             valMsgErr.push("Valeur invalide ! Valeur autorisés : (0 à 9 et .)");
-            valIsValid = false;
+            valEstValide = false;
         }
 
-        return [valMsgErr, valIsValid];
+        return [valMsgErr, valEstValide];
     },
-    checkLongitudeIsValid(lon) {
+    checkLongitudeEstValide(lon) {
         let valMsgErr = [];
-        let valIsValid = true;
+        let valEstValide = true;
 
         if (lon === "") {
             valMsgErr.push("Est requis !");
-            valIsValid = false;
+            valEstValide = false;
         }
         if (lon > 180 || lon < -180) {
             valMsgErr.push("Dois être entre -180 et 180");
-            valIsValid = false;
+            valEstValide = false;
         }
         const regex = new RegExp("^[-0-9.]+$");
         if (regex.test(lon) === false && lon.length > 0) {
             valMsgErr.push("Valeur invalide ! Valeur autorisés : (0 à 9 et .)");
-            valIsValid = false;
+            valEstValide = false;
         }
 
-        return [valMsgErr, valIsValid];
+        return [valMsgErr, valEstValide];
     },
 };
 

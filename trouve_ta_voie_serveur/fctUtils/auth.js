@@ -2,7 +2,7 @@
 
 const jwt = require("jsonwebtoken");
 
-function checkIfIsAuthenticated(req, callback) {
+function checkSiIsAuthenticated(req, callback) {
     const auth = req.headers.authorization;
     if (!auth) {
         callback(false, null);
@@ -24,7 +24,7 @@ function checkIfIsAuthenticated(req, callback) {
 
 // Middleware pour vérifier si l'utilisateur est authentifié.
 const authMidl = (req, res, next) => {
-    checkIfIsAuthenticated(req, (isAuthenticated, tokenDecode) => {
+    checkSiIsAuthenticated(req, (isAuthenticated, tokenDecode) => {
         if (!isAuthenticated) res.status(401).end();
         else {
             req.token = tokenDecode;

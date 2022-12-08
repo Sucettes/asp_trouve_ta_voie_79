@@ -38,7 +38,7 @@
                            :hideDescription="'true'"
                            :userId="x.utilisateurId"
                            :showDeleteBtn="true"
-                           @delete-climb="showModalConfirm"
+                           @delete-grimpe="showModalConfirm"
     ></grimpe-card-component>
   </div>
 
@@ -77,12 +77,12 @@
 
 
         <p class="marg0">Difficulté</p>
-        <p v-if="!diffIsValid" class="error marg0">La difficulté minimale doit être inférieure à la difficulté
+        <p v-if="!diffEstValide" class="error marg0">La difficulté minimale doit être inférieure à la difficulté
           maximale!</p>
         <label for="diffDrop1" class="form-label">entre (min.)</label>
         <select id="diffDrop1" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff1" tabindex="4"
-                @focusout="checkIfDiffIsValid" @change="checkIfDiffIsValid"
-                :class="{ 'is-invalid': diffIsValid===false }">
+                @focusout="checkSiDiffEstValide" @change="checkSiDiffEstValide"
+                :class="{ 'is-invalid': diffEstValide===false }">
           <option value="6">5.6</option>
           <option value="7">5.7</option>
           <option value="8">5.8</option>
@@ -97,8 +97,8 @@
 
         <label for="diffDrop2" class="form-label">et (max.)</label>
         <select id="diffDrop2" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff2" tabindex="5"
-                @focusout="checkIfDiffIsValid" @change="checkIfDiffIsValid"
-                :class="{ 'is-invalid': diffIsValid===false }">
+                @focusout="checkSiDiffEstValide" @change="checkSiDiffEstValide"
+                :class="{ 'is-invalid': diffEstValide===false }">
           <option value="6">5.6</option>
           <option value="7">5.7</option>
           <option value="8">5.8</option>
@@ -138,7 +138,7 @@
                                :hideDescription="'true'"
                                :userId="x.utilisateurId"
                                :showDeleteBtn="true"
-                               @delete-climb="showModalConfirm"
+                               @delete-grimpe="showModalConfirm"
         ></grimpe-card-component>
       </div>
 
@@ -193,7 +193,7 @@ export default {
       stars: 1,
       diff1: undefined,
       diff2: undefined,
-      diffIsValid: true,
+      diffEstValide: true,
       top10Grimpes: [],
       filteredGrimpes: [],
       atLeastOneSearch: false,
@@ -218,7 +218,7 @@ export default {
     },
     async confirmResult(result) {
       if (result) {
-        await this.deleteClimb(this.confirmDeleteId);
+        await this.deleteGrimpe(this.confirmDeleteId);
       }
       this.confirmDeleteId = undefined;
       this.showConfirmModal = false;
@@ -260,15 +260,15 @@ export default {
         this.$store.dispatch("stopLoading");
       });
     },
-    checkIfDiffIsValid() {
+    checkSiDiffEstValide() {
       if (this.diff1 !== undefined && this.diff2 !== undefined) {
-        this.diffIsValid = +this.diff1 <= +this.diff2;
+        this.diffEstValide = +this.diff1 <= +this.diff2;
       }
       return true;
     },
     async search() {
-      this.checkIfDiffIsValid();
-      if (this.diffIsValid) {
+      this.checkSiDiffEstValide();
+      if (this.diffEstValide) {
         this.$store.dispatch("startLoading");
         const payload = {
           style: this.style,
@@ -291,7 +291,7 @@ export default {
         });
       }
     },
-    async deleteClimb(id) {
+    async deleteGrimpe(id) {
       try {
         this.$store.dispatch("startLoading");
 
@@ -300,7 +300,7 @@ export default {
           token: this.$store.getters.token,
         };
 
-        await this.$store.dispatch("deleteClimb", payload)
+        await this.$store.dispatch("deleteGrimpe", payload)
             .then(() => {
               // Retire item des listes
               if (this.top10Grimpes.length > 0) {

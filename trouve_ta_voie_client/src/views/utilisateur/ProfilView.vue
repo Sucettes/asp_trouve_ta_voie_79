@@ -14,9 +14,9 @@
     <div class="mb-3">
       <label for="nom" class="form-label">Nom</label>
       <input type="text" class="form-control" id="nom" placeholder="Votre nom" v-model.trim="name"
-             :class="{ 'is-invalid': nameIsValid===false }" @blur="checkIfNameIsValid" @input="checkIfNameIsValid"
+             :class="{ 'is-invalid': nameEstValide===false }" @blur="checkSiNameEstValide" @input="checkSiNameEstValide"
              tabindex="1">
-      <ul class="ulError" v-if="!nameIsValid">
+      <ul class="ulError" v-if="!nameEstValide">
         <li class="error" v-for="err in nameMsgErr" :key="err">{{ err }}</li>
       </ul>
     </div>
@@ -38,22 +38,22 @@ export default {
     return {
       userId: 0,
       name: "",
-      nameIsValid: undefined,
+      nameEstValide: undefined,
       nameMsgErr: [],
     };
   },
   methods: {
-    checkIfNameIsValid(event) {
-      const result = userValidator.checkIfNameIsValid(event.target.value);
+    checkSiNameEstValide(event) {
+      const result = userValidator.checkSiNameEstValide(event.target.value);
       this.nameMsgErr = result[0];
-      this.nameIsValid = result[1];
+      this.nameEstValide = result[1];
     },
     async editUserName() {
-      const result = userValidator.checkIfNameIsValid(this.name);
+      const result = userValidator.checkSiNameEstValide(this.name);
       this.nameMsgErr = result[0];
-      this.nameIsValid = result[1];
+      this.nameEstValide = result[1];
 
-      if (this.nameIsValid) {
+      if (this.nameEstValide) {
         try {
           this.$store.dispatch("startLoading");
 

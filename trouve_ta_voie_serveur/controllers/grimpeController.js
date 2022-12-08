@@ -15,13 +15,13 @@ const grimpeValidator = require("../fctUtils/grimpeValidator");
 
 exports.createGrimpe = async (req, res) => {
     try {
-        const titleIsValid = grimpeValidator.checkIfTitleIsValid(req.body.titre);
-        const styleIsValid = grimpeValidator.checkIfStyleIsValid(req.body.style);
-        const descIsValid = grimpeValidator.checkIfDescriptionIsValid(req.body.description);
-        const diffIsValid = grimpeValidator.checkIfDifficultyLevelIsValid(req.body.difficulte);
-        const imgCountIsValid = req.body.imgsBase64.length >= 1;
+        const titreEstValide = grimpeValidator.checkSiTitreEstValide(req.body.titre);
+        const styleEstValide = grimpeValidator.checkSiStyleEstValide(req.body.style);
+        const descEstValide = grimpeValidator.checkSiDescriptionEstValide(req.body.description);
+        const diffEstValide = grimpeValidator.checkSiDifficulteLevelEstValide(req.body.difficulte);
+        const imgCountEstValide = req.body.imgsBase64.length >= 1;
 
-        if (titleIsValid && styleIsValid && descIsValid && diffIsValid && imgCountIsValid) {
+        if (titreEstValide && styleEstValide && descEstValide && diffEstValide && imgCountEstValide) {
             let grimpe = await Grimpe.findOne({
                 where: {
                     lieuxId: req.body.lieuxId,
@@ -111,12 +111,12 @@ exports.getGrimpeByIdToEdit = async (req, res) => {
 
 exports.editGrimpe = async (req, res) => {
     try {
-        const titleIsValid = grimpeValidator.checkIfTitleIsValid(req.body.titre);
-        const styleIsValid = grimpeValidator.checkIfStyleIsValid(req.body.style);
-        const descIsValid = grimpeValidator.checkIfDescriptionIsValid(req.body.description);
-        const diffIsValid = grimpeValidator.checkIfDifficultyLevelIsValid(req.body.difficulte);
+        const titreEstValide = grimpeValidator.checkSiTitreEstValide(req.body.titre);
+        const styleEstValide = grimpeValidator.checkSiStyleEstValide(req.body.style);
+        const descEstValide = grimpeValidator.checkSiDescriptionEstValide(req.body.description);
+        const diffEstValide = grimpeValidator.checkSiDifficulteLevelEstValide(req.body.difficulte);
 
-        if (titleIsValid && styleIsValid && descIsValid && diffIsValid) {
+        if (titreEstValide && styleEstValide && descEstValide && diffEstValide) {
             let grimpe = await Grimpe.findOne({
                 where: {id: req.body.id},
             });
@@ -161,18 +161,18 @@ exports.editGrimpe = async (req, res) => {
     }
 };
 
-exports.deleteClimb = async (req, res) => {
+exports.deleteGrimpe = async (req, res) => {
     try {
         // Vérification utilisateur est admin.
         const user = await Utilisateur.findByPk(req.token.userId);
         if (user.estAdmin) {
             // Récupération de la grimpe.
-            const climb = await Grimpe.findByPk(req.params.id, {include: [Image]});
-            if (climb) {
+            const grimpe = await Grimpe.findByPk(req.params.id, {include: [Image]});
+            if (grimpe) {
                 // Suppression des images de la grimpe.
                 // await Image.destroy({where: {grimpeId: req.params.id}});
-                for (let i = 0; i < climb.images.length; i++) {
-                    fs.unlinkSync(`public/${climb.images[i].path}`);
+                for (let i = 0; i < grimpe.images.length; i++) {
+                    fs.unlinkSync(`public/${grimpe.images[i].path}`);
                 }
 
                 // Suppression de la grimpe. cascade
@@ -265,19 +265,19 @@ exports.getFilteredGrimpes = async (req, res) => {
     }
 };
 
-exports.getClimbDetailsById = async (req, res) => {
+exports.getGrimpeDetailsById = async (req, res) => {
     try {
         // todo : Ajoute validation ici.
 
-        const climb = await Grimpe.findByPk(+req.params.id, {
+        const grimpe = await Grimpe.findByPk(+req.params.id, {
             include: [Image, Lieu, Vote],
         });
 
-        if (!climb) {
+        if (!grimpe) {
             res.status(404).end();
         }
 
-        res.status(200).json(climb);
+        res.status(200).json(grimpe);
     } catch (e) {
         res.status(500).end();
     }

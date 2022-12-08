@@ -13,9 +13,9 @@ exports.newVote = async (req, res) => {
     try {
         const regex = new RegExp("^[1-5]$");
 
-        const climb = await Grimpe.findByPk(req.body.grimpeId);
+        const grimpe = await Grimpe.findByPk(req.body.grimpeId);
 
-        if (regex.test(req.body.stars) && climb) {
+        if (regex.test(req.body.stars) && grimpe) {
             // Creation du vote
             await Vote.create({
                 nbEtoiles: req.body.stars,
@@ -63,7 +63,7 @@ exports.getVotesForUserId = async (req, res) => {
         if (!user)
             res.status(400).end();
 
-        const climbId = (await Vote.findAll({
+        const grimpeId = (await Vote.findAll({
             where: {
                 utilisateurId: req.token.userId,
             },
@@ -74,13 +74,13 @@ exports.getVotesForUserId = async (req, res) => {
         await Grimpe.findAll({
             where: {
                 id: {
-                    [Op.in]: climbId,
+                    [Op.in]: grimpeId,
                 },
             },
             order: [["nbEtoiles", "DESC"], ["nbVotes", "DESC"], ["titre", "ASC"]],
             include: [Image, Lieu],
-        }).then(climbs => {
-            res.status(200).json(climbs);
+        }).then(grimpes => {
+            res.status(200).json(grimpes);
         }).catch(() => {
             res.status(400).end();
         });
