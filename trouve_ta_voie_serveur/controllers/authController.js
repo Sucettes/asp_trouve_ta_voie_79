@@ -63,9 +63,9 @@ exports.register = async (req, res) => {
             } else {
                 // Pas de possibilité de créer un utilisateur admin autre que manuellement.
                 user = {
-                    nom: req.body.nom,
-                    courriel: req.body.courriel,
-                    mdp: req.body.mdp,
+                    nom: req.body.nom.trim(),
+                    courriel: req.body.courriel.trim(),
+                    mdp: req.body.mdp.trim(),
                 };
 
                 const salt = bcrypt.genSaltSync(10);

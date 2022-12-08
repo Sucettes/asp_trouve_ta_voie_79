@@ -25,9 +25,9 @@ routerLieu.route("/lieu/details/:id")
     .get(lieuController.getLieuDetailsById)
     .all(lieuController.allReq);
 
-routerLieu.route("/lieu/titre/:titre")
-    .get(lieuController.getLieuByTitre)
-    .all(lieuController.allReq);
+// routerLieu.route("/lieu/titre/:titre")
+//     .get(lieuController.getLieuByTitre)
+//     .all(lieuController.allReq);
 
 routerLieu.route("/lieux/:userId")
     .get(authMidl, lieuController.getLieuxForUserId)

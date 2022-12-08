@@ -70,7 +70,7 @@ html {
 }
 
 h1, h2, h3 {
-  color: $accent;
+  color: $primary;
   text-align: center;
 }
 
@@ -102,17 +102,17 @@ h1, h2, h3 {
   cursor: pointer;
 
   #svgIconAdd {
-    fill: $secondary;
+    fill: $primary;
 
     :hover {
-      fill: $primary;
+      fill: $accent;
     }
   }
 }
 
 #svgIconAddDiv:hover {
   path {
-    fill: $primary;
+    fill: $accent;
   }
 }
 
@@ -124,13 +124,13 @@ h1, h2, h3 {
   z-index: 1000;
 
   #svgIconEdit {
-    fill: $secondary;
+    fill: $primary;
   }
 }
 
 #svgIconEditDiv:hover {
   path {
-    fill: $primary;
+    fill: $accent;
   }
 }
 

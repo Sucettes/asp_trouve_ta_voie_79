@@ -80,7 +80,7 @@ export default {
   }
 
   h3:hover {
-    color: $Darkaccent;
+    color: $accent;
   }
 
   span {
@@ -100,7 +100,7 @@ export default {
   }
 
   #detailsBtn:hover {
-    color: $Darkaccent;
+    color: $accent;
   }
 }
 

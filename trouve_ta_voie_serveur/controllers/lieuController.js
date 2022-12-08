@@ -3,7 +3,6 @@
 const db = require("../models/dbSetup");
 const validatorFct = require("../fctUtils/validations");
 const fs = require("fs");
-const sequelize = require("sequelize");
 const Lieu = db.lieux;
 const Utilisateur = db.utilisateurs;
 const Grimpe = db.grimpes;
@@ -44,9 +43,9 @@ exports.createLieu = async (req, res) => {
             } else {
                 // Création du lieu.
                 await Lieu.create({
-                    titre: req.body.titre,
-                    description: req.body.description,
-                    directives: req.body.directives,
+                    titre: req.body.titre.trim(),
+                    description: req.body.description.trim(),
+                    directives: req.body.directives.trim(),
                     latitude: req.body.latitude,
                     longitude: req.body.longitude,
                     utilisateurId: req.token.userId,
@@ -199,9 +198,9 @@ exports.editLieu = async (req, res) => {
                         res.status(400).json({err: "Titre déjà utilisé !"});
                     } else {
                         await Lieu.update({
-                            titre: req.body.titre,
-                            description: req.body.description,
-                            directives: req.body.directives,
+                            titre: req.body.titre.trim(),
+                            description: req.body.description.trim(),
+                            directives: req.body.directives.trim(),
                             longitude: req.body.longitude,
                             latitude: req.body.latitude,
                         }, {where: {id: req.body.id}});
@@ -244,27 +243,27 @@ exports.getLieuxForUserId = async (req, res) => {
     }
 };
 
-exports.getLieuByTitre = async (req, res) => {
-    try {
-        if (validatorFct.lieuTitreEstValide(req.params.titre)) {
-            await Lieu.findOne({
-                where: {titre: req.params.titre},
-            }).then(lieu => {
-                if (lieu) {
-                    res.status(200).json(lieu);
-                } else {
-                    res.status(404).end();
-                }
-            }).catch(() => {
-                res.status(404).end();
-            });
-        } else {
-            res.status(400).end();
-        }
-    } catch (e) {
-        res.status(500).end();
-    }
-};
+// exports.getLieuByTitre = async (req, res) => {
+//     try {
+//         if (validatorFct.lieuTitreEstValide(req.params.titre)) {
+//             await Lieu.findOne({
+//                 where: {titre: req.params.titre},
+//             }).then(lieu => {
+//                 if (lieu) {
+//                     res.status(200).json(lieu);
+//                 } else {
+//                     res.status(404).end();
+//                 }
+//             }).catch(() => {
+//                 res.status(404).end();
+//             });
+//         } else {
+//             res.status(400).end();
+//         }
+//     } catch (e) {
+//         res.status(500).end();
+//     }
+// };
 
 exports.allReq = async (req, res) => {
     res.status(405).end();

@@ -2,22 +2,22 @@
 const lieuValidator = {
     checkTitreEstValide(titre) {
         let titreMsgErr = [];
-        let titreIsVaild = true;
+        let titreEstValide = true;
 
         if (titre === "") {
             titreMsgErr.push("Est requis !");
-            titreIsVaild = false;
+            titreEstValide = false;
         }
         if (titre.length < 3 && titre.length > 0) {
             titreMsgErr.push("Min. 3 caractères !");
-            titreIsVaild = false;
+            titreEstValide = false;
         }
         if (titre.length > 50) {
             titreMsgErr.push("Max. 50 caractères !");
-            titreIsVaild = false;
+            titreEstValide = false;
         }
 
-        return [titreMsgErr, titreIsVaild];
+        return [titreMsgErr, titreEstValide];
     },
     checkDescriptionEstValide(desc) {
         let descriptionMsgErr = [];

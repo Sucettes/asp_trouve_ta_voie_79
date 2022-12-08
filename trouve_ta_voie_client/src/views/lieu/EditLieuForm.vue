@@ -9,8 +9,8 @@
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="titre"
                @blur="checkTitreEstValide" @input="checkTitreEstValide"
-               :class="{ 'is-invalid': titreIsVaild===false }">
-        <ul class="ulError" v-if="!titreIsVaild">
+               :class="{ 'is-invalid': titreEstValide===false }">
+        <ul class="ulError" v-if="!titreEstValide">
           <li class="error" v-for="err in titreMsgErr" :key="err">{{ err }}</li>
         </ul>
       </div>
@@ -55,7 +55,7 @@
       </div>
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-secondary">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-primary">Retour</button>
         </div>
         <div>
           <button @click="edit" type="button" class="btn btn-primary">Sauvegarder
@@ -84,7 +84,7 @@ export default {
       instruction: "",
       latitude: 0,
       longitude: 0,
-      titreIsVaild: undefined,
+      titreEstValide: undefined,
       descEstValide: undefined,
       instrucEstValide: undefined,
       latitudeEstValide: undefined,
@@ -105,7 +105,7 @@ export default {
     checkTitreEstValide(event) {
       const result = lieuValidator.checkTitreEstValide(event.target.value);
       this.titreMsgErr = result[0];
-      this.titreIsVaild = result[1];
+      this.titreEstValide = result[1];
       this.titreNeedUpdated = false;
     },
     checkDescriptionEstValide(event) {
@@ -144,10 +144,10 @@ export default {
       if (!this.titreNeedUpdated) {
         result = lieuValidator.checkTitreEstValide(this.titre);
         this.titreMsgErr = result[0];
-        this.titreIsVaild = result[1];
+        this.titreEstValide = result[1];
       }
 
-      if (this.titreIsVaild && this.descEstValide && this.instrucEstValide && this.latitudeEstValide && this.longitudeEstValide) {
+      if (this.titreEstValide && this.descEstValide && this.instrucEstValide && this.latitudeEstValide && this.longitudeEstValide) {
         try {
           this.$store.dispatch("startLoading");
 
@@ -172,7 +172,7 @@ export default {
           }).catch(err => {
             if (err.data.err && err.data.err === "Titre déjà utilisé !") {
               this.titreNeedUpdated = true;
-              this.titreIsVaild = false;
+              this.titreEstValide = false;
               this.titreMsgErr.push("Titre déjà utilisé !");
             }
             this.$toast.error("Échec de la modification du lieu !");
@@ -208,7 +208,7 @@ export default {
         this.latitude = +res.data.latitude;
         this.longitude = +res.data.longitude;
 
-        this.titreIsVaild = true;
+        this.titreEstValide = true;
         this.descEstValide = true;
         this.instrucEstValide = true;
         this.latitudeEstValide = true;

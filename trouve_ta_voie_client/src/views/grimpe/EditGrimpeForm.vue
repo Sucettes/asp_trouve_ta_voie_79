@@ -7,9 +7,9 @@
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="titre"
-               :class="{ 'is-invalid': titreIsVaild===false }" @blur="checkSiTitreEstValide" @input="checkSiTitreEstValide"
+               :class="{ 'is-invalid': titreEstValide===false }" @blur="checkSiTitreEstValide" @input="checkSiTitreEstValide"
                >
-        <ul class="ulError" v-if="!titreIsVaild">
+        <ul class="ulError" v-if="!titreEstValide">
           <li class="error" v-for="err in titreMsgErr" :key="err">{{ err }}</li>
         </ul>
       </div>
@@ -81,7 +81,7 @@
 
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-secondary">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-primary">Retour</button>
         </div>
         <div>
           <button @click="edit" type="button" class="btn btn-primary">Sauvegarder
@@ -97,14 +97,14 @@
         <div class="input-group mb-3">
           <input id="picInput" type="file" class="form-control" placeholder="Photos" aria-label="Photo"
                  aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput">
-          <button class="btn btn-outline-secondary" type="button" id="PhotoAddBtn" @click="addPhoto">
+          <button class="btn btn-outline-primary" type="button" id="PhotoAddBtn" @click="addPhoto">
             Ajouter
           </button>
         </div>
 
         <label for="imgPrev" class="form-label">Aperçu de l'image</label>
         <div>
-          <img id="imgPrev" :src="picturePreviewUrl" alt="" class="picPrev" ref="picPrev">
+          <img id="imgPrev" :src="picturePreviewUrl" alt="Aperçus d'une image" class="picPrev" ref="picPrev">
         </div>
       </div>
 
@@ -113,7 +113,7 @@
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <div v-for="pic in pictures" :key="pic.id" class="picItem">
-          <img :src="'http://localhost:8090'+pic.path" alt="" class="lstPic"/>
+          <img :src="'http://localhost:8090'+pic.path" alt="Image d'une grimpe" class="lstPic"/>
           <a href="#" @click="deletePic(pic.id)" class="removePics" v-if="pictures.length > 1">Supprimer</a>
         </div>
       </div>
@@ -144,7 +144,7 @@ export default {
       picturePreviewUrl: null,
       pictures: [],
 
-      titreIsVaild: undefined,
+      titreEstValide: undefined,
       titreMsgErr: [],
       lieuEstValide: undefined,
       lieuMsgErr: [],
@@ -241,10 +241,10 @@ export default {
           this.$refs.picInput.value = null;
           this.picturePreviewUrl = null;
 
-          this.imgIsVaild = true;
+          this.imgEstValide = true;
           this.imgMsgErr = [];
           if (this.pictures.length < 1) {
-            this.imgIsVaild = false;
+            this.imgEstValide = false;
             this.imgMsgErr.push("Dois avoir une image au minimum !");
           }
         }
@@ -266,10 +266,10 @@ export default {
       if (!this.titreNeedUpdated) {
         result = grimpeValidator.checkSiTitreEstValide(this.titre);
         this.titreMsgErr = result[0];
-        this.titreIsVaild = result[1];
+        this.titreEstValide = result[1];
       }
 
-      if (this.titreIsVaild && this.lieuEstValide && this.diffEstValide && this.descriptionEstValide && this.styleEstValide) {
+      if (this.titreEstValide && this.lieuEstValide && this.diffEstValide && this.descriptionEstValide && this.styleEstValide) {
         try {
           this.$store.dispatch("startLoading");
 
@@ -293,7 +293,7 @@ export default {
           }).catch(err => {
             if (err.data.err && err.data.err === "Titre déjà utilisé !") {
               this.titreNeedUpdated = true;
-              this.titreIsVaild = false;
+              this.titreEstValide = false;
               this.titreMsgErr.push("Titre déjà utilisé !");
             }
             this.$toast.error("Échec de la modification de la grimpe !");
@@ -325,7 +325,7 @@ export default {
     checkSiTitreEstValide(event) {
       const result = grimpeValidator.checkSiTitreEstValide(event.target.value);
       this.titreMsgErr = result[0];
-      this.titreIsVaild = result[1];
+      this.titreEstValide = result[1];
       this.titreNeedUpdated = false;
     },
     checkSiLieuEstValide(event) {

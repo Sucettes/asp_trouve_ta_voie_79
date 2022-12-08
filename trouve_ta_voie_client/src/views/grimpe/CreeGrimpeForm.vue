@@ -8,9 +8,9 @@
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="titre"
-               :class="{ 'is-invalid': titreIsVaild===false }" @blur="checkSiTitreEstValide" @input="checkSiTitreEstValide"
+               :class="{ 'is-invalid': titreEstValide===false }" @blur="checkSiTitreEstValide" @input="checkSiTitreEstValide"
                >
-        <ul class="ulError" v-if="!titreIsVaild">
+        <ul class="ulError" v-if="!titreEstValide">
           <li class="error" v-for="err in titreMsgErr" :key="err">{{ err }}</li>
         </ul>
       </div>
@@ -79,20 +79,20 @@
         </div>
         <div class="col-md-6">
           <label for="picInput" class="form-label">Image</label>
-          <div class="input-group" :class="{'mb-3': !imgIsVaild === false}">
+          <div class="input-group" :class="{'mb-3': !imgEstValide === false}">
             <input id="picInput" type="file" class="form-control" placeholder="Photos" aria-label="Photo"
                    aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput">
             <button class="btn btn-primary" type="button" id="PhotoAddBtn" @click="addPhoto">
               Ajouter
             </button>
           </div>
-          <ul class="ulError" v-if="!imgIsVaild">
+          <ul class="ulError" v-if="!imgEstValide">
             <li class="error" v-for="err in imgMsgErr" :key="err">{{ err }}</li>
           </ul>
 
           <label for="imgPrev" class="form-label">Aperçu de l'image</label>
           <div>
-            <img id="imgPrev" :src="picturePreviewUrl" alt="" class="picPrev" ref="picPrev">
+            <img id="imgPrev" :src="picturePreviewUrl" alt="Aperçus d'une image" class="picPrev" ref="picPrev">
           </div>
         </div>
       </div>
@@ -100,14 +100,14 @@
       <hr v-if="picturesUrl.length > 0">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <div v-for="(picUrl, index) in picturesUrl" :key="picturesUrl + index" class="picItem">
-          <img :src="picUrl" alt="" class="lstPic"/>
+          <img :src="picUrl" alt="Image d'une grimpe" class="lstPic"/>
           <a href="#" class="removePics" @click="removeImg(index)">Supprimer</a>
         </div>
       </div>
 
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-secondary">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-primary">Retour</button>
         </div>
         <div>
           <button @click="add" type="button" class="btn btn-primary">Ajouter
@@ -143,7 +143,7 @@ export default {
       picturesUrl: [],
       canAddPicture: true,
 
-      titreIsVaild: undefined,
+      titreEstValide: undefined,
       titreMsgErr: [],
       lieuEstValide: undefined,
       lieuMsgErr: [],
@@ -153,7 +153,7 @@ export default {
       descriptionMsgErr: [],
       styleEstValide: undefined,
       styleMsgErr: [],
-      imgIsVaild: undefined,
+      imgEstValide: undefined,
       imgMsgErr: [],
       titreNeedUpdated: false,
     };
@@ -184,10 +184,10 @@ export default {
           this.$refs.picInput.value = null;
           this.picturePreviewUrl = null;
 
-          this.imgIsVaild = true;
+          this.imgEstValide = true;
           this.imgMsgErr = [];
           if (this.pictures.length < 1) {
-            this.imgIsVaild = false;
+            this.imgEstValide = false;
             this.imgMsgErr.push("Dois avoir une image au minimum !");
           }
         }
@@ -198,10 +198,10 @@ export default {
       this.picturesUrl.splice(index, 1);
       this.picturesBase64.splice(index, 1);
 
-      this.imgIsVaild = true;
+      this.imgEstValide = true;
       this.imgMsgErr = [];
       if (this.pictures.length < 1) {
-        this.imgIsVaild = false;
+        this.imgEstValide = false;
         this.imgMsgErr.push("Dois avoir une image au minimum !");
       }
     },
@@ -217,7 +217,7 @@ export default {
       this.picturesBase64 = [];
       this.picturesUrl = [];
       this.canAddPicture = true;
-      this.titreIsVaild = undefined;
+      this.titreEstValide = undefined;
       this.titreMsgErr = [];
       this.lieuEstValide = undefined;
       this.lieuMsgErr = [];
@@ -227,15 +227,15 @@ export default {
       this.descriptionMsgErr = [];
       this.styleEstValide = undefined;
       this.styleMsgErr = [];
-      this.imgIsVaild = undefined;
+      this.imgEstValide = undefined;
       this.imgMsgErr = [];
       this.titreNeedUpdated = false;
     },
     async add() {
-      this.imgIsVaild = true;
+      this.imgEstValide = true;
       this.imgMsgErr = [];
       if (this.pictures.length < 1) {
-        this.imgIsVaild = false;
+        this.imgEstValide = false;
         this.imgMsgErr.push("Dois avoir une image au minimum !");
       }
 
@@ -258,10 +258,10 @@ export default {
       if (!this.titreNeedUpdated) {
         result = grimpeValidator.checkSiTitreEstValide(this.titre);
         this.titreMsgErr = result[0];
-        this.titreIsVaild = result[1];
+        this.titreEstValide = result[1];
       }
 
-      if (this.titreIsVaild && this.lieuEstValide && this.diffEstValide && this.descriptionEstValide && this.styleEstValide && this.imgIsVaild) {
+      if (this.titreEstValide && this.lieuEstValide && this.diffEstValide && this.descriptionEstValide && this.styleEstValide && this.imgEstValide) {
         try {
           this.$store.dispatch("startLoading");
 
@@ -286,7 +286,7 @@ export default {
             }
           }).catch(err => {
             if (err.data.err && err.data.err === "Titre déjà utilisé !") {
-              this.titreIsVaild = false;
+              this.titreEstValide = false;
               this.titreNeedUpdated = true;
               this.titreMsgErr.push("Titre déjà utilisé !");
             }
@@ -307,7 +307,7 @@ export default {
     checkSiTitreEstValide(event) {
       const result = grimpeValidator.checkSiTitreEstValide(event.target.value);
       this.titreMsgErr = result[0];
-      this.titreIsVaild = result[1];
+      this.titreEstValide = result[1];
       this.titreNeedUpdated = false;
     },
     checkSiLieuEstValide(event) {

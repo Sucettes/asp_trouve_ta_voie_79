@@ -38,9 +38,9 @@ exports.createGrimpe = async (req, res) => {
                         let imgs = [];
 
                         const newGrimpe = await Grimpe.create({
-                            titre: req.body.titre,
+                            titre: req.body.titre.trim(),
                             style: req.body.style,
-                            description: req.body.description,
+                            description: req.body.description.trim(),
                             difficulte: +req.body.difficulte,
                             utilisateurId: req.token.userId,
                             lieuxId: req.body.lieuxId,
@@ -136,9 +136,9 @@ exports.editGrimpe = async (req, res) => {
                     } else {
                         // Modification de la grimpe.
                         await Grimpe.update({
-                                titre: req.body.titre,
+                                titre: req.body.titre.trim(),
                                 style: req.body.style,
-                                description: req.body.description,
+                                description: req.body.description.trim(),
                                 difficulte: req.body.difficulte,
                                 lieuxId: req.body.lieuxId,
                             },
@@ -170,7 +170,6 @@ exports.deleteGrimpe = async (req, res) => {
             const grimpe = await Grimpe.findByPk(req.params.id, {include: [Image]});
             if (grimpe) {
                 // Suppression des images de la grimpe.
-                // await Image.destroy({where: {grimpeId: req.params.id}});
                 for (let i = 0; i < grimpe.images.length; i++) {
                     fs.unlinkSync(`public/${grimpe.images[i].path}`);
                 }
@@ -228,11 +227,26 @@ exports.getGrimpesTop10 = async (req, res) => {
 
 exports.getFilteredGrimpes = async (req, res) => {
     try {
-        // todo : Ajouter des validations ici...
+        let styleEstValide = true;
+        let diff1EstValide = true;
+        let diff2EstValide = true;
+        if (req.body.style) {
+            styleEstValide = grimpeValidator.checkSiStyleEstValide(req.body.style);
+        }
+        if (req.body.diff1) {
+            diff1EstValide = grimpeValidator.checkSiDifficulteLevelEstValide(req.body.diff1);
+        }
+        if (req.body.diff2) {
+            diff2EstValide = grimpeValidator.checkSiDifficulteLevelEstValide(req.body.diff2);
+        }
+
+        if (!styleEstValide || !diff1EstValide || !diff2EstValide) {
+            res.status(400).end();
+        }
 
         // Création du filtre : where
         let whereStr = {};
-        if (req.body.style && req.body.style !== "all") whereStr.style = req.body.style;
+        if (req.body.style) whereStr.style = req.body.style;
         if (req.body.stars) {
             whereStr.nbEtoiles = {
                 [Op.gte]: req.body.stars,
@@ -267,8 +281,6 @@ exports.getFilteredGrimpes = async (req, res) => {
 
 exports.getGrimpeDetailsById = async (req, res) => {
     try {
-        // todo : Ajoute validation ici.
-
         const grimpe = await Grimpe.findByPk(+req.params.id, {
             include: [Image, Lieu, Vote],
         });

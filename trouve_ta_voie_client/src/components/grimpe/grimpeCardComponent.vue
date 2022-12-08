@@ -4,7 +4,7 @@
 
       <div>
         <div v-if="images[0]">
-          <img class="lstPic mb-2" :src="'http://localhost:8090' + images[0].path" alt=""/>
+          <img class="lstPic mb-2" :src="'http://localhost:8090' + images[0].path" alt="Image principale"/>
         </div>
         <h3 @click="seeDetails">{{ titre }}</h3>
         <hr>
@@ -116,7 +116,7 @@ export default {
   }
 
   h3:hover {
-    color: $Darkaccent;
+    color: $accent;
   }
 
   span {
@@ -141,7 +141,7 @@ export default {
   }
 
   #detailsBtn:hover {
-    color: $Darkaccent;
+    color: $accent;
   }
 }
 </style>

@@ -2,21 +2,21 @@
 const grimpeValidator = {
     checkSiTitreEstValide(titre) {
         let titreMsgErr = [];
-        let titreIsVaild = true;
+        let titreEstValide = true;
 
         if (titre === "") {
             titreMsgErr.push("Est requis !");
-            titreIsVaild = false;
+            titreEstValide = false;
         }
         if (titre.length < 3 && titre.length > 0) {
             titreMsgErr.push("Min. 3 caractères !");
-            titreIsVaild = false;
+            titreEstValide = false;
         }
         if (titre.length > 50) {
             titreMsgErr.push("Max. 50 caractères !");
-            titreIsVaild = false;
+            titreEstValide = false;
         }
-        return [titreMsgErr, titreIsVaild];
+        return [titreMsgErr, titreEstValide];
     },
     checkSiStyleEstValide(style) {
         let styleMsgErr = [];
@@ -53,28 +53,28 @@ const grimpeValidator = {
     },
     checkSiDifficultyLevelEstValide(diff) {
         let diffMsgErr = [];
-        let diffIsVaild = true;
+        let diffEstValide = true;
         if (diff === "" || diff === "Choisir la difficulté") {
             diffMsgErr.push("Est requis !");
-            diffIsVaild = false;
+            diffEstValide = false;
         }
         const regex = new RegExp("^[0-9]{1,2}$");
         if (regex.test(diff) === false && diff.length > 0 && diff !== "Choisir la difficulté") {
             diffMsgErr.push("Valeur invalide ! 5.6 à 5.15");
-            diffIsVaild = false;
+            diffEstValide = false;
         }
-        return [diffMsgErr, diffIsVaild];
+        return [diffMsgErr, diffEstValide];
     },
     checkSiLieuEstValide(lieu) {
         let lieuMsgErr = [];
-        let lieuIsVaild = true;
+        let lieuEstValide = true;
 
         if (lieu === "" || lieu === "Choisir le lieu") {
             lieuMsgErr.push("Est requis !");
-            lieuIsVaild = false;
+            lieuEstValide = false;
         }
 
-        return [lieuMsgErr, lieuIsVaild];
+        return [lieuMsgErr, lieuEstValide];
     },
 };
 
