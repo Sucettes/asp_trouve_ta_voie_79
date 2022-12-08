@@ -15,14 +15,14 @@
       <label for="nom" class="form-label">Nom</label>
       <input type="text" class="form-control" id="nom" placeholder="Votre nom" v-model.trim="name"
              :class="{ 'is-invalid': nameEstValide===false }" @blur="checkSiNameEstValide" @input="checkSiNameEstValide"
-             tabindex="1">
+             >
       <ul class="ulError" v-if="!nameEstValide">
         <li class="error" v-for="err in nameMsgErr" :key="err">{{ err }}</li>
       </ul>
     </div>
 
     <div class="btnWrapper">
-      <button type="button" class="btn btn-primary" tabindex="6" @click="editUserName">Sauvegarder</button>
+      <button type="button" class="btn btn-primary" @click="editUserName">Sauvegarder</button>
     </div>
   </div>
 </template>

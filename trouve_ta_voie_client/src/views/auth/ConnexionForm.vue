@@ -8,7 +8,7 @@
         <label for="inputCourriel" class="form-label">Courriel</label>
         <input type="email" class="form-control" id="inputCourriel" v-model.trim="courriel"
                @blur="valideCourriel" @input="valideCourriel"
-               :class="{ 'is-invalid': courrielVal===false }" tabindex="1">
+               :class="{ 'is-invalid': courrielVal===false }">
         <ul class="ulError" v-if="!courrielVal">
           <li class="error" v-for="err in courrielErreurs" :key="err">{{ err }}</li>
         </ul>
@@ -17,16 +17,16 @@
       <div class="mb-3">
         <label for="inputMdp" class="form-label">Mot de passe</label>
         <input type="password" class="form-control" id="inputMdp" v-model.trim="mdp" @blur="valideMdp"
-               :class="{ 'is-invalid': mdpVal===false }" @input="valideMdp" tabindex="2">
+               :class="{ 'is-invalid': mdpVal===false }" @input="valideMdp">
         <ul class="ulError" v-if="!mdpVal">
           <li class="error" v-for="err in mdpErreurs" :key="err">{{ err }}</li>
         </ul>
       </div>
 
       <div class="btnWrapper">
-        <router-link class="nav-link" to="/auth/inscription" tabindex="4">Inscription</router-link>
+        <router-link class="nav-link" to="/auth/inscription">Inscription</router-link>
 
-        <button type="button" class="btn btn-primary" @click="login" tabindex="3">Confirmer</button>
+        <button type="button" class="btn btn-primary" @click="login">Confirmer</button>
       </div>
     </form>
   </div>

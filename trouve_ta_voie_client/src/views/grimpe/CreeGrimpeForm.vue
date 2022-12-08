@@ -9,7 +9,7 @@
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="titre"
                :class="{ 'is-invalid': titreIsVaild===false }" @blur="checkSiTitreEstValide" @input="checkSiTitreEstValide"
-               tabindex="1">
+               >
         <ul class="ulError" v-if="!titreIsVaild">
           <li class="error" v-for="err in titreMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -20,7 +20,7 @@
           <label for="lieuDrop" class="form-label">Lieu</label>
           <select id="lieuDrop" class="form-select" aria-label="Choisir le lieu" v-model.trim="lieu"
                   :class="{ 'is-invalid': lieuEstValide===false }" @blur="checkSiLieuEstValide"
-                  @input="checkSiLieuEstValide" @focusout="checkSiLieuEstValide" tabindex="2">
+                  @input="checkSiLieuEstValide" @focusout="checkSiLieuEstValide">
             <option selected disabled>Choisir le lieu</option>
             <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
           </select>
@@ -33,7 +33,7 @@
           <label for="diffDrop" class="form-label">Difficulté</label>
           <select id="diffDrop" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff"
                   :class="{ 'is-invalid': diffEstValide===false }" @blur="checkSiDiffEstValide"
-                  @input="checkSiDiffEstValide" @focusout="checkSiDiffEstValide" tabindex="3">
+                  @input="checkSiDiffEstValide" @focusout="checkSiDiffEstValide">
             <option selected disabled>Choisir la difficulté</option>
             <option value="6">5.6</option>
             <option value="7">5.7</option>
@@ -56,7 +56,7 @@
         <label for="description" class="form-label">Description</label>
         <textarea class="form-control" id="description" rows="4" v-model.trim="description"
                   :class="{ 'is-invalid': descriptionEstValide===false }" @blur="checkSiDescriptionEstValide"
-                  @input="checkSiDescriptionEstValide" tabindex="4"></textarea>
+                  @input="checkSiDescriptionEstValide"></textarea>
         <ul class="ulError" v-if="!descriptionEstValide">
           <li class="error" v-for="err in descriptionMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -67,7 +67,7 @@
           <label for="styleDrop" class="form-label">Style</label>
           <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style"
                   :class="{ 'is-invalid': styleEstValide===false }" @blur="checkSiStyleEstValide"
-                  @input="checkSiStyleEstValide" tabindex="5">
+                  @input="checkSiStyleEstValide">
             <option selected disabled>Choisir le style</option>
             <option value="Traditionnelle">Traditionnelle</option>
             <option value="Sportive">Sportive</option>
@@ -81,8 +81,8 @@
           <label for="picInput" class="form-label">Image</label>
           <div class="input-group" :class="{'mb-3': !imgIsVaild === false}">
             <input id="picInput" type="file" class="form-control" placeholder="Photos" aria-label="Photo"
-                   aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput" tabindex="6">
-            <button class="btn btn-primary" type="button" id="PhotoAddBtn" @click="addPhoto" tabindex="7">
+                   aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput">
+            <button class="btn btn-primary" type="button" id="PhotoAddBtn" @click="addPhoto">
               Ajouter
             </button>
           </div>
@@ -101,16 +101,16 @@
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <div v-for="(picUrl, index) in picturesUrl" :key="picturesUrl + index" class="picItem">
           <img :src="picUrl" alt="" class="lstPic"/>
-          <a class="removePics" @click="removeImg(index)">Supprimer</a>
+          <a href="#" class="removePics" @click="removeImg(index)">Supprimer</a>
         </div>
       </div>
 
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-secondary" tabindex="9">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-secondary">Retour</button>
         </div>
         <div>
-          <button @click="add" type="button" class="btn btn-primary" tabindex="8">Ajouter
+          <button @click="add" type="button" class="btn btn-primary">Ajouter
           </button>
         </div>
       </div>

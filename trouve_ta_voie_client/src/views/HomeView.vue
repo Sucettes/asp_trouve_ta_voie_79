@@ -19,7 +19,7 @@
   </div>
 
   <br>
-  <h2 id="top10Titre">Top 10</h2>
+  <h2 id="top10Titre" v-if="top10Grimpes.length > 0" class="mb-3">Top 10</h2>
 
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 g-4"
        style="margin-left: 20px; margin-right: 20px">
@@ -51,7 +51,7 @@
         <hr>
 
         <label for="styleDrop" class="form-label">Style</label>
-        <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style" tabindex="1">
+        <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style">
           <option selected :value="undefined">Tous les styles</option>
           <option value="Traditionnelle">Traditionnelle</option>
           <option value="Sportive">Sportive</option>
@@ -63,12 +63,12 @@
         <label for="starsRange" class="form-label" v-if="stars === '5'">Étoiles : <strong>{{ stars }}</strong></label>
         <label for="starsRange" class="form-label" v-else>Étoiles : <strong>{{ stars }}</strong>+</label>
         <input type="range" class="form-range" min="1" max="5" step="0.5" id="starsRange" v-model.trim="stars"
-               tabindex="2">
+               >
 
         <br>
 
         <label for="lieuDrop" class="form-label">Lieu</label>
-        <select id="lieuDrop" class="form-select" aria-label="Choisir le style" v-model.trim="lieu" tabindex="3">
+        <select id="lieuDrop" class="form-select" aria-label="Choisir le style" v-model.trim="lieu">
           <option @click="this.lieu = undefined" selected :value="undefined">Tous les lieux</option>
           <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
         </select>
@@ -80,7 +80,7 @@
         <p v-if="!diffEstValide" class="error marg0">La difficulté minimale doit être inférieure à la difficulté
           maximale!</p>
         <label for="diffDrop1" class="form-label">entre (min.)</label>
-        <select id="diffDrop1" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff1" tabindex="4"
+        <select id="diffDrop1" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff1"
                 @focusout="checkSiDiffEstValide" @change="checkSiDiffEstValide"
                 :class="{ 'is-invalid': diffEstValide===false }">
           <option value="6">5.6</option>
@@ -96,7 +96,7 @@
         </select>
 
         <label for="diffDrop2" class="form-label">et (max.)</label>
-        <select id="diffDrop2" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff2" tabindex="5"
+        <select id="diffDrop2" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff2"
                 @focusout="checkSiDiffEstValide" @change="checkSiDiffEstValide"
                 :class="{ 'is-invalid': diffEstValide===false }">
           <option value="6">5.6</option>
@@ -113,7 +113,7 @@
         <br>
         <br>
         <div id="btnWrapper">
-          <button type="button" class="btn btn-outline-primary" @click="search()" tabindex="6">Rechercher</button>
+          <button type="button" class="btn btn-outline-primary" @click="search()">Rechercher</button>
         </div>
       </div>
     </div>
@@ -146,16 +146,16 @@
         <nav aria-label="Page navigation grimpes recherche" v-if="nbPages > 0">
           <ul class="pagination">
             <li class="page-item">
-              <a class="page-link" aria-label="Previous" @click="beforePage" tabindex="8">
+              <a class="page-link" aria-label="Previous" @click="beforePage" href="#">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
 
-            <li class="page-item" v-for="p in nbPages" :key="'page-' + p"><a class="page-link"
+            <li class="page-item" v-for="p in nbPages" :key="'page-' + p"><a href="#" class="page-link"
                                                                              @click="setPage(p)">{{ p }}</a></li>
 
             <li class="page-item">
-              <a class="page-link" aria-label="Next" @click="nextPage()" tabindex="7">
+              <a class="page-link" aria-label="Next" @click="nextPage()">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>

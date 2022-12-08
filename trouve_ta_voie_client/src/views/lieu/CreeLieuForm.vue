@@ -9,7 +9,7 @@
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="titre"
                @blur="checkTitreEstValide" @input="checkTitreEstValide"
-               :class="{ 'is-invalid': titreIsVaild===false }" tabindex="1">
+               :class="{ 'is-invalid': titreIsVaild===false }">
         <ul class="ulError" v-if="!titreIsVaild">
           <li class="error" v-for="err in titreMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -18,7 +18,7 @@
         <label for="description" class="form-label">Description</label>
         <textarea class="form-control" id="description" rows="4" v-model.trim="description"
                   @blur="checkDescriptionEstValide" @input="checkDescriptionEstValide"
-                  :class="{ 'is-invalid': descEstValide===false }" tabindex="2"></textarea>
+                  :class="{ 'is-invalid': descEstValide===false }"></textarea>
         <ul class="ulError" v-if="!descEstValide">
           <li class="error" v-for="err in descriptionMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -27,7 +27,7 @@
         <label for="directives" class="form-label">Directives pour s'y rendre</label>
         <textarea class="form-control" id="directives" rows="4" v-model.trim="instruction"
                   @blur="checkInstructionEstValide" @input="checkInstructionEstValide"
-                  :class="{ 'is-invalid': instrucEstValide===false }" tabindex="3"></textarea>
+                  :class="{ 'is-invalid': instrucEstValide===false }"></textarea>
         <ul class="ulError" v-if="!instrucEstValide">
           <li class="error" v-for="err in instructionMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -38,7 +38,7 @@
           <label for="latitude" class="form-label">Latitude</label>
           <input type="text" class="form-control" id="latitude" placeholder="0"
                  v-model.trim="latitude" @blur="checkLatitudeEstValide" @input="checkLatitudeEstValide"
-                 :class="{ 'is-invalid': latitudeEstValide===false }" tabindex="4">
+                 :class="{ 'is-invalid': latitudeEstValide===false }">
           <ul class="ulError" v-if="!latitudeEstValide">
             <li class="error" v-for="err in latitudeMsgErr" :key="err">{{ err }}</li>
           </ul>
@@ -47,7 +47,7 @@
           <label for="longitude" class="form-label">Longitude</label>
           <input type="text" class="form-control" id="longitude" placeholder="0"
                  v-model.trim="longitude" @blur="checkLongitudeEstValide" @input="checkLongitudeEstValide"
-                 :class="{ 'is-invalid': longitudeEstValide===false }" tabindex="5">
+                 :class="{ 'is-invalid': longitudeEstValide===false }">
           <ul class="ulError" v-if="!longitudeEstValide">
             <li class="error" v-for="err in longitudeMsgErr" :key="err">{{ err }}</li>
           </ul>
@@ -55,10 +55,10 @@
       </div>
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-secondary" tabindex="7">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-secondary">Retour</button>
         </div>
         <div>
-          <button @click="add" type="button" class="btn btn-primary" tabindex="6">Ajouter
+          <button @click="add" type="button" class="btn btn-primary">Ajouter
           </button>
         </div>
       </div>

@@ -8,7 +8,7 @@
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="titre"
                :class="{ 'is-invalid': titreIsVaild===false }" @blur="checkSiTitreEstValide" @input="checkSiTitreEstValide"
-               tabindex="1">
+               >
         <ul class="ulError" v-if="!titreIsVaild">
           <li class="error" v-for="err in titreMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -19,7 +19,7 @@
           <label for="lieuDrop" class="form-label">Lieu</label>
           <select id="lieuDrop" class="form-select" aria-label="Choisir le lieu" v-model.trim="lieu"
                   :class="{ 'is-invalid': lieuEstValide===false }" @blur="checkSiLieuEstValide"
-                  @input="checkSiLieuEstValide" @focusout="checkSiLieuEstValide" tabindex="2">
+                  @input="checkSiLieuEstValide" @focusout="checkSiLieuEstValide">
             <option selected disabled>Choisir le lieu</option>
             <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
           </select>
@@ -31,7 +31,7 @@
         <div class="col-6">
           <label for="diffDrop" class="form-label">Difficulté</label>
           <select id="diffDrop" class="form-select" aria-label="Choisir la difficulté"
-                  v-model.trim="diff" tabindex="3"
+                  v-model.trim="diff"
                   :class="{ 'is-invalid': diffEstValide===false }" @blur="checkSiDiffEstValide"
                   @input="checkSiDiffEstValide" @focusout="checkSiDiffEstValide">
             <option selected disabled>Choisir la difficulté</option>
@@ -56,7 +56,7 @@
         <label for="description" class="form-label">Description</label>
         <textarea class="form-control" id="description" rows="4" v-model.trim="description"
                   :class="{ 'is-invalid': descriptionEstValide===false }" @blur="checkSiDescriptionEstValide"
-                  @input="checkSiDescriptionEstValide" tabindex="4"></textarea>
+                  @input="checkSiDescriptionEstValide"></textarea>
         <ul class="ulError" v-if="!descriptionEstValide">
           <li class="error" v-for="err in descriptionMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -67,7 +67,7 @@
           <label for="styleDrop" class="form-label">Style</label>
           <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style"
                   :class="{ 'is-invalid': styleEstValide===false }" @blur="checkSiStyleEstValide"
-                  @input="checkSiStyleEstValide" tabindex="5">
+                  @input="checkSiStyleEstValide">
             <option selected disabled>Choisir le style</option>
             <option value="Traditionnelle">Traditionnelle</option>
             <option value="Sportive">Sportive</option>
@@ -81,10 +81,10 @@
 
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-secondary" tabindex="7">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-secondary">Retour</button>
         </div>
         <div>
-          <button @click="edit" type="button" class="btn btn-primary" tabindex="6">Sauvegarder
+          <button @click="edit" type="button" class="btn btn-primary">Sauvegarder
           </button>
         </div>
       </div>
@@ -96,8 +96,8 @@
         <label for="picInput" class="form-label">Image</label>
         <div class="input-group mb-3">
           <input id="picInput" type="file" class="form-control" placeholder="Photos" aria-label="Photo"
-                 aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput" tabindex="8">
-          <button class="btn btn-outline-secondary" type="button" id="PhotoAddBtn" @click="addPhoto" tabindex="9">
+                 aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput">
+          <button class="btn btn-outline-secondary" type="button" id="PhotoAddBtn" @click="addPhoto">
             Ajouter
           </button>
         </div>
@@ -114,7 +114,7 @@
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <div v-for="pic in pictures" :key="pic.id" class="picItem">
           <img :src="'http://localhost:8090'+pic.path" alt="" class="lstPic"/>
-          <a @click="deletePic(pic.id)" class="removePics" v-if="pictures.length > 1">Supprimer</a>
+          <a href="#" @click="deletePic(pic.id)" class="removePics" v-if="pictures.length > 1">Supprimer</a>
         </div>
       </div>
     </form>

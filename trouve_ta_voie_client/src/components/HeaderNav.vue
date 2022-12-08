@@ -48,7 +48,7 @@
                 <p class="dropdown-item dropdown-toggle" type="button" data-bs-toggle="offcanvas"
                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">Profil</p>
               </li>
-              <li><a class="dropdown-item" @click="logout">Déconnexion</a></li>
+              <li><a class="dropdown-item" @click="logout" href="#">Déconnexion</a></li>
             </ul>
           </li>
 

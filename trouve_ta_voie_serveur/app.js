@@ -42,5 +42,5 @@ app.all("*", (req, res) => {
 });
 
 app.listen(8090, function () {
-    console.log("Serveur sur le port " + this.address().port);
+    console.log(`Serveur sur : http://localhost:${this.address().port}`);
 });

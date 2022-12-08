@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-lg-6">
           <div>
-            <img id="imgCover" :src="'http://localhost:8090' + pictureCover.path">
+            <img id="imgCover" :src="'http://localhost:8090' + pictureCover.path" alt="">
           </div>
         </div>
         <div class="col-lg-6">
@@ -61,7 +61,7 @@
     <br>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-2">
       <div class="d-flex" v-for="pic in pictures" :key="pic.id">
-        <img class="imgGal" :src="'http://localhost:8090' + pic.path">
+        <img class="imgGal" :src="'http://localhost:8090' + pic.path" alt="">
       </div>
     </div>
 
