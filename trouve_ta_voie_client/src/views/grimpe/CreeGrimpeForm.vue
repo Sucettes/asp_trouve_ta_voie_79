@@ -92,7 +92,7 @@
 
           <label for="imgPrev" class="form-label">Aperçu de l'image</label>
           <div>
-            <img id="imgPrev" :src="picturePreviewUrl" alt="Aperçus d'une image" class="picPrev" ref="picPrev">
+            <img id="imgPrev" :src="picturePreviewUrl" class="picPrev" ref="picPrev">
           </div>
         </div>
       </div>
