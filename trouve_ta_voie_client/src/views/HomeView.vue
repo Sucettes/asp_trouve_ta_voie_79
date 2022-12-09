@@ -63,7 +63,7 @@
         <label for="starsRange" class="form-label" v-if="stars === '5'">Étoiles : <strong>{{ stars }}</strong></label>
         <label for="starsRange" class="form-label" v-else>Étoiles : <strong>{{ stars }}</strong>+</label>
         <input type="range" class="form-range" min="1" max="5" step="0.5" id="starsRange" v-model.trim="stars"
-               >
+        >
 
         <br>
 
@@ -113,7 +113,9 @@
         <br>
         <br>
         <div id="btnWrapper">
-          <button type="button" class="btn btn-outline-primary" @click="search()">Rechercher</button>
+          <button type="button" class="btn btn-outline-primary" @click="search()" aria-label="Faire la recherche">
+            Rechercher
+          </button>
         </div>
       </div>
     </div>

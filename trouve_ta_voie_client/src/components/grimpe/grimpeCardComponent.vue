@@ -15,8 +15,8 @@
 
         <br>
 
-        <p>Vote(s) : <strong class="accColorTxt">{{ nbVotes }}</strong></p>
         <star-rating-component :nbStars="nbEtoiles"></star-rating-component>
+        <p>Vote(s) : <strong class="accColorTxt">{{ nbVotes }}</strong></p>
 
         <section v-if="hideDescription !== 'true'">
           <hr>
@@ -31,13 +31,13 @@
       </div>
 
       <div>
-        <div id="btnWrapper" class="mt-2">
-          <button v-if="showDeleteBtn && this.$store.getters.isAdmin" type="button"
+        <div id="btnWrapper" class="mt-2" v-if="isLoggedIn">
+          <button v-if="showDeleteBtn && isAdmin" type="button"
                   class="btn btn-outline-danger" @click="deleteGrimpe">Supprimer
           </button>
 
           <button @click="editGrimpe" type="button" class="btn btn-outline-primary"
-                  v-if="+this.userId === +this.$store.getters.userId || this.$store.getters.isAdmin">Modifier
+                  v-if="+this.userId === +this.$store.getters.userId || isAdmin">Modifier
           </button>
         </div>
       </div>
@@ -70,6 +70,14 @@ export default {
           id: this.id,
         },
       });
+    },
+  },
+  computed: {
+    isAdmin() {
+      return this.$store.getters.isAdmin;
+    },
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
     },
   },
 };

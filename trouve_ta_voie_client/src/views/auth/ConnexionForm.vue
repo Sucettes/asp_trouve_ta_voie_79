@@ -24,9 +24,9 @@
       </div>
 
       <div class="btnWrapper">
-        <router-link class="nav-link" to="/auth/inscription">Inscription</router-link>
+        <router-link class="nav-link" to="/auth/inscription" aria-label="Allez page inscription">Inscription</router-link>
 
-        <button type="button" class="btn btn-primary" @click="login">Confirmer</button>
+        <button type="button" class="btn btn-primary" @click="login" aria-label="Confirmer connexion">Confirmer</button>
       </div>
     </form>
   </div>
@@ -154,11 +154,6 @@ export default {
   justify-content: space-between;
 }
 
-.error {
-  color: $redDark;
-  font-size: 0.9rem;
-}
-
 #authForm {
   width: 25rem;
   margin: 0 auto;
@@ -166,4 +161,8 @@ export default {
   height: auto;
 }
 
+.error {
+  color: red;
+  font-size: 0.9rem;
+}
 </style>

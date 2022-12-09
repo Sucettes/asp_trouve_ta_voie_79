@@ -95,7 +95,7 @@ exports.getGrimpeByIdToEdit = async (req, res) => {
         const grimpe = await Grimpe.findByPk(+req.params.id, {include: Image});
 
         if (grimpe) {
-            // À les autorisations.
+            // Possède les autorisations.
             if (+grimpe.utilisateurId === +req.params.userId || req.token.isAdmin) {
                 res.status(200).json(grimpe);
             } else {
@@ -177,7 +177,6 @@ exports.deleteGrimpe = async (req, res) => {
                 // Suppression de la grimpe. cascade
                 await Grimpe.destroy({where: {id: req.params.id}});
             }
-
             res.status(204).end();
         } else {
             res.status(403).end();

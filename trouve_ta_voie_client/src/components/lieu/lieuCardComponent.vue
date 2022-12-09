@@ -25,7 +25,7 @@
 
       <div>
         <div id="btnWrapper">
-          <button @click="editLieu" type="button" class="btn btn-outline-primary">Modifier</button>
+          <button aria-label="Ouvrir page pour modifier lieu" @click="editLieu" type="button" class="btn btn-outline-primary">Modifier</button>
         </div>
       </div>
     </div>

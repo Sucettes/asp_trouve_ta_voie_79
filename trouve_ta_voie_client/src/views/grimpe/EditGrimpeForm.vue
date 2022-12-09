@@ -7,8 +7,9 @@
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="titre"
-               :class="{ 'is-invalid': titreEstValide===false }" @blur="checkSiTitreEstValide" @input="checkSiTitreEstValide"
-               >
+               :class="{ 'is-invalid': titreEstValide===false }" @blur="checkSiTitreEstValide"
+               @input="checkSiTitreEstValide"
+        >
         <ul class="ulError" v-if="!titreEstValide">
           <li class="error" v-for="err in titreMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -81,10 +82,10 @@
 
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-primary">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-primary" aria-label="Retour page précédente">Retour</button>
         </div>
         <div>
-          <button @click="edit" type="button" class="btn btn-primary">Sauvegarder
+          <button @click="edit" type="button" class="btn btn-primary" aria-label="Sauvegarder modification">Sauvegarder
           </button>
         </div>
       </div>
@@ -97,8 +98,8 @@
         <div class="input-group mb-3">
           <input id="picInput" type="file" class="form-control" placeholder="Photos" aria-label="Photo"
                  aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput">
-          <button class="btn btn-outline-primary" type="button" id="PhotoAddBtn" @click="addPhoto">
-            Ajouter
+          <button class="btn btn-outline-primary" type="button" id="PhotoAddBtn" @click="addPhoto" aria-label="Ajouter image">
+            Ajouter Image
           </button>
         </div>
 
@@ -114,7 +115,8 @@
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <div v-for="pic in pictures" :key="pic.id" class="picItem">
           <img :src="'http://localhost:8090'+pic.path" alt="Image d'une grimpe" class="lstPic"/>
-          <a href="#" @click="deletePic(pic.id)" class="removePics" v-if="pictures.length > 1">Supprimer</a>
+          <a href="#" @click="deletePic(pic.id)" class="removePics" v-if="pictures.length > 1"
+             aria-label="Supprimer image">Supprimer</a>
         </div>
       </div>
     </form>

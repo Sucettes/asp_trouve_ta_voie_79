@@ -27,12 +27,12 @@
             <p>Votes : <strong class="accColorTxt">{{ votes }}</strong></p>
           </div>
 
-          <div class="btnWrapper" v-if="isLoggedIn">
-            <button v-if="this.$store.getters.isAdmin" @click="showModalConfirm" type="button"
-                    class="btn btn-outline-danger" style="margin-right: 20px">Supprimer
+          <div class="btnWrapper">
+            <button v-if="isAdmin && isLoggedIn" @click="showModalConfirm" type="button"
+                    class="btn btn-outline-danger" style="margin-right: 20px" aria-label="Supprimer la grimpe">Supprimer
             </button>
 
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ratingModal">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ratingModal" aria-label="Ouvrir modal d'évaluation">
               Évaluer la grimpe
             </button>
           </div>
@@ -71,7 +71,7 @@
     <grimpe-rating-modal-component :titre="titre" @save-rating="saveRating"></grimpe-rating-modal-component>
   </div>
 
-  <div id="svgIconEditDiv" @click="goToEditGrimpe" v-if="userCanEdit || isAdmin">
+  <div id="svgIconEditDiv" @click="goToEditGrimpe" v-if="isLoggedIn && (userCanEdit || isAdmin)">
     <svg id="svgIconEdit" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
          class="bi bi-pencil-square" viewBox="0 0 16 16">
       <path

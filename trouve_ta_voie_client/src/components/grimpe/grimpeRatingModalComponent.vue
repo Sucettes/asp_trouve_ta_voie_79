@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="ratingModalLabel">{{ titre }}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Ferme grimpe évaluation"></button>
       </div>
 
       <div class="modal-body">
@@ -90,7 +90,7 @@
         <p v-if="!starsEstValide" class="error">Il faut avoir 1 à 5 étoiles !</p>
 
         <div class="btnWrapper">
-          <button type="button" class="btn btn-primary mt-3" @click="saveStars" :disabled="isLoading">Sauvegarder évaluation</button>
+          <button aria-label="Sauvegarder évaluation" type="button" class="btn btn-primary mt-3" @click="saveStars" :disabled="isLoading">Sauvegarder évaluation</button>
         </div>
       </div>
     </div>

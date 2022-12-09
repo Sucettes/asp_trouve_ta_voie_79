@@ -55,10 +55,10 @@
       </div>
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-primary">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-primary" aria-label="Retour page précédente">Retour</button>
         </div>
         <div>
-          <button @click="edit" type="button" class="btn btn-primary">Sauvegarder
+          <button @click="edit" type="button" class="btn btn-primary" aria-label="Sauvegarder modification">Sauvegarder
           </button>
         </div>
       </div>
@@ -167,7 +167,6 @@ export default {
             if (res.status) {
               this.$toast.success("Modification du lieu réussie !");
               this.$store.dispatch("stopLoading");
-              this.$router.push({name: "lieuDetails", params: {id: +this.$route.params.id}});
             }
           }).catch(err => {
             if (err.data.err && err.data.err === "Titre déjà utilisé !") {

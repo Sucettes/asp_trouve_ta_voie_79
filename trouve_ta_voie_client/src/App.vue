@@ -10,9 +10,9 @@ import HeaderNav from "@/components/HeaderNav";
 export default {
   components: {HeaderNav},
   async mounted() {
-    await this.$store.dispatch("checkSiLocalStorageTokenEstValide", this.$store.getters.token).catch(() => {
-
-    });
+    await this.$store.dispatch("checkSiLocalStorageTokenEstValide", this.$store.getters.token)
+        .catch(() => {
+        });
   },
 };
 </script>

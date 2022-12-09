@@ -60,9 +60,9 @@
       </div>
 
       <div class="btnWrapper">
-        <router-link class="nav-link" to="/auth/connexion">Connexion</router-link>
+        <router-link class="nav-link" to="/auth/connexion" aria-label="Allez page connexion">Connexion</router-link>
 
-        <button type="button" class="btn btn-primary" @click="register">Confirmer</button>
+        <button type="button" class="btn btn-primary" @click="register" aria-label="Confirmer inscription">Confirmer</button>
       </div>
     </form>
   </div>
@@ -210,7 +210,7 @@ export default {
 }
 
 .error {
-  color: $redDark;
+  color: red;
   font-size: 0.9rem;
 }
 

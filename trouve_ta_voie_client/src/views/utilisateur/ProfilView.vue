@@ -22,7 +22,7 @@
     </div>
 
     <div class="btnWrapper">
-      <button type="button" class="btn btn-primary" @click="editUserName">Sauvegarder</button>
+      <button type="button" class="btn btn-primary" @click="editUserName" aria-label="Sauvegarder modification">Sauvegarder</button>
     </div>
   </div>
 </template>

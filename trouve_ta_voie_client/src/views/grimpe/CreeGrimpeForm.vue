@@ -82,8 +82,8 @@
           <div class="input-group" :class="{'mb-3': !imgEstValide === false}">
             <input id="picInput" type="file" class="form-control" placeholder="Photos" aria-label="Photo"
                    aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput">
-            <button class="btn btn-primary" type="button" id="PhotoAddBtn" @click="addPhoto">
-              Ajouter
+            <button class="btn btn-primary" type="button" id="PhotoAddBtn" @click="addPhoto" aria-label="Ajouter l'image">
+              Ajouter Image
             </button>
           </div>
           <ul class="ulError" v-if="!imgEstValide">
@@ -101,16 +101,16 @@
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <div v-for="(picUrl, index) in picturesUrl" :key="picturesUrl + index" class="picItem">
           <img :src="picUrl" alt="Image d'une grimpe" class="lstPic"/>
-          <a href="#" class="removePics" @click="removeImg(index)">Supprimer</a>
+          <a href="#" class="removePics" @click="removeImg(index)" aria-label="Supprimer l'image">Supprimer</a>
         </div>
       </div>
 
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-primary">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-primary" aria-label="Retour page précédente">Retour</button>
         </div>
         <div>
-          <button @click="add" type="button" class="btn btn-primary">Ajouter
+          <button @click="add" type="button" class="btn btn-primary" aria-label="Ajouter la grimpe">Ajouter
           </button>
         </div>
       </div>

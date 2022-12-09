@@ -106,7 +106,7 @@
     </section>
 
     <section>
-      <p>({{ stars }})</p>
+      <span>({{ stars }})</span>
     </section>
   </div>
 </template>

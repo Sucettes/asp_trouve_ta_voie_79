@@ -12,8 +12,8 @@
     <p>Êtes-vous sûr de vouloir continuer? Cette action n'est pas réversible.</p>
     <br class="spacer">
     <div class="btnWrapper">
-      <button type="button" class="btn btn-outline-primary" @click="$emit('confirm', false)">Annuler</button>
-      <button type="button" class="btn btn-danger" @click="$emit('confirm', true)">Supprimer</button>
+      <button aria-label="Annuler, fermer le modal" type="button" class="btn btn-outline-primary" @click="$emit('confirm', false)">Annuler</button>
+      <button aria-label="Confirmer supprimer" type="button" class="btn btn-danger" @click="$emit('confirm', true)">Supprimer</button>
     </div>
   </div>
 </template>

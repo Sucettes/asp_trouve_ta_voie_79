@@ -4,27 +4,15 @@ const db = require("../models/dbSetup");
 const validatorFct = require("../fctUtils/validations");
 const Utilisateur = db.utilisateurs;
 
-// exports.getUserByEmail = async (req, res) => {
-//     try {
-//         const utilisateur = await Utilisateur.findOne({
-//             where: {courriel: req.params.courriel},
-//         });
-//
-//         if (utilisateur) {
-//             res.status(200).json(utilisateur);
-//         } else {
-//             res.status(404).end();
-//         }
-//     } catch (e) {
-//         res.status(500).end();
-//     }
-// };
 
 exports.changeUsername = async (req, res) => {
     // Permets de changer le nom d'utilisateur de lui qui est connecté.
     try {
-        const nameEstValide = validatorFct.userNameEstValide(req.body.name);
+        if (!req.body.name) {
+            res.status(400).end();
+        }
 
+        const nameEstValide = validatorFct.userNameEstValide(req.body.name);
         if (nameEstValide) {
             const user = await Utilisateur.findByPk(req.token.userId);
 

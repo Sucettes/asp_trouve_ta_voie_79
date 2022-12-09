@@ -49,6 +49,7 @@ exports.login = async (req, res) => {
 
 exports.register = async (req, res) => {
     try {
+        // todo : Valide que le user est pas connecté...
         const emailEstValide = validatorFct.userEmailEstValide(req.body.courriel);
         const nameEstValide = validatorFct.userNameEstValide(req.body.nom);
         const pwdEstValide = validatorFct.userPwdEstValide(req.body.mdp);

@@ -11,8 +11,8 @@
       </div>
 
       <div class="btnWrapper">
-        <button v-if="this.$store.getters.isAdmin" @click="showModalConfirmLieu" type="button"
-                class="btn btn-outline-danger">Supprimer
+        <button v-if="isAdmin && isLoggedIn" @click="showModalConfirmLieu" type="button"
+                class="btn btn-outline-danger" aria-label="Supprimer lieu">Supprimer
         </button>
       </div>
     </div>
@@ -64,20 +64,27 @@
       <table class="table table-bordered">
         <thead>
         <tr>
-          <th>Grimpe</th>
-          <th>Évaluations</th>
+          <th>
+            <p class="marg0">Grimpe</p>
+          </th>
+          <th>
+            <p class="marg0">Évaluations</p>
+          </th>
           <th></th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="grimpe in grimpes" :key="grimpe.id">
-          <td class="accColorTxt cursorPointer" @click="goToGrimpeDetails(grimpe.id)">{{ grimpe.titre }}</td>
+          <td class="accColorTxt cursorPointer" @click="goToGrimpeDetails(grimpe.id)">
+            <p class="marg0">{{ grimpe.titre }}</p>
+          </td>
           <td>
             <star-rating-component :nbStars="grimpe.nbEtoiles"></star-rating-component>
             <p class="voteP">{{ grimpe.nbVotes }} votes</p>
           </td>
           <td>
-              <span class="accColorTxt cursorPointer btnLinkSPan" @click="goToGrimpeDetails(grimpe.id)">
+              <span class="accColorTxt cursorPointer btnLinkSPan" @click="goToGrimpeDetails(grimpe.id)"
+                    aria-label="Allez page détail d'une grimpe">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye"
                      viewBox="0 0 16 16">
                   <path
@@ -86,7 +93,7 @@
                 </svg>
               </span>
             <span class="cursorPointer deleteLink btnLinkSPan" @click="showModalConfirmGrimpe(grimpe.id)"
-                  v-if="this.$store.getters.isAdmin">
+                  v-if="isAdmin && isLoggedIn" aria-label="Supprimer une grimpe">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash"
                      viewBox="0 0 16 16">
                   <path
@@ -126,7 +133,7 @@
     </div>
   </div>
 
-  <div id="svgIconEditDiv" @click="goToEditLieu" v-if="userCanEdit || isAdmin">
+  <div id="svgIconEditDiv" @click="goToEditLieu" v-if="isLoggedIn && (userCanEdit || isAdmin)">
     <svg id="svgIconEdit" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
          class="bi bi-pencil-square" viewBox="0 0 16 16">
       <path
@@ -182,6 +189,9 @@ export default {
     },
     isAdmin() {
       return this.$store.getters.isAdmin;
+    },
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
     },
   },
   methods: {
