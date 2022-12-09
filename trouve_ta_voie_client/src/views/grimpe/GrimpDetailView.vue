@@ -32,7 +32,7 @@
                     class="btn btn-outline-danger" style="margin-right: 20px" aria-label="Supprimer la grimpe">Supprimer
             </button>
 
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ratingModal" aria-label="Ouvrir modal d'évaluation">
+            <button v-if="isLoggedIn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ratingModal" aria-label="Ouvrir modal d'évaluation">
               Évaluer la grimpe
             </button>
           </div>

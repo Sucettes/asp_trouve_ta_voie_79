@@ -124,7 +124,7 @@
         </div>
         <div class="col-md-6">
           <div>
-            <h6 style="margin-bottom: 15px">Directives pour s'y rendre</h6>
+            <h6 class="mb-3">Directives pour s'y rendre</h6>
             <p>{{ directives }}</p>
           </div>
         </div>
