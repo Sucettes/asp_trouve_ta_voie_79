@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="col-lg-6">
-          <div style="padding-left: 10px; padding-right: 10px">
+          <div class="plr-10">
             <h6>Description</h6>
             <p>{{ desc }}</p>
 
@@ -29,7 +29,7 @@
 
           <div class="btnWrapper">
             <button v-if="isAdmin && isLoggedIn" @click="showModalConfirm" type="button"
-                    class="btn btn-outline-danger" style="margin-right: 20px" aria-label="Supprimer la grimpe">Supprimer
+                    class="btn btn-outline-danger mr-20" aria-label="Supprimer la grimpe">Supprimer
             </button>
 
             <button v-if="isLoggedIn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ratingModal" aria-label="Ouvrir modal d'évaluation">
@@ -283,5 +283,14 @@ export default {
     min-height: 167px;
     object-fit: cover;
   }
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.plr-10 {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 </style>

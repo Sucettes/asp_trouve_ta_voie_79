@@ -1,5 +1,6 @@
 "use strict";
 
+
 const db = require("../models/dbSetup");
 const Utilisateur = db.utilisateurs;
 
@@ -7,6 +8,7 @@ const validatorFct = require("../fctUtils/validations.js");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 
 exports.login = async (req, res) => {
     try {

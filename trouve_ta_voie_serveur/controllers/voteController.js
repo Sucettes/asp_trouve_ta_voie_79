@@ -1,5 +1,6 @@
 "use strict";
 
+
 const db = require("../models/dbSetup");
 const {Op, fn, col} = require("sequelize");
 const Vote = db.votes;
@@ -84,7 +85,6 @@ exports.getVotesForUserId = async (req, res) => {
         }).catch(() => {
             res.status(400).end();
         });
-
     } catch (e) {
         res.status(500).end();
     }

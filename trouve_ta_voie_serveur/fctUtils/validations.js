@@ -1,5 +1,6 @@
 "use strict";
 
+
 // Bibliothèque de fonction pour la validation de certaines valeurs.
 const validatorFct = {
     // Vérifie si le mot de passe est valide.

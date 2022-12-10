@@ -1,11 +1,13 @@
 "use strict";
 
+
 const db = require("../models/dbSetup");
 const Image = db.images;
 const Grimpe = db.grimpes;
 
 const uuid = require("uuid");
 const fs = require("fs");
+
 
 exports.deleteImgById = async (req, res) => {
     try {
@@ -17,13 +19,14 @@ exports.deleteImgById = async (req, res) => {
                 include: [Image],
             });
 
-            // Dois avoir au moins une image.
+            // Dois avoir au moins une image restante.
             if (grimpe && grimpe.images.length <= 1) {
-                res.status(400).end(); // edit: Verifie le code a retourne
+                res.status(400).end();
             }
 
             // Est autorisé.
             if (grimpe.utilisateurId === req.token.userId || req.token.isAdmin) {
+                // Supprime l’image locale et dans la bd.
                 await Image.destroy({where: {id: req.params.id}}).then(() => {
                     fs.unlinkSync(`public/${resultImg.dataValues.path}`);
                     res.status(204).end();

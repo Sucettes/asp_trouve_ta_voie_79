@@ -19,10 +19,10 @@
   </div>
 
   <br>
+
   <h2 id="top10Titre" v-if="top10Grimpes.length > 0" class="mb-3">Top 10</h2>
 
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 g-4"
-       style="margin-left: 20px; margin-right: 20px">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 g-4 mlr-20">
     <grimpe-card-component class="d-flex"
                            v-for="(x) in top10Grimpes"
                            :key="x.id"
@@ -42,8 +42,9 @@
     ></grimpe-card-component>
   </div>
 
-  <div class="shadow-sm p-3 mb-5 bg-body rounded mtlr-35-12"><h2 id="top10Titre">Votre
-    recherche</h2></div>
+  <div class="shadow-sm p-3 mb-5 bg-body rounded mtlr-35-12">
+    <h2 id="top10Titre">Votre recherche</h2>
+  </div>
   <div id="filterContainer" class="row">
     <div class="col-lg-2" id="filterMenu">
       <div class="shadow-sm p-3 mb-5 bg-body rounded margLG-10">
@@ -62,8 +63,7 @@
 
         <label for="starsRange" class="form-label" v-if="stars === '5'">Étoiles : <strong>{{ stars }}</strong></label>
         <label for="starsRange" class="form-label" v-else>Étoiles : <strong>{{ stars }}</strong>+</label>
-        <input type="range" class="form-range" min="1" max="5" step="0.5" id="starsRange" v-model.trim="stars"
-        >
+        <input type="range" class="form-range" min="1" max="5" step="0.5" id="starsRange" v-model.trim="stars">
 
         <br>
 
@@ -75,10 +75,10 @@
 
         <br>
 
-
         <p class="marg0">Difficulté</p>
-        <p v-if="!diffEstValide" class="error marg0">La difficulté minimale doit être inférieure à la difficulté
-          maximale!</p>
+        <p v-if="!diffEstValide" class="error marg0">
+          La difficulté minimale doit être inférieure à la difficulté maximale!
+        </p>
         <label for="diffDrop1" class="form-label">entre (min.)</label>
         <select id="diffDrop1" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff1"
                 @focusout="checkSiDiffEstValide" @change="checkSiDiffEstValide"
@@ -334,6 +334,7 @@ export default {
     await this.loadTop10();
   },
 };
+
 </script>
 
 <style lang="scss" scoped>
@@ -350,6 +351,11 @@ export default {
 
 .marg0 {
   margin: 0;
+}
+
+.mlr-20 {
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .mtlr-35-12 {

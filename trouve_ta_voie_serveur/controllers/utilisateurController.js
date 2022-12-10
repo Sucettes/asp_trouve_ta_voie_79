@@ -1,5 +1,6 @@
 "use strict";
 
+
 const db = require("../models/dbSetup");
 const validatorFct = require("../fctUtils/validations");
 const Utilisateur = db.utilisateurs;

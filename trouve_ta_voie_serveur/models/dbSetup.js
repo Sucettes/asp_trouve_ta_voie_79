@@ -1,5 +1,6 @@
 "use strict";
 
+
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
@@ -14,6 +15,7 @@ const sequelize = new Sequelize(
             timestamps: false,
             freezeTableName: true,
         },
+        // Retirer les logs dans le cmd
         logging: false,
         pool: {
             max: 5,

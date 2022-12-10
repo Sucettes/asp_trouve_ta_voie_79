@@ -1,11 +1,13 @@
 "use strict";
 
+
 const express = require("express");
 const routerLieu = express.Router();
 
 const authMidl = require("../fctUtils/auth");
 
 const lieuController = require("../controllers/lieuController");
+
 
 routerLieu.route("/lieux/dropFormat")
     .get(lieuController.getDropdownData)

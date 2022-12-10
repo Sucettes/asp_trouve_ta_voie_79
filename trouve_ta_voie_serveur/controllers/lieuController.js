@@ -1,5 +1,6 @@
 "use strict";
 
+
 const db = require("../models/dbSetup");
 const validatorFct = require("../fctUtils/validations");
 const fs = require("fs");
@@ -197,6 +198,7 @@ exports.editLieu = async (req, res) => {
                     if (lieu2 && lieu2.id !== req.body.id) {
                         res.status(400).json({err: "Titre déjà utilisé !"});
                     } else {
+                        // Mes à jour le lieu
                         await Lieu.update({
                             titre: req.body.titre.trim(),
                             description: req.body.description.trim(),

@@ -19,8 +19,12 @@ app.set("jwt-secret", process.env.SECRET);
 app.use(express.static(path.join(__dirname, "public")));
 
 const db = require("./models/dbSetup");
-// db.sequelize.sync({force: true}).then(() => {
+db.sequelize.authenticate().then(() => {
+    console.log("Connexion à la bd réussie !");
+});
+// db.sequelize.sync({force: true}).then(() => { // Drop la bd (Force la sync)
 db.sequelize.sync().then(() => {
+    console.log("Synchronisation réussie !");
 });
 
 const routerAuth = require("./routes/authRoutes");

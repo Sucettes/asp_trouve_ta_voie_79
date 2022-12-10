@@ -15,10 +15,8 @@
   </div>
   <div v-if="refreshUserLieux.length === 0 && !isLoading && pageLoaded" class="alert alert-info shadow-sm" role="alert"
        id="alertInfo">
-    Aucun lieu a affiché ! <br> cliquez ici pour en ajouté un : <strong @click="addLieu">ajouté un
-    lieu</strong>
+    Aucun lieu a affiché ! <br> cliquez ici pour en ajouté un : <strong @click="addLieu">ajouté un lieu</strong>
   </div>
-
 
   <div id="svgIconAddDiv" @click="addLieu">
     <svg id="svgIconAdd" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"

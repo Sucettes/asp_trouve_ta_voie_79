@@ -1,5 +1,6 @@
 "use strict";
 
+
 const db = require("../models/dbSetup");
 const Op = db.Sequelize.Op;
 const Grimpe = db.grimpes;
@@ -12,6 +13,7 @@ const uuid = require("uuid");
 
 const fs = require("fs");
 const grimpeValidator = require("../fctUtils/grimpeValidator");
+
 
 exports.createGrimpe = async (req, res) => {
     try {
