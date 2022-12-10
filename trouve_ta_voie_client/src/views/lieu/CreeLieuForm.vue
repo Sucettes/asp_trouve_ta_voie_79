@@ -55,10 +55,13 @@
       </div>
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-primary" aria-label="Retour page précédente">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-primary" aria-label="Retour page précédente">
+            Retour
+          </button>
         </div>
         <div>
-          <button @click="add" type="button" class="btn btn-primary" aria-label="Ajouter le lieu">Ajouter
+          <button @click="add" type="button" class="btn btn-primary" aria-label="Ajouter le lieu">
+            Ajouter
           </button>
         </div>
       </div>

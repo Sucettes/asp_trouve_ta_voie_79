@@ -1,3 +1,5 @@
+"use strict";
+
 // Bibliothèque de fonction pour la validation des utilisateurs.
 const userValidator = {
     checkSiEmailEstValide(email) {

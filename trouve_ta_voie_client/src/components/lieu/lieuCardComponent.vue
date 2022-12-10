@@ -15,7 +15,7 @@
         <p v-if="directives.length > 170">{{ directives.substring(0, 170) + "..." }}</p>
         <p v-else>{{ directives }}</p>
 
-        <p class="cooP"><strong>Latitude  : </strong> <span class="accColorTxt">{{ +latitude }}</span></p>
+        <p class="cooP"><strong>Latitude : </strong> <span class="accColorTxt">{{ +latitude }}</span></p>
         <p class="cooP"><strong>Longitude : </strong> <span class="accColorTxt">{{ +longitude }}</span></p>
 
         <span></span>
@@ -25,7 +25,9 @@
 
       <div>
         <div id="btnWrapper">
-          <button aria-label="Ouvrir page pour modifier lieu" @click="editLieu" type="button" class="btn btn-outline-primary">Modifier</button>
+          <button aria-label="Ouvrir page pour modifier lieu" @click="editLieu" type="button"
+                  class="btn btn-outline-primary">Modifier
+          </button>
         </div>
       </div>
     </div>

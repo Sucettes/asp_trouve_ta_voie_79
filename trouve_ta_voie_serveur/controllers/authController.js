@@ -12,6 +12,10 @@ const jwt = require("jsonwebtoken");
 
 exports.login = async (req, res) => {
     try {
+        if (!req.body.courriel || !req.body.mdp) {
+            res.status(400).end();
+        }
+
         let emailEstValide = validatorFct.userEmailEstValide(req.body.courriel);
         let pwdEstValide = validatorFct.userPwdEstValide(req.body.mdp);
 
@@ -51,7 +55,10 @@ exports.login = async (req, res) => {
 
 exports.register = async (req, res) => {
     try {
-        // todo : Valide que le user est pas connecté...
+        if (!req.body.courriel || !req.body.mdp || !req.body.nom || !req.body.mdpConf) {
+            res.status(400).end();
+        }
+
         const emailEstValide = validatorFct.userEmailEstValide(req.body.courriel);
         const nameEstValide = validatorFct.userNameEstValide(req.body.nom);
         const pwdEstValide = validatorFct.userPwdEstValide(req.body.mdp);

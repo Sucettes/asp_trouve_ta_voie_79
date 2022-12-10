@@ -110,8 +110,7 @@
           <button @click="cancel" type="button" class="btn btn-outline-primary" aria-label="Retour page précédente">Retour</button>
         </div>
         <div>
-          <button @click="add" type="button" class="btn btn-primary" aria-label="Ajouter la grimpe">Ajouter
-          </button>
+          <button @click="add" type="button" class="btn btn-primary" aria-label="Ajouter la grimpe">Ajouter</button>
         </div>
       </div>
     </form>
@@ -256,7 +255,7 @@ export default {
       this.styleEstValide = result[1];
 
       if (!this.titreNeedUpdated) {
-        result = grimpeValidator.checkSiTitreEstValide(this.titre);
+        result = grimpeValidator.checkSiTitreGrimpeEstValide(this.titre);
         this.titreMsgErr = result[0];
         this.titreEstValide = result[1];
       }
@@ -305,7 +304,7 @@ export default {
       this.$router.go(-1);
     },
     checkSiTitreEstValide(event) {
-      const result = grimpeValidator.checkSiTitreEstValide(event.target.value);
+      const result = grimpeValidator.checkSiTitreGrimpeEstValide(event.target.value);
       this.titreMsgErr = result[0];
       this.titreEstValide = result[1];
       this.titreNeedUpdated = false;

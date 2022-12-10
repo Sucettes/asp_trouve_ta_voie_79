@@ -17,6 +17,10 @@ const grimpeValidator = require("../fctUtils/grimpeValidator");
 
 exports.createGrimpe = async (req, res) => {
     try {
+        if (!req.body.titre || !req.body.style || !req.body.description || !req.body.difficulte) {
+            res.status(400).end();
+        }
+
         const titreEstValide = grimpeValidator.checkSiTitreEstValide(req.body.titre);
         const styleEstValide = grimpeValidator.checkSiStyleEstValide(req.body.style);
         const descEstValide = grimpeValidator.checkSiDescriptionEstValide(req.body.description);
@@ -80,6 +84,10 @@ exports.createGrimpe = async (req, res) => {
 
 exports.getGrimpeById = async (req, res) => {
     try {
+        if (!req.params.id) {
+            res.status(400).end();
+        }
+
         const grimpe = await Grimpe.findByPk(+req.params.id, {include: Image});
 
         if (grimpe) {
@@ -94,6 +102,10 @@ exports.getGrimpeById = async (req, res) => {
 
 exports.getGrimpeByIdToEdit = async (req, res) => {
     try {
+        if (!req.params.id || !req.params.userId) {
+            res.status(400).end();
+        }
+
         const grimpe = await Grimpe.findByPk(+req.params.id, {include: Image});
 
         if (grimpe) {
@@ -113,6 +125,10 @@ exports.getGrimpeByIdToEdit = async (req, res) => {
 
 exports.editGrimpe = async (req, res) => {
     try {
+        if (!req.body.titre || !req.body.style || !req.body.description || !req.body.difficulte) {
+            res.status(400).end();
+        }
+
         const titreEstValide = grimpeValidator.checkSiTitreEstValide(req.body.titre);
         const styleEstValide = grimpeValidator.checkSiStyleEstValide(req.body.style);
         const descEstValide = grimpeValidator.checkSiDescriptionEstValide(req.body.description);
@@ -165,6 +181,10 @@ exports.editGrimpe = async (req, res) => {
 
 exports.deleteGrimpe = async (req, res) => {
     try {
+        if (!req.params.id) {
+            res.status(400).end();
+        }
+
         // Vérification utilisateur est admin.
         const user = await Utilisateur.findByPk(req.token.userId);
         if (user.estAdmin) {
@@ -190,6 +210,10 @@ exports.deleteGrimpe = async (req, res) => {
 
 exports.getGrimpesForUserId = async (req, res) => {
     try {
+        if (!req.params.userId){
+            res.status(400).end();
+        }
+
         if (+req.params.userId !== +req.token.userId)
             return res.status(403).end();
 
@@ -282,6 +306,10 @@ exports.getFilteredGrimpes = async (req, res) => {
 
 exports.getGrimpeDetailsById = async (req, res) => {
     try {
+        if (!req.params.id) {
+            res.status(400).end();
+        }
+
         const grimpe = await Grimpe.findByPk(+req.params.id, {
             include: [Image, Lieu, Vote],
         });

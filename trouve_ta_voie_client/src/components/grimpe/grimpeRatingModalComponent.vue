@@ -87,10 +87,12 @@
           </div>
         </div>
 
-        <p v-if="!starsEstValide" class="error">Il faut avoir 1 à 5 étoiles !</p>
+        <p v-if="!starsEstValide" class="error txt-center">Il faut avoir 1 à 5 étoile(s) !</p>
 
         <div class="btnWrapper">
-          <button aria-label="Sauvegarder évaluation" type="button" class="btn btn-primary mt-3" @click="saveStars" :disabled="isLoading">Sauvegarder évaluation</button>
+          <button aria-label="Sauvegarder évaluation" type="button" class="btn btn-primary mt-3" @click="saveStars"
+                  :disabled="isLoading">Sauvegarder évaluation
+          </button>
         </div>
       </div>
     </div>
@@ -105,8 +107,8 @@ export default {
   data() {
     return {
       stars: 0,
-      starsEstValide: true
-    }
+      starsEstValide: true,
+    };
   },
   methods: {
     changeStars(star) {
@@ -120,16 +122,16 @@ export default {
       this.checkSiStarsEstValide();
 
       if (this.starsEstValide) {
-        this.$emit('saveRating', this.stars);
+        this.$emit("saveRating", this.stars);
         this.stars = 0;
       }
-    }
+    },
   },
   computed: {
     isLoading() {
       return this.$store.getters.isLoading;
     },
-  }
+  },
 };
 </script>
 
@@ -153,5 +155,14 @@ export default {
 .btnWrapper {
   display: flex;
   justify-content: end;
+}
+
+.error {
+  color: $red;
+  font-size: 0.9rem;
+}
+
+.txt-center {
+  text-align: center;
 }
 </style>

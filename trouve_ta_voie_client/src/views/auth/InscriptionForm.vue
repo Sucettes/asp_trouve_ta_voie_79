@@ -173,7 +173,7 @@ export default {
 @import '@/assets/styles/custom.scss';
 
 #authForm {
-  width: 25rem;
+  width: 22.5rem;
   margin: 0 auto;
   padding: 30px;
   height: auto;

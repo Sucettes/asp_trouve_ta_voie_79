@@ -4,16 +4,22 @@
     <div id="headModal" class="p-2">
       <h2>Suppression !</h2>
 
-      <svg @click="$emit('confirm', false)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+      <svg @click="$emit('confirm', false)" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+           fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+        <path
+            d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
       </svg>
     </div>
     <br class="spacer">
     <p>Êtes-vous sûr de vouloir continuer? Cette action n'est pas réversible.</p>
     <br class="spacer">
     <div class="btnWrapper">
-      <button aria-label="Annuler, fermer le modal" type="button" class="btn btn-outline-primary" @click="$emit('confirm', false)">Annuler</button>
-      <button aria-label="Confirmer supprimer" type="button" class="btn btn-danger" @click="$emit('confirm', true)">Supprimer</button>
+      <button aria-label="Annuler, fermer le modal" type="button" class="btn btn-outline-primary"
+              @click="$emit('confirm', false)">Annuler
+      </button>
+      <button aria-label="Confirmer supprimer" type="button" class="btn btn-danger" @click="$emit('confirm', true)">
+        Supprimer
+      </button>
     </div>
   </div>
 </template>
@@ -22,7 +28,7 @@
 export default {
   name: "confirmModalComponent",
   emits: ["confirm"],
-  props: ["msg"]
+  props: ["msg"],
 };
 </script>
 

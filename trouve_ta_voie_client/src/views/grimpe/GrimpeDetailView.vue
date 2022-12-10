@@ -24,7 +24,7 @@
             <p>Difficulté : <strong class="accColorTxt">5.{{ diff }}</strong></p>
 
             <star-rating-component v-if="stars !== undefined" :nbStars="stars"></star-rating-component>
-            <p>Votes : <strong class="accColorTxt">{{ votes }}</strong></p>
+            <p>Vote(s) : <strong class="accColorTxt">{{ votes }}</strong></p>
           </div>
 
           <div class="btnWrapper">

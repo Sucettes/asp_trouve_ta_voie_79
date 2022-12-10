@@ -1,6 +1,8 @@
+"use strict";
+
 // Bibliothèque de fonction pour la validation des grimpes
 const grimpeValidator = {
-    checkSiTitreEstValide(titre) {
+    checkSiTitreGrimpeEstValide(titre) {
         let titreMsgErr = [];
         let titreEstValide = true;
 

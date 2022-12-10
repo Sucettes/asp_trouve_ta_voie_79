@@ -11,6 +11,10 @@ const fs = require("fs");
 
 exports.deleteImgById = async (req, res) => {
     try {
+        if(!req.params.id) {
+            res.status(400).end();
+        }
+
         let resultImg = await Image.findByPk(req.params.id);
 
         if (resultImg) {
@@ -44,6 +48,10 @@ exports.deleteImgById = async (req, res) => {
 
 exports.addImg = async (req, res) => {
     try {
+        if (!req.body.grimpeId) {
+            res.status(400).end();
+        }
+
         await db.sequelize.transaction(async (transaction) => {
             try {
                 let grimpe = await Grimpe.findOne({

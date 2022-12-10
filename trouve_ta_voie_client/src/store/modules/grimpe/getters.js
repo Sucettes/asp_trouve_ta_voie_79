@@ -10,5 +10,5 @@ export default {
     },
     grimpeDetails(state) {
         return state.grimpeDetails;
-    }
+    },
 };

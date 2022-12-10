@@ -8,8 +8,7 @@
         <label for="titre" class="form-label">Titre</label>
         <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="titre"
                :class="{ 'is-invalid': titreEstValide===false }" @blur="checkSiTitreEstValide"
-               @input="checkSiTitreEstValide"
-        >
+               @input="checkSiTitreEstValide">
         <ul class="ulError" v-if="!titreEstValide">
           <li class="error" v-for="err in titreMsgErr" :key="err">{{ err }}</li>
         </ul>
@@ -266,7 +265,7 @@ export default {
       this.styleMsgErr = result[0];
       this.styleEstValide = result[1];
       if (!this.titreNeedUpdated) {
-        result = grimpeValidator.checkSiTitreEstValide(this.titre);
+        result = grimpeValidator.checkSiTitreGrimpeEstValide(this.titre);
         this.titreMsgErr = result[0];
         this.titreEstValide = result[1];
       }
@@ -325,7 +324,7 @@ export default {
       }
     },
     checkSiTitreEstValide(event) {
-      const result = grimpeValidator.checkSiTitreEstValide(event.target.value);
+      const result = grimpeValidator.checkSiTitreGrimpeEstValide(event.target.value);
       this.titreMsgErr = result[0];
       this.titreEstValide = result[1];
       this.titreNeedUpdated = false;

@@ -55,7 +55,9 @@
       </div>
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-primary" aria-label="Retour page précédente">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-primary" aria-label="Retour page précédente">
+            Retour
+          </button>
         </div>
         <div>
           <button @click="edit" type="button" class="btn btn-primary" aria-label="Sauvegarder modification">Sauvegarder
@@ -187,7 +189,7 @@ export default {
       }
     },
     cancel() {
-      this.$router.go(-1);
+      this.$router.back();
     },
     async loadLieuToEdit() {
       this.$store.dispatch("startLoading");

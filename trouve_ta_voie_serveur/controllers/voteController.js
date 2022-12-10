@@ -12,6 +12,10 @@ const Lieu = db.lieux;
 
 exports.newVote = async (req, res) => {
     try {
+        if (!req.body.stars || !req.body.grimpeId) {
+            res.status(400).end();
+        }
+
         const regex = new RegExp("^[1-5]$");
 
         const grimpe = await Grimpe.findByPk(req.body.grimpeId);
@@ -57,6 +61,10 @@ exports.newVote = async (req, res) => {
 
 exports.getVotesForUserId = async (req, res) => {
     try {
+        if (!req.params.userId) {
+            res.status(400).end();
+        }
+
         if (+req.params.userId !== +req.token.userId)
             return res.status(403).end();
 

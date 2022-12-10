@@ -80,7 +80,7 @@
           </td>
           <td>
             <star-rating-component :nbStars="grimpe.nbEtoiles"></star-rating-component>
-            <p class="voteP">{{ grimpe.nbVotes }} votes</p>
+            <p class="voteP">{{ grimpe.nbVotes }} vote(s)</p>
           </td>
           <td>
               <span class="accColorTxt cursorPointer btnLinkSPan" @click="goToGrimpeDetails(grimpe.id)"
@@ -177,7 +177,6 @@ export default {
       grimpes: [],
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       userCanEdit: false,
-
       showConfirmModalLieu: false,
       showConfirmModalGrimpe: false,
       confirmDeleteGrimpeId: undefined,

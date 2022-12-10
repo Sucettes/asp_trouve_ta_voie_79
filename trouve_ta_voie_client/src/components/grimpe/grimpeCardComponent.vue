@@ -37,7 +37,7 @@
           </button>
 
           <button @click="editGrimpe" type="button" class="btn btn-outline-primary"
-                  v-if="+this.userId === +this.$store.getters.userId || isAdmin">Modifier
+                  v-if="+this.userId === loggedUserId || isAdmin">Modifier
           </button>
         </div>
       </div>
@@ -47,6 +47,7 @@
 
 <script>
 import starRatingComponent from "@/components/starRatingComponent";
+
 
 export default {
   name: "grimpeCardComponent",
@@ -61,7 +62,7 @@ export default {
       this.$router.push({name: "grimpeDetails", params: {id: this.id}});
     },
     deleteGrimpe() {
-      this.$emit('deleteGrimpe', this.id);
+      this.$emit("deleteGrimpe", this.id);
     },
     editGrimpe() {
       this.$router.push({
@@ -78,6 +79,9 @@ export default {
     },
     isLoggedIn() {
       return this.$store.getters.isAuthenticated;
+    },
+    loggedUserId() {
+      return +this.$store.getters.userId;
     },
   },
 };

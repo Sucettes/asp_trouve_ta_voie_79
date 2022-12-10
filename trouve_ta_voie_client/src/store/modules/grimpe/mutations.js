@@ -10,5 +10,5 @@ export default {
     },
     setUserGrimpesVoter(state, payload) {
         state.userGrimpesVoter = payload;
-    }
+    },
 };

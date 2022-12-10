@@ -5,10 +5,8 @@
 
   <div id="homeContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
     <h1>Trouve ta voie</h1>
-
     <br>
     <br>
-
     <p class="blockquote">
       Notre objectif est simple, vous offrir un guide de qualité supérieure avec un inventaire de lieux tous plus
       impressionnants les uns des autres à travers le monde entier. Nous voulons aider et accompagner les
@@ -17,11 +15,8 @@
       Vous êtes au bon endroit. Venez consulter notre catalogue afin de trouver votre lieu et à partir à l'aventure.
     </p>
   </div>
-
   <br>
-
   <h2 id="top10Titre" v-if="top10Grimpes.length > 0" class="mb-3">Top 10</h2>
-
   <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row-cols-xl-5 g-4 mlr-20">
     <grimpe-card-component class="d-flex"
                            v-for="(x) in top10Grimpes"
@@ -50,7 +45,6 @@
       <div class="shadow-sm p-3 mb-5 bg-body rounded margLG-10">
         <h3>Filtres</h3>
         <hr>
-
         <label for="styleDrop" class="form-label">Style</label>
         <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style">
           <option selected :value="undefined">Tous les styles</option>
@@ -164,15 +158,9 @@
           </ul>
         </nav>
       </div>
-
     </div>
   </div>
-
-
-  <confirmModalComponent v-if="showConfirmModal" @confirm="confirmResult"
-  ></confirmModalComponent>
-
-
+  <confirmModalComponent v-if="showConfirmModal" @confirm="confirmResult"></confirmModalComponent>
 </template>
 
 <script>
@@ -199,11 +187,9 @@ export default {
       top10Grimpes: [],
       filteredGrimpes: [],
       atLeastOneSearch: false,
-
       filteredGrimpesSplice: [],
       nbPages: 0,
       currPage: 0,
-
       showConfirmModal: false,
       confirmDeleteId: undefined,
     };

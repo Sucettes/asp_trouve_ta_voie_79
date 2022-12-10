@@ -5,7 +5,6 @@
   </div>
 
   <div class="offcanvas-body">
-
     <br>
     <p>Modifier nom d'utilisateur</p>
 
@@ -15,14 +14,16 @@
       <label for="nom" class="form-label">Nom</label>
       <input type="text" class="form-control" id="nom" placeholder="Votre nom" v-model.trim="name"
              :class="{ 'is-invalid': nameEstValide===false }" @blur="checkSiNameEstValide" @input="checkSiNameEstValide"
-             >
+      >
       <ul class="ulError" v-if="!nameEstValide">
         <li class="error" v-for="err in nameMsgErr" :key="err">{{ err }}</li>
       </ul>
     </div>
 
     <div class="btnWrapper">
-      <button type="button" class="btn btn-primary" @click="editUserName" aria-label="Sauvegarder modification">Sauvegarder</button>
+      <button type="button" class="btn btn-primary" @click="editUserName" aria-label="Sauvegarder modification">
+        Sauvegarder
+      </button>
     </div>
   </div>
 </template>

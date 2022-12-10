@@ -1,5 +1,5 @@
 import EditGrimpeForm from "@/views/grimpe/EditGrimpeForm";
-import GrimpDetailView from "@/views/grimpe/GrimpDetailView";
+import GrimpeDetailView from "@/views/grimpe/GrimpeDetailView";
 import LieuDetailView from "@/views/lieu/LieuDetailView";
 import UserGrimpeLstComponent from "@/views/utilisateur/UserGrimpeLstComponent";
 import ErreurView from "@/views/erreur/ErreurView";
@@ -22,9 +22,9 @@ const routes = [
         path: "/auth/inscription",
         name: "inscription",
         component: InscriptionForm,
-        meta: {requiresUnauth: true},
+        meta: {requiresUnAuth: true},
     },
-    {path: "/auth/connexion", name: "connexion", component: ConnexionForm, meta: {requiresUnauth: true}},
+    {path: "/auth/connexion", name: "connexion", component: ConnexionForm, meta: {requiresUnAuth: true}},
     {path: "/lieu/ajouter", name: "lieuAjouter", component: CreeLieuForm, meta: {requiresAuth: true}},
     {
         path: "/lieu/mesLieux",
@@ -51,7 +51,7 @@ const routes = [
         component: UserGrimpeLstComponent,
         meta: {requiresAuth: true},
     },
-    {path: "/grimpe/:id", name: "grimpeDetails", component: GrimpDetailView},
+    {path: "/grimpe/:id", name: "grimpeDetails", component: GrimpeDetailView},
     {path: "/mesVotes", name: "mesVotes", component: UserGrimpeLstVoteComponent, meta: {requiresAuth: true}},
     {
         path: "/grimpe/modifier/:id",
@@ -81,7 +81,7 @@ const router = createRouter({
 router.beforeEach(function (to, from, next) {
     if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
         next({name: "401"});
-    } else if (to.meta.requiresUnauth && store.getters.isAuthenticated) {
+    } else if (to.meta.requiresUnAuth && store.getters.isAuthenticated) {
         next({name: "accueil"});
     } else {
         next();

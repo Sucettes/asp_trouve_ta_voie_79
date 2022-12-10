@@ -1,3 +1,5 @@
+"use strict";
+
 // Bibliothèque de fonction pour la validation des lieux.
 const lieuValidator = {
     checkTitreEstValide(titre) {

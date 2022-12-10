@@ -30,6 +30,10 @@ exports.getDropdownData = async (req, res) => {
 
 exports.createLieu = async (req, res) => {
     try {
+        if (!req.body.titre || !req.body.description || !req.body.directives || !req.body.latitude || !req.body.longitude) {
+            res.status(400).end();
+        }
+
         const lieuTitreEstValide = validatorFct.lieuTitreEstValide(req.body.titre);
         const lieuDescriptionEstValide = validatorFct.lieuDescriptionEstValide(req.body.description);
         const lieuInstructionEstValide = validatorFct.lieuInstructionEstValide(req.body.directives);
@@ -64,6 +68,10 @@ exports.createLieu = async (req, res) => {
 
 exports.getLieuById = async (req, res) => {
     try {
+        if (!req.params.id) {
+            res.status(400).end();
+        }
+
         await Lieu.findByPk(+req.params.id)
             .then(lieu => {
                 if (lieu) {
@@ -82,6 +90,10 @@ exports.getLieuById = async (req, res) => {
 
 exports.getLieuDetailsById = async (req, res) => {
     try {
+        if (!req.params.id) {
+            res.status(400).end();
+        }
+
         const lieu = await Lieu.findByPk(+req.params.id);
 
         if (lieu) {
@@ -126,6 +138,10 @@ exports.getLieuDetailsById = async (req, res) => {
 
 exports.getLieuByIdToEdit = async (req, res) => {
     try {
+        if (!req.params.id || !req.params.userId) {
+            res.status(400).end();
+        }
+
         await Lieu.findByPk(+req.params.id)
             .then(lieu => {
                 if (!lieu) {
@@ -146,6 +162,10 @@ exports.getLieuByIdToEdit = async (req, res) => {
 
 exports.deleteLieu = async (req, res) => {
     try {
+        if (!req.params.id) {
+            res.status(400).end();
+        }
+
         // Vérification utilisateur est admin.
         const user = await Utilisateur.findByPk(req.token.userId);
         if (user.estAdmin) {
@@ -179,6 +199,10 @@ exports.deleteLieu = async (req, res) => {
 
 exports.editLieu = async (req, res) => {
     try {
+        if (!req.body.id || !req.body.titre || !req.body.description || !req.body.directives || !req.body.latitude || !req.body.longitude) {
+            res.status(400).end();
+        }
+
         const lieuTitreEstValide = validatorFct.lieuTitreEstValide(req.body.titre);
         const lieuDescriptionEstValide = validatorFct.lieuDescriptionEstValide(req.body.description);
         const lieuInstructionEstValide = validatorFct.lieuInstructionEstValide(req.body.directives);
