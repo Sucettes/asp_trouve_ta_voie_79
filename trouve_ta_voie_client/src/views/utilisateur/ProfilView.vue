@@ -1,6 +1,6 @@
 <template>
   <div class="offcanvas-header">
-    <h4 class="offcanvas-title" id="offcanvasNavbarLabel">Profil</h4>
+    <h4 class="offcanvas-title" id="offcanvasNavbarLabel">Mes informations</h4>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
 

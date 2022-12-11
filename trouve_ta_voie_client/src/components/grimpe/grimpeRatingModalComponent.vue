@@ -7,7 +7,7 @@
       </div>
 
       <div class="modal-body">
-        <p>Indiquer le nombre d'étoiles que vous voulez attribué.</p>
+        <p>Indiquer le nombre d'étoiles que vous voulez attribuer.</p>
 
         <div id="starsContainer">
           <div @click="changeStars(1)">

@@ -57,7 +57,7 @@
               <li class="nav-item dropdown" v-if="isLoggedIn">
                 <p class="dropdown-item dropdown-toggle" type="button" data-bs-toggle="offcanvas"
                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
-                   aria-label="Voir option de mon profil">Profil option</p>
+                   aria-label="Voir option de mon profil">Mon compte</p>
               </li>
               <li><a aria-label="Déconnexion" class="dropdown-item" @click="logout" href="#">Déconnexion</a></li>
             </ul>

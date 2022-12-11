@@ -2,7 +2,7 @@
   <LoadingSpinnerComponent v-if="isLoading"></LoadingSpinnerComponent>
 
   <div v-if="!errorOccurred" id="grimpeContainer" class="shadow-sm p-3 mb-5 bg-body rounded">
-    <h1>Grimpe a modifier</h1>
+    <h1>Modifier une grimpe</h1>
     <form id="editGrimpeForm">
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
@@ -98,7 +98,7 @@
           <input id="picInput" type="file" class="form-control" placeholder="Photos" aria-label="Photo"
                  aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput">
           <button class="btn btn-outline-primary" type="button" id="PhotoAddBtn" @click="addPhoto" aria-label="Ajouter image">
-            Ajouter Image
+            Ajouter image
           </button>
         </div>
 

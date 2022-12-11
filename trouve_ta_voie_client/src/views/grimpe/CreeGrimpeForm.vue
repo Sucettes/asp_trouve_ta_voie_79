@@ -83,7 +83,7 @@
             <input id="picInput" type="file" class="form-control" placeholder="Photos" aria-label="Photo"
                    aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput">
             <button class="btn btn-primary" type="button" id="PhotoAddBtn" @click="addPhoto" aria-label="Ajouter l'image">
-              Ajouter Image
+              Ajouter image
             </button>
           </div>
           <ul class="ulError" v-if="!imgEstValide">
