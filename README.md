@@ -32,7 +32,7 @@
 ---
 ### 5. Démarage
 - Afin de démarrer le projet **SERVEUR** faire cette commande :
-> nodemon app.js ou node_modules/.bin/nodemon app.js
+> nodemon app.js ou npm start .\app.js ou node_modules/.bin/nodemon app.js
 
 - Afin de démarrer le projet **CLIENT** faire cette commande :
 > npm run serve
