@@ -269,28 +269,6 @@ exports.getLieuxForUserId = async (req, res) => {
     }
 };
 
-// exports.getLieuByTitre = async (req, res) => {
-//     try {
-//         if (validatorFct.lieuTitreEstValide(req.params.titre)) {
-//             await Lieu.findOne({
-//                 where: {titre: req.params.titre},
-//             }).then(lieu => {
-//                 if (lieu) {
-//                     res.status(200).json(lieu);
-//                 } else {
-//                     res.status(404).end();
-//                 }
-//             }).catch(() => {
-//                 res.status(404).end();
-//             });
-//         } else {
-//             res.status(400).end();
-//         }
-//     } catch (e) {
-//         res.status(500).end();
-//     }
-// };
-
 exports.allReq = async (req, res) => {
     res.status(405).end();
 };
