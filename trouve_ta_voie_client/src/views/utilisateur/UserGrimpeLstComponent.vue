@@ -59,6 +59,8 @@ export default {
   },
   methods: {
     async loadUserGrimpes() {
+      this.$store.dispatch("startLoading");
+
       const payload = {
         userId: this.$store.getters.userId,
         token: this.$store.getters.token,
@@ -73,6 +75,7 @@ export default {
               this.$store.dispatch("stopLoading");
               errorManager(err, this.$store, this.$router);
             });
+
         this.myGrimpes = this.$store.getters.userGrimpes;
       } catch (err) {
         this.$store.dispatch("stopLoading");
@@ -84,7 +87,6 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("startLoading");
     this.loadUserGrimpes();
   },
   mounted() {
@@ -94,45 +96,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/custom.scss';
-@import 'bootstrap/scss/bootstrap.scss';
-
-#svgIconAddDiv {
-  position: fixed;
-  right: 32px;
-  bottom: 32px;
-  cursor: pointer;
-
-  #svgIconAdd {
-    fill: $secondary;
-
-    :hover {
-      fill: $primary;
-    }
-  }
-}
-
-#svgIconAddDiv:hover {
-  path {
-    fill: $primary;
-  }
-}
-
 .row {
   margin: 0;
-}
-
-#alertInfo {
-  margin: 40px auto 0;
-  width: 80%;
-  text-align: center;
-
-  strong {
-    cursor: pointer;
-  }
-}
-
-.d-flex {
-  justify-content: center;
 }
 </style>

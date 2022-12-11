@@ -1,6 +1,6 @@
 {
   "name": "trouve_ta_voie_serveur",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Projet ASP Garneau",
   "main": "app.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "mariadb": "^3.0.2",
-    "sequelize": "^6.25.7",
+    "sequelize": "^6.26.0",
     "uuid": "^9.0.0"
   }
 }

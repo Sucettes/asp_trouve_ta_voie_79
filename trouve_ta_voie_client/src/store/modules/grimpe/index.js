@@ -7,7 +7,9 @@ export default {
     state() {
         return {
             userGrimpes: [],
+            userGrimpesVoter: [],
             grimpe: {},
+            grimpeDetails: {},
         };
     },
     mutations,

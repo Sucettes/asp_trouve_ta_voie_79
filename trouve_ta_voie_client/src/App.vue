@@ -1,5 +1,5 @@
 <template>
-  <HeaderNav></HeaderNav>
+  <header-nav></header-nav>
   <router-view></router-view>
 </template>
 
@@ -10,8 +10,9 @@ import HeaderNav from "@/components/HeaderNav";
 export default {
   components: {HeaderNav},
   async mounted() {
-    await this.$store.dispatch("checkIfLocalStorageTokenIsValid", this.$store.getters.token).catch(() => {
-    });
+    await this.$store.dispatch("checkSiLocalStorageTokenEstValide", this.$store.getters.token)
+        .catch(() => {
+        });
   },
 };
 </script>
@@ -36,6 +37,10 @@ html {
     color: $primary;
     background: $blueAccent;
   }
+
+  body {
+    background-color: #f3f4f6;
+  }
 }
 
 .backgroundGlass {
@@ -46,13 +51,6 @@ html {
   border: 1px solid rgba(255, 255, 255, 0.125)
 }
 
-#authForm {
-  width: 25rem;
-  margin: 0 auto;
-  padding: 30px;
-  height: auto;
-}
-
 .error {
   color: $red;
   font-size: 0.9rem;
@@ -61,5 +59,90 @@ html {
 .ulError {
   list-style: none;
   padding: 0;
+}
+
+.deleteLink {
+  color: $red;
+}
+
+.deleteLink:hover {
+  color: $redDark !important;
+}
+
+h1, h2, h3 {
+  color: $primary;
+  text-align: center;
+}
+
+.d-flex {
+  justify-content: center;
+}
+
+#alertInfo {
+  margin: 40px auto 0;
+  width: 80%;
+  text-align: center;
+
+  strong {
+    cursor: pointer;
+  }
+}
+
+#map {
+  height: 300px !important;
+  width: 100% !important;
+  min-height: 0;
+  position: relative;
+}
+
+#svgIconAddDiv {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  cursor: pointer;
+
+  #svgIconAdd {
+    fill: $primary;
+
+    :hover {
+      fill: $accent;
+    }
+  }
+}
+
+#svgIconAddDiv:hover {
+  path {
+    fill: $accent;
+  }
+}
+
+#svgIconEditDiv {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  cursor: pointer;
+  z-index: 1000;
+
+  #svgIconEdit {
+    fill: $primary;
+  }
+}
+
+#svgIconEditDiv:hover {
+  path {
+    fill: $accent;
+  }
+}
+
+.accColorTxt {
+  color: $primary;
+}
+
+.cursorPointer {
+  cursor: pointer;
+}
+
+.cursorPointer:hover {
+  color: $accent;
 }
 </style>

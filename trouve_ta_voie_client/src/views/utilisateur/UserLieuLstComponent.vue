@@ -15,10 +15,8 @@
   </div>
   <div v-if="refreshUserLieux.length === 0 && !isLoading && pageLoaded" class="alert alert-info shadow-sm" role="alert"
        id="alertInfo">
-    Aucun lieu a affiché ! <br> cliquez ici pour en ajouté un : <strong @click="addLieu">ajouté un
-    lieu</strong>
+    Aucun lieu a affiché ! <br> cliquez ici pour en ajouté un : <strong @click="addLieu">ajouté un lieu</strong>
   </div>
-
 
   <div id="svgIconAddDiv" @click="addLieu">
     <svg id="svgIconAdd" xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
@@ -90,45 +88,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/custom.scss';
-@import 'bootstrap/scss/bootstrap.scss';
-
-#svgIconAddDiv {
-  position: fixed;
-  right: 32px;
-  bottom: 32px;
-  cursor: pointer;
-
-  #svgIconAdd {
-    fill: $secondary;
-
-    :hover {
-      fill: $primary;
-    }
-  }
-}
-
-#svgIconAddDiv:hover {
-  path {
-    fill: $primary;
-  }
-}
-
 .row {
   margin: 0;
-}
-
-#alertInfo {
-  margin: 40px auto 0;
-  width: 80%;
-  text-align: center;
-
-  strong {
-    cursor: pointer;
-  }
-}
-
-.d-flex {
-  justify-content: center;
 }
 </style>

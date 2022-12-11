@@ -1,4 +1,5 @@
 import EditGrimpeForm from "@/views/grimpe/EditGrimpeForm";
+import GrimpeDetailView from "@/views/grimpe/GrimpeDetailView";
 import LieuDetailView from "@/views/lieu/LieuDetailView";
 import UserGrimpeLstComponent from "@/views/utilisateur/UserGrimpeLstComponent";
 import ErreurView from "@/views/erreur/ErreurView";
@@ -7,7 +8,6 @@ import {createRouter, createWebHistory} from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import ConnexionForm from "@/views/auth/ConnexionForm";
 import InscriptionForm from "@/views/auth/InscriptionForm";
-import ProfilView from "@/views/utilisateur/ProfilView";
 import store from "@/store/index.js";
 import CreeLieuForm from "@/views/lieu/CreeLieuForm";
 import CreeGrimpeForm from "@/views/grimpe/CreeGrimpeForm";
@@ -22,10 +22,9 @@ const routes = [
         path: "/auth/inscription",
         name: "inscription",
         component: InscriptionForm,
-        meta: {requiresUnauth: true},
+        meta: {requiresUnAuth: true},
     },
-    {path: "/auth/connexion", name: "connexion", component: ConnexionForm, meta: {requiresUnauth: true}},
-    {path: "/profil", name: "profil", component: ProfilView, meta: {requiresAuth: true}},
+    {path: "/auth/connexion", name: "connexion", component: ConnexionForm, meta: {requiresUnAuth: true}},
     {path: "/lieu/ajouter", name: "lieuAjouter", component: CreeLieuForm, meta: {requiresAuth: true}},
     {
         path: "/lieu/mesLieux",
@@ -52,8 +51,8 @@ const routes = [
         component: UserGrimpeLstComponent,
         meta: {requiresAuth: true},
     },
+    {path: "/grimpe/:id", name: "grimpeDetails", component: GrimpeDetailView},
     {path: "/mesVotes", name: "mesVotes", component: UserGrimpeLstVoteComponent, meta: {requiresAuth: true}},
-
     {
         path: "/grimpe/modifier/:id",
         name: "modifierGrimpe",
@@ -82,7 +81,7 @@ const router = createRouter({
 router.beforeEach(function (to, from, next) {
     if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
         next({name: "401"});
-    } else if (to.meta.requiresUnauth && store.getters.isAuthenticated) {
+    } else if (to.meta.requiresUnAuth && store.getters.isAuthenticated) {
         next({name: "accueil"});
     } else {
         next();

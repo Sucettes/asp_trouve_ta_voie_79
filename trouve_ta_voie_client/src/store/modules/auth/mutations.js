@@ -7,4 +7,7 @@ export default {
     setIsAdmin(state, payload) {
         state.isAdmin = payload;
     },
+    setUsername(state, payload) {
+        state.name = payload.name;
+    },
 };

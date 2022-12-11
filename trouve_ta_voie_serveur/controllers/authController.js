@@ -1,5 +1,6 @@
 "use strict";
 
+
 const db = require("../models/dbSetup");
 const Utilisateur = db.utilisateurs;
 
@@ -8,12 +9,17 @@ const validatorFct = require("../fctUtils/validations.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+
 exports.login = async (req, res) => {
     try {
-        let emailIsValid = validatorFct.userEmailIsValid(req.body.courriel);
-        let pwdIsValid = validatorFct.userPwdIsValid(req.body.mdp);
+        if (!req.body.courriel || !req.body.mdp) {
+            res.status(400).end();
+        }
 
-        if (emailIsValid && pwdIsValid) {
+        let emailEstValide = validatorFct.userEmailEstValide(req.body.courriel);
+        let pwdEstValide = validatorFct.userPwdEstValide(req.body.mdp);
+
+        if (emailEstValide && pwdEstValide) {
             let user = await Utilisateur.findOne({
                 where: {courriel: req.body.courriel},
             });
@@ -49,12 +55,16 @@ exports.login = async (req, res) => {
 
 exports.register = async (req, res) => {
     try {
-        const emailIsValid = validatorFct.userEmailIsValid(req.body.courriel);
-        const nameIsValid = validatorFct.userNameIsValid(req.body.nom);
-        const pwdIsValid = validatorFct.userPwdIsValid(req.body.mdp);
-        const pwdConfIsValid = validatorFct.userPwdIsValid(req.body.mdpConf);
+        if (!req.body.courriel || !req.body.mdp || !req.body.nom || !req.body.mdpConf) {
+            res.status(400).end();
+        }
 
-        if (emailIsValid && nameIsValid && pwdIsValid && pwdConfIsValid) {
+        const emailEstValide = validatorFct.userEmailEstValide(req.body.courriel);
+        const nameEstValide = validatorFct.userNameEstValide(req.body.nom);
+        const pwdEstValide = validatorFct.userPwdEstValide(req.body.mdp);
+        const pwdConfEstValide = validatorFct.userPwdEstValide(req.body.mdpConf);
+
+        if (emailEstValide && nameEstValide && pwdEstValide && pwdConfEstValide) {
             // Vérifie si le courriel est déjà utilisé.
             let user = await Utilisateur.findOne({where: {courriel: req.body.courriel}});
 
@@ -63,9 +73,9 @@ exports.register = async (req, res) => {
             } else {
                 // Pas de possibilité de créer un utilisateur admin autre que manuellement.
                 user = {
-                    nom: req.body.nom,
-                    courriel: req.body.courriel,
-                    mdp: req.body.mdp,
+                    nom: req.body.nom.trim(),
+                    courriel: req.body.courriel.trim(),
+                    mdp: req.body.mdp.trim(),
                 };
 
                 const salt = bcrypt.genSaltSync(10);
@@ -102,7 +112,11 @@ exports.register = async (req, res) => {
 
 // Si ce n’est pas valide, 401 est retourné grâce au middleware.
 exports.valideToken = async (req, res) => {
-    res.status(200).json(req.token);
+    try {
+        res.status(200).json(req.token);
+    } catch (e) {
+        res.status(500).end();
+    }
 };
 
 exports.allReq = async (req, res) => {

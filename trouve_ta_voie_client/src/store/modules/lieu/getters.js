@@ -8,5 +8,4 @@ export default {
     lieuDetails(state) {
         return state.lieuDetails;
     },
-
 };

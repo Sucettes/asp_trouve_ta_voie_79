@@ -1,5 +1,6 @@
 "use strict";
 
+
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
@@ -14,7 +15,14 @@ const sequelize = new Sequelize(
             timestamps: false,
             freezeTableName: true,
         },
+        // Retirer les logs dans le cmd
         logging: false,
+        pool: {
+            max: 5,
+            min: 0,
+            acquire: 30000,
+            idle: 10000,
+        },
     },
 );
 
@@ -36,13 +44,14 @@ db.lieux.belongsTo(db.utilisateurs);
 db.utilisateurs.hasMany(db.grimpes);
 db.grimpes.belongsTo(db.utilisateurs);
 
-db.lieux.hasMany(db.grimpes);
+db.lieux.hasMany(db.grimpes, {onDelete: "CASCADE"});
 db.grimpes.belongsTo(db.lieux);
 
-db.grimpes.hasMany(db.images);
+db.grimpes.hasMany(db.images, {onDelete: "CASCADE"});
 
-db.grimpes.hasMany(db.votes);
+db.grimpes.hasMany(db.votes, {onDelete: "CASCADE"});
 db.votes.belongsTo(db.grimpes);
+
 db.utilisateurs.hasMany(db.votes);
 db.votes.belongsTo(db.utilisateurs);
 

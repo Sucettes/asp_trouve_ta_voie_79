@@ -1,26 +1,33 @@
 "use strict";
 
+
 const db = require("../models/dbSetup");
 const Op = db.Sequelize.Op;
 const Grimpe = db.grimpes;
 const Utilisateur = db.utilisateurs;
 const Image = db.images;
 const Lieu = db.lieux;
+const Vote = db.votes;
 
 const uuid = require("uuid");
 
 const fs = require("fs");
 const grimpeValidator = require("../fctUtils/grimpeValidator");
 
+
 exports.createGrimpe = async (req, res) => {
     try {
-        const titleIsValid = grimpeValidator.checkIfTitleIsValid(req.body.titre);
-        const styleIsValid = grimpeValidator.checkIfStyleIsValid(req.body.style);
-        const descIsValid = grimpeValidator.checkIfDescriptionIsValid(req.body.description);
-        const diffIsValid = grimpeValidator.checkIfDifficultyLevelIsValid(req.body.difficulte);
-        const imgCountIsValid = req.body.imgsBase64.length >= 1;
+        if (!req.body.titre || !req.body.style || !req.body.description || !req.body.difficulte) {
+            res.status(400).end();
+        }
 
-        if (titleIsValid && styleIsValid && descIsValid && diffIsValid && imgCountIsValid) {
+        const titreEstValide = grimpeValidator.checkSiTitreEstValide(req.body.titre);
+        const styleEstValide = grimpeValidator.checkSiStyleEstValide(req.body.style);
+        const descEstValide = grimpeValidator.checkSiDescriptionEstValide(req.body.description);
+        const diffEstValide = grimpeValidator.checkSiDifficulteLevelEstValide(req.body.difficulte);
+        const imgCountEstValide = req.body.imgsBase64.length >= 1;
+
+        if (titreEstValide && styleEstValide && descEstValide && diffEstValide && imgCountEstValide) {
             let grimpe = await Grimpe.findOne({
                 where: {
                     lieuxId: req.body.lieuxId,
@@ -37,9 +44,9 @@ exports.createGrimpe = async (req, res) => {
                         let imgs = [];
 
                         const newGrimpe = await Grimpe.create({
-                            titre: req.body.titre,
+                            titre: req.body.titre.trim(),
                             style: req.body.style,
-                            description: req.body.description,
+                            description: req.body.description.trim(),
                             difficulte: +req.body.difficulte,
                             utilisateurId: req.token.userId,
                             lieuxId: req.body.lieuxId,
@@ -77,6 +84,10 @@ exports.createGrimpe = async (req, res) => {
 
 exports.getGrimpeById = async (req, res) => {
     try {
+        if (!req.params.id) {
+            res.status(400).end();
+        }
+
         const grimpe = await Grimpe.findByPk(+req.params.id, {include: Image});
 
         if (grimpe) {
@@ -91,10 +102,14 @@ exports.getGrimpeById = async (req, res) => {
 
 exports.getGrimpeByIdToEdit = async (req, res) => {
     try {
+        if (!req.params.id || !req.params.userId) {
+            res.status(400).end();
+        }
+
         const grimpe = await Grimpe.findByPk(+req.params.id, {include: Image});
 
         if (grimpe) {
-            // À les autorisations.
+            // Possède les autorisations.
             if (+grimpe.utilisateurId === +req.params.userId || req.token.isAdmin) {
                 res.status(200).json(grimpe);
             } else {
@@ -110,12 +125,16 @@ exports.getGrimpeByIdToEdit = async (req, res) => {
 
 exports.editGrimpe = async (req, res) => {
     try {
-        const titleIsValid = grimpeValidator.checkIfTitleIsValid(req.body.titre);
-        const styleIsValid = grimpeValidator.checkIfStyleIsValid(req.body.style);
-        const descIsValid = grimpeValidator.checkIfDescriptionIsValid(req.body.description);
-        const diffIsValid = grimpeValidator.checkIfDifficultyLevelIsValid(req.body.difficulte);
+        if (!req.body.titre || !req.body.style || !req.body.description || !req.body.difficulte) {
+            res.status(400).end();
+        }
 
-        if (titleIsValid && styleIsValid && descIsValid && diffIsValid) {
+        const titreEstValide = grimpeValidator.checkSiTitreEstValide(req.body.titre);
+        const styleEstValide = grimpeValidator.checkSiStyleEstValide(req.body.style);
+        const descEstValide = grimpeValidator.checkSiDescriptionEstValide(req.body.description);
+        const diffEstValide = grimpeValidator.checkSiDifficulteLevelEstValide(req.body.difficulte);
+
+        if (titreEstValide && styleEstValide && descEstValide && diffEstValide) {
             let grimpe = await Grimpe.findOne({
                 where: {id: req.body.id},
             });
@@ -135,9 +154,9 @@ exports.editGrimpe = async (req, res) => {
                     } else {
                         // Modification de la grimpe.
                         await Grimpe.update({
-                                titre: req.body.titre,
+                                titre: req.body.titre.trim(),
                                 style: req.body.style,
-                                description: req.body.description,
+                                description: req.body.description.trim(),
                                 difficulte: req.body.difficulte,
                                 lieuxId: req.body.lieuxId,
                             },
@@ -160,8 +179,41 @@ exports.editGrimpe = async (req, res) => {
     }
 };
 
+exports.deleteGrimpe = async (req, res) => {
+    try {
+        if (!req.params.id) {
+            res.status(400).end();
+        }
+
+        // Vérification utilisateur est admin.
+        const user = await Utilisateur.findByPk(req.token.userId);
+        if (user.estAdmin) {
+            // Récupération de la grimpe.
+            const grimpe = await Grimpe.findByPk(req.params.id, {include: [Image]});
+            if (grimpe) {
+                // Suppression des images de la grimpe.
+                for (let i = 0; i < grimpe.images.length; i++) {
+                    fs.unlinkSync(`public/${grimpe.images[i].path}`);
+                }
+
+                // Suppression de la grimpe. cascade
+                await Grimpe.destroy({where: {id: req.params.id}});
+            }
+            res.status(204).end();
+        } else {
+            res.status(403).end();
+        }
+    } catch (e) {
+        res.status(500).end();
+    }
+};
+
 exports.getGrimpesForUserId = async (req, res) => {
     try {
+        if (!req.params.userId){
+            res.status(400).end();
+        }
+
         if (+req.params.userId !== +req.token.userId)
             return res.status(403).end();
 
@@ -169,7 +221,9 @@ exports.getGrimpesForUserId = async (req, res) => {
 
         if (user) {
             await Grimpe.findAll({
-                include: [Image, Lieu, Utilisateur], where: {utilisateurId: req.token.userId},
+                include: [Image, Lieu, Utilisateur],
+                where: {utilisateurId: req.token.userId},
+                order: [["nbEtoiles", "DESC"], ["nbVotes", "DESC"], ["titre", "ASC"]],
             }).then(grimpes => {
                 res.status(200).json(grimpes);
             }).catch(() => {
@@ -198,11 +252,26 @@ exports.getGrimpesTop10 = async (req, res) => {
 
 exports.getFilteredGrimpes = async (req, res) => {
     try {
-        // todo : Ajouter des filtres ici...
+        let styleEstValide = true;
+        let diff1EstValide = true;
+        let diff2EstValide = true;
+        if (req.body.style) {
+            styleEstValide = grimpeValidator.checkSiStyleEstValide(req.body.style);
+        }
+        if (req.body.diff1) {
+            diff1EstValide = grimpeValidator.checkSiDifficulteLevelEstValide(req.body.diff1);
+        }
+        if (req.body.diff2) {
+            diff2EstValide = grimpeValidator.checkSiDifficulteLevelEstValide(req.body.diff2);
+        }
+
+        if (!styleEstValide || !diff1EstValide || !diff2EstValide) {
+            res.status(400).end();
+        }
 
         // Création du filtre : where
         let whereStr = {};
-        if (req.body.style && req.body.style !== "all") whereStr.style = req.body.style;
+        if (req.body.style) whereStr.style = req.body.style;
         if (req.body.stars) {
             whereStr.nbEtoiles = {
                 [Op.gte]: req.body.stars,
@@ -230,6 +299,26 @@ exports.getFilteredGrimpes = async (req, res) => {
         });
 
         res.status(200).json(grimpes);
+    } catch (e) {
+        res.status(500).end();
+    }
+};
+
+exports.getGrimpeDetailsById = async (req, res) => {
+    try {
+        if (!req.params.id) {
+            res.status(400).end();
+        }
+
+        const grimpe = await Grimpe.findByPk(+req.params.id, {
+            include: [Image, Lieu, Vote],
+        });
+
+        if (!grimpe) {
+            res.status(404).end();
+        }
+
+        res.status(200).json(grimpe);
     } catch (e) {
         res.status(500).end();
     }

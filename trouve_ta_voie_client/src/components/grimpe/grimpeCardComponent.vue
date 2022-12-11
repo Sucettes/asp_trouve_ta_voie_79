@@ -1,10 +1,10 @@
 <template>
   <div id="card">
-    <div id="cardBody" class="shadow-sm p-3 mb-5 bg-body rounded" :class="{cardBodyShort: hideDescription === 'true'}">
+    <div id="cardBody" class="shadow-sm p-3 bg-body rounded" :class="{cardBodyShort: hideDescription === 'true'}">
 
       <div>
         <div v-if="images[0]">
-          <img class="lstPic" :src="'http://localhost:8090' + images[0].path" alt=""/>
+          <img class="lstPic mb-2" :src="'http://localhost:8090' + images[0].path" alt="Image principale"/>
         </div>
         <h3 @click="seeDetails">{{ titre }}</h3>
         <hr>
@@ -15,8 +15,8 @@
 
         <br>
 
-        <p>Vote(s) : <strong class="accColorTxt">{{ nbVotes }}</strong></p>
         <star-rating-component :nbStars="nbEtoiles"></star-rating-component>
+        <p>Vote(s) : <strong class="accColorTxt">{{ nbVotes }}</strong></p>
 
         <section v-if="hideDescription !== 'true'">
           <hr>
@@ -31,10 +31,13 @@
       </div>
 
       <div>
-        <div id="btnWrapper">
-          <p @click="seeDetails" id="detailsBtn">Détails</p>
-          <button @click="editGrimpe" type="button" class="btn btn-outline-secondary"
-                  v-if="+this.userId === +this.$store.getters.userId || this.$store.getters.isAdmin">Modifier
+        <div id="btnWrapper" class="mt-2" v-if="isLoggedIn">
+          <button v-if="showDeleteBtn && isAdmin" type="button"
+                  class="btn btn-outline-danger" @click="deleteGrimpe">Supprimer
+          </button>
+
+          <button @click="editGrimpe" type="button" class="btn btn-outline-primary"
+                  v-if="+this.userId === loggedUserId || isAdmin">Modifier
           </button>
         </div>
       </div>
@@ -48,13 +51,18 @@ import starRatingComponent from "@/components/starRatingComponent";
 
 export default {
   name: "grimpeCardComponent",
-  props: ["id", "titre", "style", "description", "difficulte", "nbEtoiles", "nbVotes", "images", "lieu", "hideDescription", "userId"],
+  props: ["id", "titre", "style", "description", "difficulte", "nbEtoiles", "nbVotes", "images", "lieu", "hideDescription", "userId", "showDeleteBtn"],
+  emits: ["deleteGrimpe"],
   components: {starRatingComponent},
   methods: {
     seeLieuDetails() {
       this.$router.push({name: "lieuDetails", params: {id: this.lieu.id}});
     },
     seeDetails() {
+      this.$router.push({name: "grimpeDetails", params: {id: this.id}});
+    },
+    deleteGrimpe() {
+      this.$emit("deleteGrimpe", this.id);
     },
     editGrimpe() {
       this.$router.push({
@@ -65,6 +73,17 @@ export default {
       });
     },
   },
+  computed: {
+    isAdmin() {
+      return this.$store.getters.isAdmin;
+    },
+    isLoggedIn() {
+      return this.$store.getters.isAuthenticated;
+    },
+    loggedUserId() {
+      return +this.$store.getters.userId;
+    },
+  },
 };
 </script>
 
@@ -73,15 +92,13 @@ export default {
 
 .lstPic {
   width: 100%;
-  //height: 167px;
-  //object-fit: contain;
   height: 12vw;
   min-height: 167px;
   object-fit: cover;
 }
 
 #card {
-  padding: 15px;
+  padding: 0 15px 15px 15px;
 
   p {
     overflow: auto;
@@ -111,23 +128,11 @@ export default {
   }
 
   h3:hover {
-    color: $Darkaccent;
+    color: $accent;
   }
 
   span {
     height: 10px;
-  }
-
-  .accColorTxt {
-    color: $Darkaccent;
-  }
-
-  .cursorPointer {
-    cursor: pointer;
-  }
-
-  .cursorPointer:hover {
-    color: $accent;
   }
 }
 
@@ -148,7 +153,7 @@ export default {
   }
 
   #detailsBtn:hover {
-    color: $Darkaccent;
+    color: $accent;
   }
 }
 </style>

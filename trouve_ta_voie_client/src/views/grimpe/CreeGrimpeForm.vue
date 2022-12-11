@@ -7,10 +7,11 @@
     <form id="addGrimpeForm">
       <div class="mb-3">
         <label for="titre" class="form-label">Titre</label>
-        <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="title"
-               :class="{ 'is-invalid': titleIsVaild===false }" @blur="checkIfTitleIsValid" @input="checkIfTitleIsValid" tabindex="1">
-        <ul class="ulError" v-if="!titleIsVaild">
-          <li class="error" v-for="err in titleMsgErr" :key="err">{{ err }}</li>
+        <input type="text" class="form-control" id="titre" placeholder="Titre" v-model.trim="titre"
+               :class="{ 'is-invalid': titreEstValide===false }" @blur="checkSiTitreEstValide" @input="checkSiTitreEstValide"
+               >
+        <ul class="ulError" v-if="!titreEstValide">
+          <li class="error" v-for="err in titreMsgErr" :key="err">{{ err }}</li>
         </ul>
       </div>
 
@@ -18,12 +19,12 @@
         <div class="col-6">
           <label for="lieuDrop" class="form-label">Lieu</label>
           <select id="lieuDrop" class="form-select" aria-label="Choisir le lieu" v-model.trim="lieu"
-                  :class="{ 'is-invalid': lieuIsValid===false }" @blur="checkIfLieuIsValid"
-                  @input="checkIfLieuIsValid" @focusout="checkIfLieuIsValid" tabindex="2">
+                  :class="{ 'is-invalid': lieuEstValide===false }" @blur="checkSiLieuEstValide"
+                  @input="checkSiLieuEstValide" @focusout="checkSiLieuEstValide">
             <option selected disabled>Choisir le lieu</option>
             <option v-for="lieu in lieux" :key="lieu.id" :value="lieu.id">{{ lieu.titre }}</option>
           </select>
-          <ul class="ulError" v-if="!lieuIsValid">
+          <ul class="ulError" v-if="!lieuEstValide">
             <li class="error" v-for="err in lieuMsgErr" :key="err">{{ err }}</li>
           </ul>
         </div>
@@ -31,8 +32,8 @@
         <div class="col-6">
           <label for="diffDrop" class="form-label">Difficulté</label>
           <select id="diffDrop" class="form-select" aria-label="Choisir la difficulté" v-model.trim="diff"
-                  :class="{ 'is-invalid': diffIsValid===false }" @blur="checkIfDiffIsValid"
-                  @input="checkIfDiffIsValid" @focusout="checkIfDiffIsValid" tabindex="3">
+                  :class="{ 'is-invalid': diffEstValide===false }" @blur="checkSiDiffEstValide"
+                  @input="checkSiDiffEstValide" @focusout="checkSiDiffEstValide">
             <option selected disabled>Choisir la difficulté</option>
             <option value="6">5.6</option>
             <option value="7">5.7</option>
@@ -45,7 +46,7 @@
             <option value="14">5.14</option>
             <option value="15">5.15</option>
           </select>
-          <ul class="ulError" v-if="!diffIsValid">
+          <ul class="ulError" v-if="!diffEstValide">
             <li class="error" v-for="err in diffMsgErr" :key="err">{{ err }}</li>
           </ul>
         </div>
@@ -54,9 +55,9 @@
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <textarea class="form-control" id="description" rows="4" v-model.trim="description"
-                  :class="{ 'is-invalid': descriptionIsValid===false }" @blur="checkIfDescriptionIsValid"
-                  @input="checkIfDescriptionIsValid" tabindex="4"></textarea>
-        <ul class="ulError" v-if="!descriptionIsValid">
+                  :class="{ 'is-invalid': descriptionEstValide===false }" @blur="checkSiDescriptionEstValide"
+                  @input="checkSiDescriptionEstValide"></textarea>
+        <ul class="ulError" v-if="!descriptionEstValide">
           <li class="error" v-for="err in descriptionMsgErr" :key="err">{{ err }}</li>
         </ul>
       </div>
@@ -65,33 +66,33 @@
         <div class="col-md-6">
           <label for="styleDrop" class="form-label">Style</label>
           <select id="styleDrop" class="form-select" aria-label="Choisir le style" v-model.trim="style"
-                  :class="{ 'is-invalid': styleIsValid===false }" @blur="checkIfStyleIsValid"
-                  @input="checkIfStyleIsValid" tabindex="5">
+                  :class="{ 'is-invalid': styleEstValide===false }" @blur="checkSiStyleEstValide"
+                  @input="checkSiStyleEstValide">
             <option selected disabled>Choisir le style</option>
             <option value="Traditionnelle">Traditionnelle</option>
             <option value="Sportive">Sportive</option>
             <option value="Moulinette">Moulinette</option>
           </select>
-          <ul class="ulError" v-if="!styleIsValid">
+          <ul class="ulError" v-if="!styleEstValide">
             <li class="error" v-for="err in styleMsgErr" :key="err">{{ err }}</li>
           </ul>
         </div>
         <div class="col-md-6">
           <label for="picInput" class="form-label">Image</label>
-          <div class="input-group" :class="{'mb-3': !imgIsVaild === false}">
+          <div class="input-group" :class="{'mb-3': !imgEstValide === false}">
             <input id="picInput" type="file" class="form-control" placeholder="Photos" aria-label="Photo"
-                   aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput" tabindex="6">
-            <button class="btn btn-primary" type="button" id="PhotoAddBtn" @click="addPhoto" tabindex="7">
-              Ajouter
+                   aria-describedby="Photo" @change="pictureChange" accept="image/*" ref="picInput">
+            <button class="btn btn-primary" type="button" id="PhotoAddBtn" @click="addPhoto" aria-label="Ajouter l'image">
+              Ajouter image
             </button>
           </div>
-          <ul class="ulError" v-if="!imgIsVaild">
+          <ul class="ulError" v-if="!imgEstValide">
             <li class="error" v-for="err in imgMsgErr" :key="err">{{ err }}</li>
           </ul>
 
           <label for="imgPrev" class="form-label">Aperçu de l'image</label>
           <div>
-            <img id="imgPrev" :src="picturePreviewUrl" alt="" class="picPrev" ref="picPrev">
+            <img id="imgPrev" :src="picturePreviewUrl" class="picPrev" ref="picPrev">
           </div>
         </div>
       </div>
@@ -99,18 +100,17 @@
       <hr v-if="picturesUrl.length > 0">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
         <div v-for="(picUrl, index) in picturesUrl" :key="picturesUrl + index" class="picItem">
-          <img :src="picUrl" alt="" class="lstPic"/>
-          <a class="removePics" @click="removeImg(index)">Supprimer</a>
+          <img :src="picUrl" alt="Image d'une grimpe" class="lstPic"/>
+          <a href="#" class="removePics" @click="removeImg(index)" aria-label="Supprimer l'image">Supprimer</a>
         </div>
       </div>
 
       <div class="btnWrapper">
         <div>
-          <button @click="cancel" type="button" class="btn btn-outline-secondary" tabindex="9">Retour</button>
+          <button @click="cancel" type="button" class="btn btn-outline-primary" aria-label="Retour page précédente">Retour</button>
         </div>
         <div>
-          <button @click="add" type="button" class="btn btn-primary" tabindex="8">Ajouter
-          </button>
+          <button @click="add" type="button" class="btn btn-primary" aria-label="Ajouter la grimpe">Ajouter</button>
         </div>
       </div>
     </form>
@@ -129,7 +129,7 @@ export default {
   components: {LoadingSpinnerComponent},
   data() {
     return {
-      title: "",
+      titre: "",
       style: "Choisir le style",
       diff: "Choisir la difficulté",
       lieu: "Choisir le lieu",
@@ -142,19 +142,19 @@ export default {
       picturesUrl: [],
       canAddPicture: true,
 
-      titleIsVaild: undefined,
-      titleMsgErr: [],
-      lieuIsValid: undefined,
+      titreEstValide: undefined,
+      titreMsgErr: [],
+      lieuEstValide: undefined,
       lieuMsgErr: [],
-      diffIsValid: undefined,
+      diffEstValide: undefined,
       diffMsgErr: [],
-      descriptionIsValid: undefined,
+      descriptionEstValide: undefined,
       descriptionMsgErr: [],
-      styleIsValid: undefined,
+      styleEstValide: undefined,
       styleMsgErr: [],
-      imgIsVaild: undefined,
+      imgEstValide: undefined,
       imgMsgErr: [],
-      titleNeedUpdated: false,
+      titreNeedUpdated: false,
     };
   },
   computed: {
@@ -183,10 +183,10 @@ export default {
           this.$refs.picInput.value = null;
           this.picturePreviewUrl = null;
 
-          this.imgIsVaild = true;
+          this.imgEstValide = true;
           this.imgMsgErr = [];
           if (this.pictures.length < 1) {
-            this.imgIsVaild = false;
+            this.imgEstValide = false;
             this.imgMsgErr.push("Dois avoir une image au minimum !");
           }
         }
@@ -197,15 +197,15 @@ export default {
       this.picturesUrl.splice(index, 1);
       this.picturesBase64.splice(index, 1);
 
-      this.imgIsVaild = true;
+      this.imgEstValide = true;
       this.imgMsgErr = [];
       if (this.pictures.length < 1) {
-        this.imgIsVaild = false;
+        this.imgEstValide = false;
         this.imgMsgErr.push("Dois avoir une image au minimum !");
       }
     },
     clearField() {
-      this.title = "";
+      this.titre = "";
       this.style = "Choisir le style";
       this.diff = "Choisir la difficulté";
       this.lieu = "Choisir le lieu";
@@ -216,57 +216,57 @@ export default {
       this.picturesBase64 = [];
       this.picturesUrl = [];
       this.canAddPicture = true;
-      this.titleIsVaild = undefined;
-      this.titleMsgErr = [];
-      this.lieuIsValid = undefined;
+      this.titreEstValide = undefined;
+      this.titreMsgErr = [];
+      this.lieuEstValide = undefined;
       this.lieuMsgErr = [];
-      this.diffIsValid = undefined;
+      this.diffEstValide = undefined;
       this.diffMsgErr = [];
-      this.descriptionIsValid = undefined;
+      this.descriptionEstValide = undefined;
       this.descriptionMsgErr = [];
-      this.styleIsValid = undefined;
+      this.styleEstValide = undefined;
       this.styleMsgErr = [];
-      this.imgIsVaild = undefined;
+      this.imgEstValide = undefined;
       this.imgMsgErr = [];
-      this.titleNeedUpdated = false;
+      this.titreNeedUpdated = false;
     },
     async add() {
-      this.imgIsVaild = true;
+      this.imgEstValide = true;
       this.imgMsgErr = [];
       if (this.pictures.length < 1) {
-        this.imgIsVaild = false;
+        this.imgEstValide = false;
         this.imgMsgErr.push("Dois avoir une image au minimum !");
       }
 
-      let result = grimpeValidator.checkIfLieuIsValid(this.lieu);
+      let result = grimpeValidator.checkSiLieuEstValide(this.lieu);
       this.lieuMsgErr = result[0];
-      this.lieuIsValid = result[1];
+      this.lieuEstValide = result[1];
 
-      result = grimpeValidator.checkIfDifficultyLevelIsValid(this.diff);
+      result = grimpeValidator.checkSiDifficultyLevelEstValide(this.diff);
       this.diffMsgErr = result[0];
-      this.diffIsValid = result[1];
+      this.diffEstValide = result[1];
 
-      result = grimpeValidator.checkIfDescriptionIsValid(this.description);
+      result = grimpeValidator.checkSiDescriptionEstValide(this.description);
       this.descriptionMsgErr = result[0];
-      this.descriptionIsValid = result[1];
+      this.descriptionEstValide = result[1];
 
-      result = grimpeValidator.checkIfStyleIsValid(this.style);
+      result = grimpeValidator.checkSiStyleEstValide(this.style);
       this.styleMsgErr = result[0];
-      this.styleIsValid = result[1];
+      this.styleEstValide = result[1];
 
-      if (!this.titleNeedUpdated) {
-        result = grimpeValidator.checkIfTitleIsValid(this.title);
-        this.titleMsgErr = result[0];
-        this.titleIsVaild = result[1];
+      if (!this.titreNeedUpdated) {
+        result = grimpeValidator.checkSiTitreGrimpeEstValide(this.titre);
+        this.titreMsgErr = result[0];
+        this.titreEstValide = result[1];
       }
 
-      if (this.titleIsVaild && this.lieuIsValid && this.diffIsValid && this.descriptionIsValid && this.styleIsValid && this.imgIsVaild) {
+      if (this.titreEstValide && this.lieuEstValide && this.diffEstValide && this.descriptionEstValide && this.styleEstValide && this.imgEstValide) {
         try {
           this.$store.dispatch("startLoading");
 
           const payload = {
             data: {
-              titre: this.title,
+              titre: this.titre,
               style: this.style,
               description: this.description,
               difficulte: this.diff,
@@ -285,9 +285,9 @@ export default {
             }
           }).catch(err => {
             if (err.data.err && err.data.err === "Titre déjà utilisé !") {
-              this.titleIsVaild = false;
-              this.titleNeedUpdated = true;
-              this.titleMsgErr.push("Titre déjà utilisé !");
+              this.titreEstValide = false;
+              this.titreNeedUpdated = true;
+              this.titreMsgErr.push("Titre déjà utilisé !");
             }
             this.$toast.error("Échec de la création de la grimpe !");
             this.$store.dispatch("stopLoading");
@@ -296,38 +296,38 @@ export default {
         } catch (err) {
           this.$toast.error("Une erreur est survenue !");
           this.$store.dispatch("stopLoading");
-          errorManager(err, this.$store, this.$router);
+          await errorManager(err, this.$store, this.$router);
         }
       }
     },
     cancel() {
       this.$router.go(-1);
     },
-    checkIfTitleIsValid(event) {
-      const result = grimpeValidator.checkIfTitleIsValid(event.target.value);
-      this.titleMsgErr = result[0];
-      this.titleIsVaild = result[1];
-      this.titleNeedUpdated = false;
+    checkSiTitreEstValide(event) {
+      const result = grimpeValidator.checkSiTitreGrimpeEstValide(event.target.value);
+      this.titreMsgErr = result[0];
+      this.titreEstValide = result[1];
+      this.titreNeedUpdated = false;
     },
-    checkIfLieuIsValid(event) {
-      const result = grimpeValidator.checkIfLieuIsValid(event.target.value);
+    checkSiLieuEstValide(event) {
+      const result = grimpeValidator.checkSiLieuEstValide(event.target.value);
       this.lieuMsgErr = result[0];
-      this.lieuIsValid = result[1];
+      this.lieuEstValide = result[1];
     },
-    checkIfDiffIsValid(event) {
-      const result = grimpeValidator.checkIfDifficultyLevelIsValid(event.target.value);
+    checkSiDiffEstValide(event) {
+      const result = grimpeValidator.checkSiDifficultyLevelEstValide(event.target.value);
       this.diffMsgErr = result[0];
-      this.diffIsValid = result[1];
+      this.diffEstValide = result[1];
     },
-    checkIfDescriptionIsValid(event) {
-      const result = grimpeValidator.checkIfDescriptionIsValid(event.target.value);
+    checkSiDescriptionEstValide(event) {
+      const result = grimpeValidator.checkSiDescriptionEstValide(event.target.value);
       this.descriptionMsgErr = result[0];
-      this.descriptionIsValid = result[1];
+      this.descriptionEstValide = result[1];
     },
-    checkIfStyleIsValid(event) {
-      const result = grimpeValidator.checkIfStyleIsValid(event.target.value);
+    checkSiStyleEstValide(event) {
+      const result = grimpeValidator.checkSiStyleEstValide(event.target.value);
       this.styleMsgErr = result[0];
-      this.styleIsValid = result[1];
+      this.styleEstValide = result[1];
     },
   },
   created() {
@@ -381,13 +381,11 @@ export default {
   margin: 30px;
 }
 
-body {
-  background-color: #f3f4f6;
-}
-
-h1, h2 {
-  color: $accent;
-  text-align: center;
+#addGrimpeForm {
+  padding: 30px;
+  height: auto;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 .btnWrapper {
@@ -396,14 +394,8 @@ h1, h2 {
   margin-top: 40px;
 }
 
-#addGrimpeForm {
-  padding: 30px;
-  height: auto;
-  margin-left: 5%;
-  margin-right: 5%;
-}
-
 .btnWrapper > div {
   margin: 10px;
 }
+
 </style>

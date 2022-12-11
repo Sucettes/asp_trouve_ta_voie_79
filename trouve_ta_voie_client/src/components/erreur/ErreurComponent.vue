@@ -60,7 +60,7 @@ export default {
     }
 
     span:hover {
-      color: $Darkaccent;
+      color: $accent;
     }
   }
 }

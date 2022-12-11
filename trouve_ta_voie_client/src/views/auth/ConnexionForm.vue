@@ -8,7 +8,7 @@
         <label for="inputCourriel" class="form-label">Courriel</label>
         <input type="email" class="form-control" id="inputCourriel" v-model.trim="courriel"
                @blur="valideCourriel" @input="valideCourriel"
-               :class="{ 'is-invalid': courrielVal===false }" tabindex="1">
+               :class="{ 'is-invalid': courrielVal===false }">
         <ul class="ulError" v-if="!courrielVal">
           <li class="error" v-for="err in courrielErreurs" :key="err">{{ err }}</li>
         </ul>
@@ -17,16 +17,16 @@
       <div class="mb-3">
         <label for="inputMdp" class="form-label">Mot de passe</label>
         <input type="password" class="form-control" id="inputMdp" v-model.trim="mdp" @blur="valideMdp"
-               :class="{ 'is-invalid': mdpVal===false }" @input="valideMdp" tabindex="2">
+               :class="{ 'is-invalid': mdpVal===false }" @input="valideMdp">
         <ul class="ulError" v-if="!mdpVal">
           <li class="error" v-for="err in mdpErreurs" :key="err">{{ err }}</li>
         </ul>
       </div>
 
       <div class="btnWrapper">
-        <router-link class="nav-link" to="/auth/inscription" tabindex="4">Inscription</router-link>
+        <router-link class="nav-link" to="/auth/inscription" aria-label="Allez page inscription">Inscription</router-link>
 
-        <button type="button" class="btn btn-primary" @click="login" tabindex="3">Confirmer</button>
+        <button type="button" class="btn btn-primary" @click="login" aria-label="Confirmer connexion">Confirmer</button>
       </div>
     </form>
   </div>
@@ -54,10 +54,10 @@ export default {
   },
   methods: {
     async login() {
-      let result = userValidator.checkIfEmailIsValid(this.courriel);
+      let result = userValidator.checkSiEmailEstValide(this.courriel);
       this.courrielErreurs = result[0];
       this.courrielVal = result[1];
-      result = userValidator.checkIfPwdIsValid(this.mdp);
+      result = userValidator.checkSiPwdEstValide(this.mdp);
       this.mdpErreurs = result[0];
       this.mdpVal = result[1];
 
@@ -93,12 +93,12 @@ export default {
       }
     },
     valideCourriel(event) {
-      const result = userValidator.checkIfEmailIsValid(event.target.value);
+      const result = userValidator.checkSiEmailEstValide(event.target.value);
       this.courrielErreurs = result[0];
       this.courrielVal = result[1];
     },
     valideMdp(event) {
-      const result = userValidator.checkIfPwdIsValid(event.target.value);
+      const result = userValidator.checkSiPwdEstValide(event.target.value);
       this.mdpErreurs = result[0];
       this.mdpVal = result[1];
     },
@@ -131,11 +131,15 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   color: white;
-}
 
-#container input {
-  color: white;
-  background-color: transparent;
+  input {
+    color: white;
+    background-color: transparent;
+  }
+
+  h2 {
+    color: white;
+  }
 }
 
 #loginForm {
@@ -150,14 +154,15 @@ export default {
   justify-content: space-between;
 }
 
+#authForm {
+  width: 22.5rem;
+  margin: 0 auto;
+  padding: 30px;
+  height: auto;
+}
+
 .error {
-  color: $redDark;
+  color: red;
   font-size: 0.9rem;
 }
-
-.ulError {
-  list-style: none;
-  padding: 0;
-}
-
 </style>

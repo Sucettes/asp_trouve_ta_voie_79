@@ -11,19 +11,24 @@
         <ul class="navbar-nav">
 
           <li class="nav-item">
-            <router-link class="nav-link" to="/lieu/ajouter" v-if="isLoggedIn">Ajouter un lieu
+            <router-link aria-label="Allez sur la page ajouter un lieu" class="nav-link" to="/lieu/ajouter"
+                         v-if="isLoggedIn">Ajouter un lieu
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/grimpe/ajouter" v-if="isLoggedIn">Ajouter une grimpe
+            <router-link aria-label="Allez sur la page ajouter une grimpe" class="nav-link" to="/grimpe/ajouter"
+                         v-if="isLoggedIn">Ajouter une grimpe
             </router-link>
           </li>
 
           <li class="nav-item">
-            <router-link class="nav-link" to="/auth/connexion" v-if="!isLoggedIn">Connexion</router-link>
+            <router-link aria-label="Allez sur la page de connexion" class="nav-link" to="/auth/connexion"
+                         v-if="!isLoggedIn">Connexion
+            </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/auth/inscription" v-if="!isLoggedIn">Inscription
+            <router-link aria-label="Allez sur la page d'inscription" class="nav-link" to="/auth/inscription"
+                         v-if="!isLoggedIn">Inscription
             </router-link>
           </li>
 
@@ -34,35 +39,48 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li>
-                <router-link class="dropdown-item" :to="{name: 'mesLieux'}" v-if="isLoggedIn">Mes lieux</router-link>
-              </li>
-              <li>
-                <router-link class="dropdown-item" :to="{name: 'mesGrimpes'}" v-if="isLoggedIn">Mes grimpes
+                <router-link aria-label="Voir mes lieux" class="dropdown-item" :to="{name: 'mesLieux'}"
+                             v-if="isLoggedIn">Mes lieux
                 </router-link>
               </li>
               <li>
-                <router-link class="dropdown-item" :to="{name: 'mesVotes'}" v-if="isLoggedIn">Mes votes</router-link>
+                <router-link aria-label="Voir mes grimpes" class="dropdown-item" :to="{name: 'mesGrimpes'}"
+                             v-if="isLoggedIn">Mes grimpes
+                </router-link>
+              </li>
+              <li>
+                <router-link aria-label="Voir mes votes" class="dropdown-item" :to="{name: 'mesVotes'}"
+                             v-if="isLoggedIn">Mes votes
+                </router-link>
               </li>
               <hr>
-              <li>
-                <router-link class="dropdown-item" :to="{name: 'profil'}" v-if="isLoggedIn">Profil</router-link>
+              <li class="nav-item dropdown" v-if="isLoggedIn">
+                <p class="dropdown-item dropdown-toggle" type="button" data-bs-toggle="offcanvas"
+                   data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
+                   aria-label="Voir option de mon profil">Mon compte</p>
               </li>
-              <li><a class="dropdown-item" @click="logout">Déconnexion</a></li>
+              <li><a aria-label="Déconnexion" class="dropdown-item" @click="logout" href="#">Déconnexion</a></li>
             </ul>
           </li>
+
         </ul>
       </div>
     </div>
   </nav>
+
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <ProfileView v-if="isLoggedIn"></ProfileView>
+  </div>
 </template>
 
 <script>
 import router from "@/router";
+import ProfileView from "@/views/utilisateur/ProfilView";
 
 
 export default {
   name: "HeaderNav",
-  components: {},
+  components: {ProfileView},
   data() {
     return {
       userId: 0,

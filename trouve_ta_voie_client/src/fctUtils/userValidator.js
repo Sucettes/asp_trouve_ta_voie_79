@@ -1,6 +1,8 @@
+"use strict";
+
 // Bibliothèque de fonction pour la validation des utilisateurs.
 const userValidator = {
-    checkIfEmailIsValid(email) {
+    checkSiEmailEstValide(email) {
         const emailRegex = new RegExp("^(\\w|\\.|\\_|\\-)+[@](\\w|\\_|\\-|\\.)+[.]\\w{2,3}$");
         let courrielVal = true;
         let courrielErreurs = [];
@@ -20,7 +22,7 @@ const userValidator = {
 
         return [courrielErreurs, courrielVal];
     },
-    checkIfPwdIsValid(pwd) {
+    checkSiPwdEstValide(pwd) {
         const mdpRegex = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[#?!@$%^&*-])([a-zA-Z0-9#?!@$%^&*-]){4,}$");
         let mdpErreurs = [];
         let mdpVal = true;
@@ -40,7 +42,7 @@ const userValidator = {
 
         return [mdpErreurs, mdpVal];
     },
-    checkIfNameIsValid(name) {
+    checkSiNameEstValide(name) {
         let nomVal = true;
         let nomErreurs = [];
         const nomRegex = new RegExp("^[A-Za-z\\s-]+$");
