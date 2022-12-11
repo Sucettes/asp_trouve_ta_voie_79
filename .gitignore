@@ -23,4 +23,4 @@ pnpm-debug.log*
 *.sw?
 testPasSurGit
 
-trouve_ta_voie_serveur/public/img/grimpe/
+trouve_ta_voie_serveur/public/img/grimpe/*.*
